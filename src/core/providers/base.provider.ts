@@ -66,26 +66,33 @@ export abstract class BaseMediaProvider {
       downloadArgs.push('--ffmpeg-location', ffmpegPath);
     }
 
-    // Format selection logic
-    const isAudioRequest = formatId.startsWith('audio-') || formatId === 'bestaudio';
+    const isAudioOnly =
+      formatId.startsWith('audio-') ||
+      formatId === 'bestaudio' ||
+      ['139', '140', '249', '250', '251', 'ba'].includes(formatId);
 
-    if (formatId === 'audio-mp3-320' || formatId === 'audio-mp3') {
-      downloadArgs.push('-f', 'ba/b', '-x', '--audio-format', 'mp3', '--audio-quality', '320K');
-    } else if (formatId === 'audio-mp3-128') {
-      downloadArgs.push('-f', 'ba/b', '-x', '--audio-format', 'mp3', '--audio-quality', '128K');
-    } else if (formatId === 'audio-m4a') {
-      downloadArgs.push('-f', 'ba[ext=m4a]/ba/b', '-x', '--audio-format', 'm4a');
-    } else if (formatId === 'bestaudio') {
-      downloadArgs.push('-f', 'ba/b');
-    } else if (formatId === 'best' || !formatId) {
-      downloadArgs.push('-f', 'bv*+ba/b/best', '--merge-output-format', 'mp4');
+    if (isAudioOnly) {
+      if (formatId === 'audio-mp3-320') {
+        downloadArgs.push('-f', 'ba/b', '-x', '--audio-format', 'mp3', '--audio-quality', '320K');
+      } else if (formatId === 'audio-mp3-128') {
+        downloadArgs.push('-f', 'ba/b', '-x', '--audio-format', 'mp3', '--audio-quality', '128K');
+      } else if (formatId === 'audio-m4a') {
+        downloadArgs.push('-f', 'ba[ext=m4a]/ba/b', '-x', '--audio-format', 'm4a');
+      } else if (formatId === 'bestaudio') {
+        downloadArgs.push('-f', 'ba/b', '-x', '--audio-format', 'mp3', '--audio-quality', '0');
+      } else {
+        downloadArgs.push('-f', `${formatId}/ba/b`, '-x', '--audio-format', 'mp3');
+      }
     } else {
-      // For video qualities: mux selected video stream with best audio into MP4 container
+      // For video downloads: download the video stream, mux with best audio stream,
+      // and encode audio track as standard AAC 192k for 100% universal playback on all devices and players
       downloadArgs.push(
         '-f',
-        `${formatId}+ba/bestvideo[format_id=${formatId}]+bestaudio/${formatId}/best`,
+        `${formatId}+ba/bestvideo[format_id=${formatId}]+bestaudio/bestvideo+bestaudio/best`,
         '--merge-output-format',
-        'mp4'
+        'mp4',
+        '--postprocessor-args',
+        'ffmpeg:-c:a aac -b:a 192k'
       );
     }
 
@@ -93,6 +100,7 @@ export abstract class BaseMediaProvider {
 
     logger.info(`Starting download job ${jobId} with format ${formatId}`, 'PROVIDER', {
       platform: this.platform,
+      isAudioOnly,
       hasFfmpeg: Boolean(ffmpegPath),
     });
 
