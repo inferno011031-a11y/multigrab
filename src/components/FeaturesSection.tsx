@@ -2,51 +2,51 @@
 
 import React from 'react';
 import {
-  ShieldCheck,
-  Zap,
-  Sliders,
+  Film,
+  Music,
+  CheckCircle,
+  Smartphone,
+  Shield,
   Layers,
-  FileCheck,
-  Server,
 } from 'lucide-react';
 
 export function FeaturesSection() {
   const features = [
     {
-      icon: <Zap className="w-5 h-5 text-cyan-400" />,
-      title: 'Ultra-Fast Subprocess Engine',
+      icon: <Film className="w-5 h-5 text-cyan-400" />,
+      title: 'Full Quality 4K & 1080p',
       description:
-        'Zero shell-injection execution with native streaming pipes for real-time progress, speed, and ETA calculation.',
+        'Download original quality video streams up to 4K 2160p and 1080p Full HD with synchronized stereo audio.',
     },
     {
-      icon: <ShieldCheck className="w-5 h-5 text-emerald-400" />,
-      title: 'DNS Pre-Lookup SSRF Firewall',
+      icon: <Music className="w-5 h-5 text-purple-400" />,
+      title: 'Direct MP3 Audio Extraction',
       description:
-        'Blocks RFC 1918 private subnets, cloud metadata IPs, loopbacks, and intranet endpoints with strict pre-resolution.',
+        'Convert any video or Spotify track into high-bitrate 320 kbps or 128 kbps MP3 files for offline listening.',
     },
     {
-      icon: <Sliders className="w-5 h-5 text-indigo-400" />,
-      title: 'Adaptive Video & Audio Muxing',
+      icon: <CheckCircle className="w-5 h-5 text-emerald-400" />,
+      title: '100% Free & Unlimited',
       description:
-        'Automatically merges separate high-bitrate video streams and AAC audio tracks into standard MP4 containers.',
+        'No account required, no download queues, no paywalls, and no daily conversion caps.',
     },
     {
-      icon: <Layers className="w-5 h-5 text-purple-400" />,
-      title: 'Asynchronous Queue Architecture',
+      icon: <Shield className="w-5 h-5 text-indigo-400" />,
+      title: 'No Popups or Shady Redirects',
       description:
-        'Powered by BullMQ and Redis for high-concurrency background job processing with seamless in-memory fallback.',
+        'Clean and straightforward. No fake download buttons, intrusive pop-unders, or malware redirects.',
     },
     {
-      icon: <FileCheck className="w-5 h-5 text-teal-400" />,
-      title: 'HMAC-Signed Download Tokens',
+      icon: <Smartphone className="w-5 h-5 text-teal-400" />,
+      title: 'Works on Any Phone or PC',
       description:
-        'Cryptographically signed ephemeral download URLs with automatic 30-minute expiration and background garbage collection.',
+        'Download directly in Safari, Chrome, or Firefox on iOS, Android, macOS, Windows, and Linux.',
     },
     {
-      icon: <Server className="w-5 h-5 text-amber-400" />,
-      title: 'Universal Platform Providers',
+      icon: <Layers className="w-5 h-5 text-amber-400" />,
+      title: 'All Your Favorite Platforms',
       description:
-        'Modular object-oriented provider registry supporting YouTube, TikTok, Instagram, X/Twitter, Facebook, Reddit, Pinterest, and Vimeo.',
+        'Supports YouTube, Spotify, TikTok, Instagram, X (Twitter), Facebook, Reddit, Pinterest, and Vimeo in one place.',
     },
   ];
 
@@ -54,10 +54,10 @@ export function FeaturesSection() {
     <section className="mx-auto max-w-6xl px-4 py-16 sm:py-24">
       <div className="text-center mb-12">
         <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-          Engineered for Performance & Security
+          Why Use MediaDrop?
         </h2>
         <p className="mt-2 text-sm text-neutral-400 max-w-xl mx-auto">
-          MediaDrop combines cutting-edge full-stack architecture with enterprise-grade security.
+          Fast, direct downloads without the spam and popups found on other tools.
         </p>
       </div>
 

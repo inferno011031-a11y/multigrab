@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { ArrowDownToLine, Shield, Code } from 'lucide-react';
+import Link from 'next/link';
+import { ArrowDownToLine } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -17,26 +18,37 @@ export function Footer() {
               <span className="text-base font-bold text-white tracking-tight">
                 Media<span className="bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">Drop</span>
               </span>
-              <p className="text-xs text-neutral-500">Universal Public Media Downloader & Audio Extractor</p>
+              <p className="text-xs text-neutral-500">Universal Video & Audio Downloader</p>
             </div>
           </div>
 
-          {/* Highlights */}
+          {/* Clean Navigation Links */}
           <div className="flex flex-wrap items-center gap-6 text-xs text-neutral-400">
-            <div className="flex items-center gap-1.5">
-              <Shield className="w-4 h-4 text-emerald-400" />
-              <span>SSRF & Malware Firewall</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <Code className="w-4 h-4 text-indigo-400" />
-              <span>Open Source & Free</span>
-            </div>
+            <Link href="/" className="hover:text-white transition-colors">
+              Home
+            </Link>
+            <Link href="/youtube-downloader" className="hover:text-white transition-colors">
+              YouTube
+            </Link>
+            <Link href="/spotify-downloader" className="hover:text-white transition-colors">
+              Spotify
+            </Link>
+            <Link href="/tiktok-downloader" className="hover:text-white transition-colors">
+              TikTok
+            </Link>
+            <Link href="/instagram-downloader" className="hover:text-white transition-colors">
+              Instagram
+            </Link>
+            <Link href="/#platforms" className="hover:text-white transition-colors">
+              All Platforms
+            </Link>
           </div>
         </div>
 
-        {/* Bottom copyright */}
-        <div className="mt-8 border-t border-neutral-800/60 pt-6 text-center text-xs text-neutral-500">
-          <p>© {new Date().getFullYear()} MediaDrop. All rights reserved. Built with Next.js, TypeScript & Tailwind CSS.</p>
+        {/* Bottom copyright & disclaimer */}
+        <div className="mt-8 border-t border-neutral-800/60 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-neutral-500 gap-4">
+          <p>© {new Date().getFullYear()} MediaDrop. All rights reserved.</p>
+          <p className="text-[11px] text-neutral-600">For personal archival and offline viewing of public media.</p>
         </div>
       </div>
     </footer>

@@ -13,7 +13,7 @@ import { SeoPlatformData } from '@/lib/seo-platforms';
 import { MediaMetadata, DownloadJob } from '@/core/types/media';
 import {
   CheckCircle2,
-  Sparkles,
+  ArrowDownToLine,
   ArrowRight,
   AlertCircle,
   HelpCircle,
@@ -180,7 +180,7 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
       <main className="flex-1">
         {/* Hero Section */}
         <section className="relative overflow-hidden pt-10 pb-8 sm:pt-16 sm:pb-12 px-4 text-center">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gradient-to-tr from-indigo-600/15 via-cyan-500/15 to-emerald-600/15 blur-[120px] pointer-events-none -z-10" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gradient-to-tr from-indigo-600/10 via-cyan-500/10 to-purple-600/10 blur-[120px] pointer-events-none -z-10" />
 
           <div className="mx-auto max-w-4xl">
             {/* Breadcrumb */}
@@ -193,8 +193,8 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
             </div>
 
             {/* Top pill badge */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3.5 py-1 text-xs font-semibold text-indigo-400 backdrop-blur-md mb-6 shadow-sm">
-              <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-neutral-800 bg-neutral-900/80 px-3.5 py-1 text-xs font-semibold text-neutral-300 backdrop-blur-md mb-6 shadow-sm">
+              <ArrowDownToLine className="w-3.5 h-3.5 text-cyan-400" />
               <span>{data.heroBadge}</span>
             </div>
 
@@ -269,7 +269,7 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
               How to Download from {data.platform.toUpperCase()}
             </h2>
             <p className="mt-1.5 text-xs sm:text-sm text-neutral-400">
-              Save your favorite media in 3 simple steps.
+              Save your media in 3 simple steps.
             </p>
           </div>
 
@@ -293,7 +293,7 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
         <section className="mx-auto max-w-5xl px-4 py-10">
           <div className="rounded-3xl border border-neutral-800/80 bg-neutral-900/30 p-8">
             <h3 className="text-lg font-bold text-white mb-6 text-center">
-              Key Features & Benefits
+              Features
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {data.features.map((feat, idx) => (

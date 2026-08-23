@@ -14,7 +14,7 @@ import { FaqSection } from '@/components/FaqSection';
 import { Footer } from '@/components/Footer';
 import { AdBanner } from '@/components/AdBanner';
 import { MediaMetadata, PlatformInfo, DownloadJob } from '@/core/types/media';
-import { AlertCircle, Zap, Share2, Activity } from 'lucide-react';
+import { AlertCircle, ArrowDownToLine, Share2 } from 'lucide-react';
 
 interface HistoryItem {
   id: string;
@@ -172,8 +172,8 @@ function MainContent() {
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
         await navigator.share({
-          title: 'MediaDrop - Free Universal Media Downloader',
-          text: 'Download public videos and audio from YouTube, Spotify, TikTok, Instagram, X in full quality!',
+          title: 'MediaDrop - Universal Media Downloader',
+          text: 'Download public videos and MP3 audio from YouTube, Spotify, TikTok, Instagram, and more!',
           url: window.location.origin,
         });
         return;
@@ -198,32 +198,27 @@ function MainContent() {
       <main className="flex-1">
         {/* Hero Section */}
         <section className="relative overflow-hidden pt-10 pb-8 sm:pt-20 sm:pb-12 px-4 text-center">
-          {/* Background Ambient Glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gradient-to-tr from-indigo-600/15 via-cyan-500/15 to-purple-600/15 blur-[120px] pointer-events-none -z-10" />
+          {/* Subtle Ambient Background */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gradient-to-tr from-indigo-600/10 via-cyan-500/10 to-purple-600/10 blur-[120px] pointer-events-none -z-10" />
 
           <div className="mx-auto max-w-4xl">
             {/* Top pill badge */}
-            <div className="inline-flex flex-wrap items-center justify-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3.5 py-1 text-xs font-semibold text-cyan-400 backdrop-blur-md mb-6 shadow-sm">
-              <Zap className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Universal Free Cloud Media Downloader & Audio Extractor</span>
-              <span className="hidden sm:inline">•</span>
-              <span className="flex items-center gap-1 text-emerald-400 font-mono">
-                <Activity className="w-3 h-3" />
-                <span>9 Platforms Live</span>
-              </span>
+            <div className="inline-flex items-center gap-2 rounded-full border border-neutral-800 bg-neutral-900/80 px-3.5 py-1 text-xs font-semibold text-neutral-300 backdrop-blur-md mb-6 shadow-sm">
+              <ArrowDownToLine className="w-3.5 h-3.5 text-cyan-400" />
+              <span>Universal Video & Audio Downloader</span>
             </div>
 
             {/* Main Headline */}
             <h1 className="text-3xl sm:text-6xl font-black tracking-tight text-white leading-[1.15]">
-              Download Public Media in{' '}
+              Paste a link.{' '}
               <span className="bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
-                All Qualities & Audio
+                Download the file.
               </span>
             </h1>
 
             {/* Sub-headline */}
-            <p className="mt-4 text-sm sm:text-lg text-neutral-400 max-w-2xl mx-auto leading-relaxed">
-              Paste any link from YouTube, Spotify, TikTok, Instagram, X/Twitter, Reddit, Facebook, Pinterest or Vimeo. Choose your video resolution or extract MP3 tracks instantly.
+            <p className="mt-4 text-sm sm:text-base text-neutral-400 max-w-2xl mx-auto leading-relaxed">
+              Download videos and audio from YouTube, Spotify, TikTok, Instagram, X/Twitter, Reddit, Facebook, Pinterest, and Vimeo in top quality. Free, fast, and no software required.
             </p>
 
             {/* URL Form Input */}
@@ -234,14 +229,14 @@ function MainContent() {
               />
             </div>
 
-            {/* Quick Share Button for mobile & desktop */}
+            {/* Quick Share */}
             <div className="mt-4 flex items-center justify-center gap-2">
               <button
                 onClick={handleShareApp}
                 className="inline-flex items-center gap-1.5 rounded-full border border-neutral-800 bg-neutral-900/60 px-3 py-1 text-xs text-neutral-400 hover:text-white transition-colors cursor-pointer"
               >
                 <Share2 className="w-3.5 h-3.5" />
-                <span>{shareCopied ? 'Link Copied to Clipboard!' : 'Share MediaDrop'}</span>
+                <span>{shareCopied ? 'Link Copied!' : 'Share MediaDrop'}</span>
               </button>
             </div>
 
@@ -283,12 +278,12 @@ function MainContent() {
           />
         </div>
 
-        {/* Features & Architecture Highlights */}
+        {/* Features Highlights */}
         <div id="features">
           <FeaturesSection />
         </div>
 
-        {/* FAQ & Fair Use Disclaimer */}
+        {/* FAQ */}
         <FaqSection />
       </main>
 
