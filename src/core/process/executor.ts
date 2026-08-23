@@ -14,6 +14,40 @@ export interface ProgressCallback {
 
 export class SubprocessExecutor {
   private static cachedCommand: { cmd: string; baseArgs: string[] } | null = null;
+  private static cachedFfmpegPath: string | null = null;
+
+  /**
+   * Discovers ffmpeg executable path on the system.
+   */
+  public static async getFfmpegPath(): Promise<string | null> {
+    if (SubprocessExecutor.cachedFfmpegPath !== null) {
+      return SubprocessExecutor.cachedFfmpegPath;
+    }
+
+    // 1. Try direct system ffmpeg
+    try {
+      await SubprocessExecutor.runRaw('ffmpeg', ['-version'], { timeout: 3000 });
+      SubprocessExecutor.cachedFfmpegPath = 'ffmpeg';
+      return 'ffmpeg';
+    } catch {}
+
+    // 2. Try python imageio_ffmpeg
+    const pythonExecs = [config.extractor.pythonPath, 'python3', 'python', 'py'];
+    for (const py of pythonExecs) {
+      try {
+        const out = await SubprocessExecutor.runRaw(py, ['-c', 'import imageio_ffmpeg; print(imageio_ffmpeg.get_ffmpeg_exe())'], { timeout: 4000 });
+        const ffmpegExe = out.stdout.trim();
+        if (ffmpegExe && !ffmpegExe.includes('Traceback')) {
+          SubprocessExecutor.cachedFfmpegPath = ffmpegExe;
+          logger.info(`Discovered ffmpeg executable at ${ffmpegExe}`, 'EXECUTOR');
+          return ffmpegExe;
+        }
+      } catch {}
+    }
+
+    SubprocessExecutor.cachedFfmpegPath = '';
+    return null;
+  }
 
   /**
    * Discovers the best way to execute yt-dlp on the current host.

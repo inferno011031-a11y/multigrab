@@ -1,5 +1,5 @@
 import fs from 'fs/promises';
-import { createReadStream, existsSync } from 'fs';
+import { existsSync } from 'fs';
 import path from 'path';
 import { config } from '@/lib/config';
 import { logger } from '@/lib/logger';
@@ -58,14 +58,35 @@ export class TempStorageManager {
       if (!existsSync(jobDir)) return null;
 
       const entries = await fs.readdir(jobDir, { withFileTypes: true });
+      const candidates: Array<{ filePath: string; filename: string; size: number; isVideo: boolean }> = [];
+
       for (const entry of entries) {
-        if (entry.isFile() && entry.name !== 'meta.json') {
+        if (entry.isFile() && entry.name !== 'meta.json' && !entry.name.endsWith('.part') && !entry.name.endsWith('.ytdl')) {
           const filePath = path.join(jobDir, entry.name);
           const stat = await fs.stat(filePath);
-          return { filePath, filename: entry.name, size: stat.size };
+          const ext = path.extname(entry.name).toLowerCase();
+          const isVideo = ['.mp4', '.mkv', '.webm', '.avi', '.mov'].includes(ext);
+
+          candidates.push({
+            filePath,
+            filename: entry.name,
+            size: stat.size,
+            isVideo,
+          });
         }
       }
-      return null;
+
+      if (candidates.length === 0) return null;
+
+      // Sort candidate files: videos first, then by size descending
+      candidates.sort((a, b) => {
+        if (a.isVideo && !b.isVideo) return -1;
+        if (!a.isVideo && b.isVideo) return 1;
+        return b.size - a.size;
+      });
+
+      const best = candidates[0];
+      return { filePath: best.filePath, filename: best.filename, size: best.size };
     } catch {
       return null;
     }

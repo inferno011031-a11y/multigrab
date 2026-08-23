@@ -44,6 +44,7 @@ export abstract class BaseMediaProvider {
   ): Promise<{ filePath: string; filename: string; mimeType: string; size: number }> {
     const jobDir = await TempStorageManager.getJobDirectory(jobId);
     const { cmd, baseArgs } = await SubprocessExecutor.getExtractorCommand();
+    const ffmpegPath = await SubprocessExecutor.getFfmpegPath();
 
     // Output template to place file directly inside isolated job folder
     const outputTemplate = path.join(jobDir, '%(title).100B-%(id)s.%(ext)s');
@@ -60,7 +61,14 @@ export abstract class BaseMediaProvider {
       outputTemplate,
     ];
 
+    // Pass ffmpeg location if discovered
+    if (ffmpegPath) {
+      downloadArgs.push('--ffmpeg-location', ffmpegPath);
+    }
+
     // Format selection logic
+    const isAudioRequest = formatId.startsWith('audio-') || formatId === 'bestaudio';
+
     if (formatId === 'audio-mp3-320' || formatId === 'audio-mp3') {
       downloadArgs.push('-f', 'ba/b', '-x', '--audio-format', 'mp3', '--audio-quality', '320K');
     } else if (formatId === 'audio-mp3-128') {
@@ -70,16 +78,22 @@ export abstract class BaseMediaProvider {
     } else if (formatId === 'bestaudio') {
       downloadArgs.push('-f', 'ba/b');
     } else if (formatId === 'best' || !formatId) {
-      downloadArgs.push('-f', 'b/bv*+ba/best');
+      downloadArgs.push('-f', 'bv*+ba/b/best', '--merge-output-format', 'mp4');
     } else {
-      // For specific video format: fetch format and mux with best audio stream, or fallback to direct format
-      downloadArgs.push('-f', `${formatId}+ba/${formatId}/b/best`);
+      // For video qualities: mux selected video stream with best audio into MP4 container
+      downloadArgs.push(
+        '-f',
+        `${formatId}+ba/bestvideo[format_id=${formatId}]+bestaudio/${formatId}/best`,
+        '--merge-output-format',
+        'mp4'
+      );
     }
 
     downloadArgs.push(url);
 
     logger.info(`Starting download job ${jobId} with format ${formatId}`, 'PROVIDER', {
       platform: this.platform,
+      hasFfmpeg: Boolean(ffmpegPath),
     });
 
     await SubprocessExecutor.runRaw(cmd, downloadArgs, {
@@ -234,7 +248,7 @@ export abstract class BaseMediaProvider {
 
       const formatItem: MediaFormat = {
         formatId,
-        ext,
+        ext: height ? 'mp4' : ext, // Guarantee MP4 for video muxing
         resolution,
         qualityLabel,
         width,
