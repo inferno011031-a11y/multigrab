@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs/promises';
-import { createReadStream, existsSync } from 'fs';
+import { existsSync, createReadStream } from 'fs';
 import path from 'path';
 import { Readable } from 'stream';
 import { verifySignedDownloadToken, sanitizeFilename } from '@/core/security/sanitize';
@@ -67,20 +67,28 @@ export async function GET(
     const meta = await TempStorageManager.getJobMetadata(safeJobId);
     const mimeType = meta?.mimeType || 'application/octet-stream';
 
-    // Create readable stream
-    const nodeStream = createReadStream(normalizedPath);
-    const webReadableStream = Readable.toWeb(nodeStream) as ReadableStream;
+    // 1. Create clean ASCII fallback for HTTP header (RFC 6266)
+    // Replace all non-ASCII, quotes, control characters with underscores
+    const asciiFilename = safeFilename
+      .replace(/[^\x20-\x7E]/g, '_')
+      .replace(/["\\]/g, '_')
+      .trim() || 'media-download.mp4';
 
-    // Clean RFC 5987 Content-Disposition header
-    const encodedFilename = encodeURIComponent(safeFilename).replace(/['()]/g, escape).replace(/\*/g, '%2A');
+    // 2. Create RFC 5987 UTF-8 encoded filename
+    const utf8Encoded = encodeURIComponent(safeFilename)
+      .replace(/['()]/g, (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`)
+      .replace(/\*/g, '%2A');
 
-    return new Response(webReadableStream, {
+    // Read and return binary stream safely
+    const fileBuffer = await fs.readFile(normalizedPath);
+
+    return new Response(fileBuffer, {
       status: 200,
       headers: {
         'Content-Type': mimeType,
         'Content-Length': String(stat.size),
-        'Content-Disposition': `attachment; filename="${safeFilename}"; filename*=UTF-8''${encodedFilename}`,
-        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        'Content-Disposition': `attachment; filename="${asciiFilename}"; filename*=UTF-8''${utf8Encoded}`,
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
         'Accept-Ranges': 'bytes',
         'X-Content-Type-Options': 'nosniff',
       },
