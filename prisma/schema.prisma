@@ -1,0 +1,31 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model DownloadLog {
+  id          String   @id @default(uuid())
+  jobId       String   @unique
+  platform    String
+  formatId    String
+  fileSize    BigInt?
+  duration    Int?
+  ipHash      String
+  status      String   @default("completed")
+  createdAt   DateTime @default(now())
+
+  @@index([platform])
+  @@index([createdAt])
+}
+
+model RateLimitRecord {
+  key       String   @id
+  points    Int      @default(1)
+  expiresAt DateTime
+
+  @@index([expiresAt])
+}

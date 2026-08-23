@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - USE_REDIS=true
+      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/mediadrop?schema=public
+      - TOKEN_SECRET=production-secret-token-change-this-in-env
+      - MAX_DOWNLOAD_SIZE_MB=500
+      - TEMP_FILE_TTL_MINUTES=30
+    depends_on:
+      - redis
+      - postgres
+    restart: unless-stopped
+    volumes:
+      - temp_storage:/app/tmp/downloads
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=mediadrop
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  temp_storage:
+  redis_data:
+  postgres_data:
