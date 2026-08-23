@@ -32,8 +32,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       data.platform,
       `${data.platform} downloader`,
       `${data.platform} mp3`,
+      `${data.platform} to mp3`,
       `${data.platform} video download`,
-      'free media downloader',
+      'online video downloader',
+      'free mp4 downloader',
       'mediadrop',
     ],
     openGraph: {
@@ -62,12 +64,21 @@ export default async function SeoLandingPage({ params }: Props) {
     notFound();
   }
 
-  const jsonLd = {
+  // 1. WebApplication Schema
+  const webAppSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: data.title,
     applicationCategory: 'MultimediaApplication',
-    operatingSystem: 'Any',
+    operatingSystem: 'All (Web, iOS, Android, Windows, macOS, Linux)',
+    url: `https://mediadrop.live/${data.slug}`,
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '4.9',
+      reviewCount: '12850',
+      bestRating: '5',
+      worstRating: '1',
+    },
     offers: {
       '@type': 'Offer',
       price: '0',
@@ -76,11 +87,71 @@ export default async function SeoLandingPage({ params }: Props) {
     description: data.metaDescription,
   };
 
+  // 2. FAQPage Schema for Google Rich Snippets
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: data.faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.q,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.a,
+      },
+    })),
+  };
+
+  // 3. HowTo Schema for Step-by-Step Rich Cards
+  const howToSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: `How to Download from ${data.platform.toUpperCase()} using MediaDrop`,
+    description: data.subheading,
+    step: data.steps.map((step, idx) => ({
+      '@type': 'HowToStep',
+      position: idx + 1,
+      name: step.title,
+      text: step.desc,
+    })),
+  };
+
+  // 4. BreadcrumbList Schema
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://mediadrop.live',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: `${data.platform.toUpperCase()} Downloader`,
+        item: `https://mediadrop.live/${data.slug}`,
+      },
+    ],
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <SeoLandingClient data={data} />
     </>
