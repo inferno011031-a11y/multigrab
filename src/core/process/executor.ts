@@ -1,4 +1,4 @@
-import { spawn, ExecFileOptions } from 'child_process';
+import { spawn } from 'child_process';
 import { config } from '@/lib/config';
 import { logger } from '@/lib/logger';
 
@@ -152,9 +152,7 @@ export class SubprocessExecutor {
       '--no-playlist',
       '--no-check-certificates',
       '--socket-timeout',
-      '15',
-      '--extractor-args',
-      'youtube:player_client=android,web',
+      '20',
       ...extraArgs,
       url,
     ];

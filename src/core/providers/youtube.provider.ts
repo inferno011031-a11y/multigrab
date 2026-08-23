@@ -17,10 +17,7 @@ export class YouTubeProvider extends BaseMediaProvider {
   public async getMetadata(url: string): Promise<MediaMetadata> {
     logger.info(`Fetching metadata for YouTube URL`, 'YOUTUBE_PROVIDER');
 
-    const raw = await SubprocessExecutor.extractJson(url, [
-      '--extractor-args',
-      'youtube:player_client=android,web;player_skip=configs',
-    ]);
+    const raw = await SubprocessExecutor.extractJson(url);
 
     const id = String(raw.id || '');
     const title = String(raw.title || 'YouTube Video');
@@ -34,7 +31,7 @@ export class YouTubeProvider extends BaseMediaProvider {
     const uploadDate = typeof raw.upload_date === 'string' ? raw.upload_date : undefined;
 
     const rawFormats = Array.isArray(raw.formats) ? (raw.formats as Array<Record<string, unknown>>) : [];
-    const normalized = this.normalizeExtractorFormats(rawFormats);
+    const normalized = this.normalizeExtractorFormats(rawFormats, duration);
 
     return {
       id,

@@ -56,8 +56,6 @@ export abstract class BaseMediaProvider {
       '--max-filesize',
       `${config.storage.maxFileSizeMb}M`,
       '--newline',
-      '--extractor-args',
-      'youtube:player_client=android,web',
       '-o',
       outputTemplate,
     ];
@@ -74,8 +72,8 @@ export abstract class BaseMediaProvider {
     } else if (formatId === 'best' || !formatId) {
       downloadArgs.push('-f', 'b/bv*+ba/best');
     } else {
-      // Direct format id first, then fallback to format+bestaudio, then best
-      downloadArgs.push('-f', `${formatId}/${formatId}+ba/b/best`);
+      // For specific video format: fetch format and mux with best audio stream, or fallback to direct format
+      downloadArgs.push('-f', `${formatId}+ba/${formatId}/b/best`);
     }
 
     downloadArgs.push(url);
@@ -156,34 +154,52 @@ export abstract class BaseMediaProvider {
   /**
    * Normalizes extractor JSON formats into standardized MediaFormat entries.
    */
-  protected normalizeExtractorFormats(rawFormats: Array<Record<string, unknown>>): {
+  protected normalizeExtractorFormats(
+    rawFormats: Array<Record<string, unknown>>,
+    durationSeconds?: number
+  ): {
     video: MediaFormat[];
     audio: MediaFormat[];
     all: MediaFormat[];
   } {
     const all: MediaFormat[] = [];
-    const videoMap = new Map<string, MediaFormat>();
+    const videoMap = new Map<number, MediaFormat>();
     const audioList: MediaFormat[] = [];
 
     for (const f of rawFormats) {
       const formatId = String(f.format_id || '');
-      if (!formatId) continue;
+      const ext = String(f.ext || 'mp4').toLowerCase();
+      const formatNote = typeof f.format_note === 'string' ? f.format_note : '';
+
+      // Skip storyboard thumbnails and invalid container formats
+      if (!formatId || ext === 'mhtml' || formatId.startsWith('sb') || formatNote.includes('storyboard')) {
+        continue;
+      }
 
       const vcodec = String(f.vcodec || 'none');
       const acodec = String(f.acodec || 'none');
-      const ext = String(f.ext || 'mp4');
       const width = typeof f.width === 'number' ? f.width : undefined;
       const height = typeof f.height === 'number' ? f.height : undefined;
       const fps = typeof f.fps === 'number' ? f.fps : undefined;
-      const filesize = typeof f.filesize === 'number' ? f.filesize : undefined;
+      let filesize = typeof f.filesize === 'number' ? f.filesize : undefined;
       const filesizeApprox = typeof f.filesize_approx === 'number' ? f.filesize_approx : undefined;
       const tbr = typeof f.tbr === 'number' ? f.tbr : undefined;
-      const formatNote = typeof f.format_note === 'string' ? f.format_note : undefined;
+
+      // If filesize is not provided, estimate from bitrate and duration
+      if (!filesize && filesizeApprox) {
+        filesize = filesizeApprox;
+      } else if (!filesize && tbr && durationSeconds && durationSeconds > 0) {
+        filesize = Math.round((tbr * 1024 * durationSeconds) / 8);
+      }
 
       const isAudioOnly = (vcodec === 'none' || !vcodec) && acodec !== 'none';
       const isVideoOnly = (acodec === 'none' || !acodec) && vcodec !== 'none';
       const hasVideo = vcodec !== 'none' && Boolean(vcodec);
       const hasAudio = acodec !== 'none' && Boolean(acodec);
+
+      if (!hasVideo && !hasAudio) {
+        continue;
+      }
 
       let qualityLabel = '';
       let resolution = '';
@@ -202,8 +218,10 @@ export abstract class BaseMediaProvider {
           qualityLabel = '480p SD';
         } else if (height >= 360) {
           qualityLabel = '360p Medium';
+        } else if (height >= 240) {
+          qualityLabel = '240p Low';
         } else {
-          qualityLabel = `${height}p Low`;
+          qualityLabel = `${height}p`;
         }
 
         if (fps && fps > 30) qualityLabel += ` ${fps}fps`;
@@ -239,19 +257,22 @@ export abstract class BaseMediaProvider {
       if (isAudioOnly) {
         audioList.push(formatItem);
       } else if (hasVideo && height && height >= 144) {
-        // Group by height to provide a clean list of resolutions
-        const key = `${height}p`;
-        const existing = videoMap.get(key);
-        if (!existing || (ext === 'mp4' && existing.ext !== 'mp4') || (tbr && existing.tbr && tbr > existing.tbr)) {
-          videoMap.set(key, formatItem);
+        // Group by height resolution to provide a clean, complete list
+        const existing = videoMap.get(height);
+        if (
+          !existing ||
+          (ext === 'mp4' && existing.ext !== 'mp4') ||
+          (tbr && existing.tbr && tbr > existing.tbr)
+        ) {
+          videoMap.set(height, formatItem);
         }
       }
     }
 
-    // Sort video by height descending (2160p -> 1440p -> 1080p -> 720p -> 480p -> 360p -> 240p)
+    // Sort video by height descending (2160p -> 1440p -> 1080p -> 720p -> 480p -> 360p -> 240p -> 144p)
     const sortedVideo = Array.from(videoMap.values()).sort((a, b) => (b.height || 0) - (a.height || 0));
 
-    // Curate separate audio tracks with specific bitrates
+    // Curated high quality separate audio tracks
     const curatedAudio: MediaFormat[] = [
       {
         formatId: 'audio-mp3-320',
@@ -265,7 +286,7 @@ export abstract class BaseMediaProvider {
       {
         formatId: 'audio-mp3-128',
         ext: 'mp3',
-        qualityLabel: 'MP3 Standard Quality (128 kbps)',
+        qualityLabel: 'MP3 Standard (128 kbps)',
         isAudioOnly: true,
         isVideoOnly: false,
         hasVideo: false,
