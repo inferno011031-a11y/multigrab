@@ -5,13 +5,13 @@ import { logger } from '@/lib/logger';
 
 export class TwitterProvider extends BaseMediaProvider {
   readonly platform: SupportedPlatform = 'twitter';
-  readonly name: string = 'X (Twitter)';
+  readonly name: string = 'X / Twitter';
   readonly supportedDomains: string[] = [
     'twitter.com',
     'www.twitter.com',
     'x.com',
     'www.x.com',
-    'mobile.twitter.com',
+    't.co',
   ];
 
   public async getMetadata(url: string): Promise<MediaMetadata> {
@@ -22,7 +22,7 @@ export class TwitterProvider extends BaseMediaProvider {
     const id = String(raw.id || '');
     const title = String(raw.title || raw.description || 'X/Twitter Post');
     const description = typeof raw.description === 'string' ? raw.description : undefined;
-    const author = String(raw.uploader || raw.creator || 'X User');
+    const author = String(raw.uploader || raw.uploader_id || 'X User');
     const authorUrl = typeof raw.uploader_url === 'string' ? raw.uploader_url : undefined;
     const duration = typeof raw.duration === 'number' ? raw.duration : undefined;
     const thumbnail = String(raw.thumbnail || '');
@@ -30,7 +30,7 @@ export class TwitterProvider extends BaseMediaProvider {
     const likeCount = typeof raw.like_count === 'number' ? raw.like_count : undefined;
 
     const rawFormats = Array.isArray(raw.formats) ? (raw.formats as Array<Record<string, unknown>>) : [];
-    const normalized = this.normalizeExtractorFormats(rawFormats);
+    const normalized = this.normalizeExtractorFormats(rawFormats, duration);
 
     return {
       id,

@@ -67,3 +67,8 @@ export function VimeoIcon({ className = 'w-5 h-5', ...props }: IconProps) {
     </svg>
   );
 }
+
+// Aliases for convenience
+export const YoutubeIcon = YouTubeIcon;
+export const TiktokIcon = TikTokIcon;
+export const TwitterIcon = TwitterXIcon;

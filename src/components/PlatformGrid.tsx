@@ -1,21 +1,18 @@
 'use client';
 
 import React from 'react';
+import { PlatformInfo } from '@/core/types/media';
 import {
-  Video,
-  Sparkles,
-} from 'lucide-react';
-import {
-  YouTubeIcon,
-  TikTokIcon,
+  YoutubeIcon,
+  TiktokIcon,
   InstagramIcon,
-  TwitterXIcon,
+  TwitterIcon,
   FacebookIcon,
   RedditIcon,
   PinterestIcon,
   VimeoIcon,
-} from './PlatformIcons';
-import { PlatformInfo } from '@/core/types/media';
+} from '@/components/PlatformIcons';
+import { Globe, Video, Music } from 'lucide-react';
 
 interface PlatformGridProps {
   platforms: PlatformInfo[];
@@ -23,79 +20,84 @@ interface PlatformGridProps {
 }
 
 export function PlatformGrid({ platforms, onSelectPlatformSample }: PlatformGridProps) {
-  const getIcon = (id: string) => {
-    switch (id) {
+  const getIcon = (iconName: string) => {
+    switch (iconName) {
       case 'youtube':
-        return <YouTubeIcon className="w-5 h-5 text-red-500" />;
+        return <YoutubeIcon className="w-6 h-6 text-red-500" />;
       case 'tiktok':
-        return <TikTokIcon className="w-5 h-5 text-pink-400" />;
+        return <TiktokIcon className="w-6 h-6 text-pink-400" />;
       case 'instagram':
-        return <InstagramIcon className="w-5 h-5 text-purple-400" />;
+        return <InstagramIcon className="w-6 h-6 text-pink-500" />;
       case 'twitter':
-        return <TwitterXIcon className="w-5 h-5 text-slate-200" />;
+        return <TwitterIcon className="w-6 h-6 text-cyan-400" />;
       case 'facebook':
-        return <FacebookIcon className="w-5 h-5 text-blue-500" />;
+        return <FacebookIcon className="w-6 h-6 text-blue-500" />;
       case 'reddit':
-        return <RedditIcon className="w-5 h-5 text-orange-500" />;
+        return <RedditIcon className="w-6 h-6 text-orange-500" />;
       case 'pinterest':
-        return <PinterestIcon className="w-5 h-5 text-rose-500" />;
+        return <PinterestIcon className="w-6 h-6 text-rose-500" />;
       case 'vimeo':
-        return <VimeoIcon className="w-5 h-5 text-cyan-400" />;
+        return <VimeoIcon className="w-6 h-6 text-cyan-500" />;
       default:
-        return <Video className="w-5 h-5 text-cyan-400" />;
+        return <Globe className="w-6 h-6 text-indigo-400" />;
     }
   };
 
   return (
-    <section className="mt-20 w-full max-w-6xl mx-auto px-4">
-      <div className="text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/20 bg-indigo-500/10 px-3 py-1 text-xs font-semibold text-indigo-400">
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>Universal Platform Support</span>
-        </div>
-        <h2 className="mt-3 text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+    <section className="mx-auto max-w-6xl px-4 py-16 sm:py-24">
+      <div className="text-center mb-12">
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
           Supported Media Platforms
         </h2>
         <p className="mt-2 text-sm text-neutral-400 max-w-xl mx-auto">
-          MediaDrop connects to permitted public endpoints and extracts original quality video, audio, and thumbnails.
+          Built with an extensible modular provider engine supporting high-resolution downloads across the web.
         </p>
       </div>
 
-      <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {platforms.map((p) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {platforms.map((platform) => (
           <div
-            key={p.id}
-            className="group relative rounded-2xl border border-neutral-800/90 bg-neutral-950/60 p-5 backdrop-blur-sm transition-all hover:border-neutral-700 hover:bg-neutral-900/60 shadow-lg"
+            key={platform.id}
+            className="group relative flex flex-col justify-between rounded-3xl border border-neutral-800/80 bg-neutral-900/40 p-5 backdrop-blur-md transition-all hover:border-neutral-700 hover:bg-neutral-900/80 shadow-lg"
           >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-neutral-900 border border-neutral-800 group-hover:border-indigo-500/40 transition-colors">
-                  {getIcon(p.id)}
+            <div>
+              <div className="flex items-center justify-between">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-neutral-800/80 ring-1 ring-white/10 group-hover:scale-105 transition-transform">
+                  {getIcon(platform.iconName)}
                 </div>
-                <span className="font-bold text-white text-base">{p.name}</span>
+                <div className="flex items-center gap-1.5 text-[10px] font-semibold text-neutral-400">
+                  {platform.supportedFeatures.video && (
+                    <span className="flex items-center gap-0.5 rounded-md bg-neutral-800 px-1.5 py-0.5">
+                      <Video className="w-2.5 h-2.5 text-cyan-400" />
+                      <span>Video</span>
+                    </span>
+                  )}
+                  {platform.supportedFeatures.audio && (
+                    <span className="flex items-center gap-0.5 rounded-md bg-neutral-800 px-1.5 py-0.5">
+                      <Music className="w-2.5 h-2.5 text-purple-400" />
+                      <span>Audio</span>
+                    </span>
+                  )}
+                </div>
               </div>
-              <span className="flex h-2 w-2 rounded-full bg-emerald-400 ring-4 ring-emerald-500/20" />
+
+              <h3 className="mt-4 text-base font-bold text-white tracking-tight">
+                {platform.name}
+              </h3>
+              <p className="mt-1.5 text-xs text-neutral-400 leading-relaxed line-clamp-2">
+                {platform.description}
+              </p>
             </div>
 
-            <p className="mt-3 text-xs text-neutral-400 leading-relaxed line-clamp-2">
-              {p.description}
-            </p>
-
-            <div className="mt-4 flex flex-wrap gap-1.5 text-[10px] font-medium text-neutral-300">
-              {p.supportedFeatures.video && (
-                <span className="rounded-md bg-neutral-900 border border-neutral-800 px-2 py-0.5">
-                  ✓ MP4 Video
-                </span>
-              )}
-              {p.supportedFeatures.audio && (
-                <span className="rounded-md bg-neutral-900 border border-neutral-800 px-2 py-0.5">
-                  ✓ MP3 Audio
-                </span>
-              )}
-              {p.supportedFeatures.hd && (
-                <span className="rounded-md bg-indigo-950/60 border border-indigo-800/40 text-indigo-300 px-2 py-0.5">
-                  HD / 4K
-                </span>
+            <div className="mt-4 pt-3 border-t border-neutral-800/60 flex items-center justify-between text-[11px] text-neutral-500">
+              <span className="truncate max-w-[150px] font-mono">{platform.domainPattern}</span>
+              {platform.examples && platform.examples[0] && onSelectPlatformSample && (
+                <button
+                  onClick={() => onSelectPlatformSample(platform.examples[0])}
+                  className="text-indigo-400 hover:underline cursor-pointer"
+                >
+                  Test Sample
+                </button>
               )}
             </div>
           </div>

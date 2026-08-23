@@ -28,7 +28,7 @@ export class InstagramProvider extends BaseMediaProvider {
     const likeCount = typeof raw.like_count === 'number' ? raw.like_count : undefined;
 
     const rawFormats = Array.isArray(raw.formats) ? (raw.formats as Array<Record<string, unknown>>) : [];
-    const normalized = this.normalizeExtractorFormats(rawFormats);
+    const normalized = this.normalizeExtractorFormats(rawFormats, duration);
 
     return {
       id,

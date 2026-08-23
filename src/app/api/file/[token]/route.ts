@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs/promises';
-import { existsSync, createReadStream } from 'fs';
+import { existsSync } from 'fs';
 import path from 'path';
-import { Readable } from 'stream';
 import { verifySignedDownloadToken, sanitizeFilename } from '@/core/security/sanitize';
 import { TempStorageManager } from '@/core/storage/temp-storage';
 import { ApiErrorResponse } from '@/core/types/api';
@@ -68,7 +67,6 @@ export async function GET(
     const mimeType = meta?.mimeType || 'application/octet-stream';
 
     // 1. Create clean ASCII fallback for HTTP header (RFC 6266)
-    // Replace all non-ASCII, quotes, control characters with underscores
     const asciiFilename = safeFilename
       .replace(/[^\x20-\x7E]/g, '_')
       .replace(/["\\]/g, '_')

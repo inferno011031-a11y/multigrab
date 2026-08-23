@@ -11,6 +11,7 @@ export class PinterestProvider extends BaseMediaProvider {
     'www.pinterest.com',
     'pin.it',
     'pinterest.co.uk',
+    'pinterest.de',
   ];
 
   public async getMetadata(url: string): Promise<MediaMetadata> {
@@ -19,7 +20,7 @@ export class PinterestProvider extends BaseMediaProvider {
     const raw = await SubprocessExecutor.extractJson(url);
 
     const id = String(raw.id || '');
-    const title = String(raw.title || raw.description || 'Pinterest Pin');
+    const title = String(raw.title || raw.description || 'Pinterest Media');
     const description = typeof raw.description === 'string' ? raw.description : undefined;
     const author = String(raw.uploader || 'Pinterest Creator');
     const authorUrl = typeof raw.uploader_url === 'string' ? raw.uploader_url : undefined;
@@ -29,7 +30,7 @@ export class PinterestProvider extends BaseMediaProvider {
     const likeCount = typeof raw.like_count === 'number' ? raw.like_count : undefined;
 
     const rawFormats = Array.isArray(raw.formats) ? (raw.formats as Array<Record<string, unknown>>) : [];
-    const normalized = this.normalizeExtractorFormats(rawFormats);
+    const normalized = this.normalizeExtractorFormats(rawFormats, duration);
 
     return {
       id,

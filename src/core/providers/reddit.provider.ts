@@ -9,9 +9,9 @@ export class RedditProvider extends BaseMediaProvider {
   readonly supportedDomains: string[] = [
     'reddit.com',
     'www.reddit.com',
-    'redd.it',
-    'v.redd.it',
     'old.reddit.com',
+    'v.redd.it',
+    'redd.it',
   ];
 
   public async getMetadata(url: string): Promise<MediaMetadata> {
@@ -20,9 +20,9 @@ export class RedditProvider extends BaseMediaProvider {
     const raw = await SubprocessExecutor.extractJson(url);
 
     const id = String(raw.id || '');
-    const title = String(raw.title || 'Reddit Video');
+    const title = String(raw.title || raw.description || 'Reddit Video');
     const description = typeof raw.description === 'string' ? raw.description : undefined;
-    const author = String(raw.uploader || raw.author || 'Reddit User');
+    const author = String(raw.uploader || 'u/RedditUser');
     const authorUrl = typeof raw.uploader_url === 'string' ? raw.uploader_url : undefined;
     const duration = typeof raw.duration === 'number' ? raw.duration : undefined;
     const thumbnail = String(raw.thumbnail || '');
@@ -30,7 +30,7 @@ export class RedditProvider extends BaseMediaProvider {
     const likeCount = typeof raw.like_count === 'number' ? raw.like_count : undefined;
 
     const rawFormats = Array.isArray(raw.formats) ? (raw.formats as Array<Record<string, unknown>>) : [];
-    const normalized = this.normalizeExtractorFormats(rawFormats);
+    const normalized = this.normalizeExtractorFormats(rawFormats, duration);
 
     return {
       id,

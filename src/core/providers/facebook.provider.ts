@@ -22,7 +22,7 @@ export class FacebookProvider extends BaseMediaProvider {
     const id = String(raw.id || '');
     const title = String(raw.title || raw.description || 'Facebook Video');
     const description = typeof raw.description === 'string' ? raw.description : undefined;
-    const author = String(raw.uploader || 'Facebook User');
+    const author = String(raw.uploader || 'Facebook Creator');
     const authorUrl = typeof raw.uploader_url === 'string' ? raw.uploader_url : undefined;
     const duration = typeof raw.duration === 'number' ? raw.duration : undefined;
     const thumbnail = String(raw.thumbnail || '');
@@ -30,7 +30,7 @@ export class FacebookProvider extends BaseMediaProvider {
     const likeCount = typeof raw.like_count === 'number' ? raw.like_count : undefined;
 
     const rawFormats = Array.isArray(raw.formats) ? (raw.formats as Array<Record<string, unknown>>) : [];
-    const normalized = this.normalizeExtractorFormats(rawFormats);
+    const normalized = this.normalizeExtractorFormats(rawFormats, duration);
 
     return {
       id,

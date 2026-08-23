@@ -1,10 +1,7 @@
 import path from 'path';
-import fs from 'fs/promises';
-import { existsSync } from 'fs';
-import { SupportedPlatform, MediaMetadata, MediaFormat, DownloadJob } from '@/core/types/media';
+import { SupportedPlatform, MediaMetadata, MediaFormat } from '@/core/types/media';
 import { SubprocessExecutor, ProgressCallback } from '@/core/process/executor';
 import { TempStorageManager } from '@/core/storage/temp-storage';
-import { sanitizeFilename } from '@/core/security/sanitize';
 import { config } from '@/lib/config';
 import { logger } from '@/lib/logger';
 

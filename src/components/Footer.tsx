@@ -1,33 +1,42 @@
 'use client';
 
 import React from 'react';
-import { ArrowDownToLine, ShieldCheck, Heart } from 'lucide-react';
+import { ArrowDownToLine, Shield, Code } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer className="mt-32 border-t border-neutral-850 bg-neutral-950 py-12 text-neutral-400">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <footer className="w-full border-t border-neutral-800/80 bg-neutral-950/80 backdrop-blur-xl mt-20">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          {/* Brand */}
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-tr from-indigo-500 to-cyan-400 p-0.5">
-              <div className="flex h-full w-full items-center justify-center rounded-[6px] bg-neutral-950">
-                <ArrowDownToLine className="h-4 w-4 text-cyan-400" />
-              </div>
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600/20 text-cyan-400">
+              <ArrowDownToLine className="h-5 w-5" />
             </div>
-            <span className="text-sm font-bold text-white tracking-tight">MediaDrop</span>
-            <span className="text-xs text-neutral-500">© {new Date().getFullYear()} • Fast Public Media Downloader</span>
+            <div>
+              <span className="text-base font-bold text-white tracking-tight">
+                Media<span className="bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">Drop</span>
+              </span>
+              <p className="text-xs text-neutral-500">Universal Public Media Downloader & Audio Extractor</p>
+            </div>
           </div>
 
-          <div className="flex items-center gap-6 text-xs">
-            <span className="flex items-center gap-1.5 text-neutral-400">
-              <ShieldCheck className="w-4 h-4 text-emerald-400" />
-              <span>SSRF Protected</span>
-            </span>
-            <span className="text-neutral-600">•</span>
-            <span>No DRM Bypassing</span>
-            <span className="text-neutral-600">•</span>
-            <span>Auto-Purge Storage</span>
+          {/* Highlights */}
+          <div className="flex flex-wrap items-center gap-6 text-xs text-neutral-400">
+            <div className="flex items-center gap-1.5">
+              <Shield className="w-4 h-4 text-emerald-400" />
+              <span>SSRF & Malware Firewall</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <Code className="w-4 h-4 text-indigo-400" />
+              <span>Open Source & Free</span>
+            </div>
           </div>
+        </div>
+
+        {/* Bottom copyright */}
+        <div className="mt-8 border-t border-neutral-800/60 pt-6 text-center text-xs text-neutral-500">
+          <p>© {new Date().getFullYear()} MediaDrop. All rights reserved. Built with Next.js, TypeScript & Tailwind CSS.</p>
         </div>
       </div>
     </footer>

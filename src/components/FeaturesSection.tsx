@@ -1,58 +1,77 @@
 'use client';
 
 import React from 'react';
-import { Shield, Zap, Sliders, Lock, CheckCircle, RefreshCw } from 'lucide-react';
+import {
+  ShieldCheck,
+  Zap,
+  Sliders,
+  Layers,
+  FileCheck,
+  Server,
+} from 'lucide-react';
 
 export function FeaturesSection() {
   const features = [
     {
       icon: <Zap className="w-5 h-5 text-cyan-400" />,
-      title: 'Ultra-Fast Direct Extraction',
-      description: 'Streamlined asynchronous pipeline that extracts and packages media directly without redundant transcoding lag.',
+      title: 'Ultra-Fast Subprocess Engine',
+      description:
+        'Zero shell-injection execution with native streaming pipes for real-time progress, speed, and ETA calculation.',
     },
     {
-      icon: <Shield className="w-5 h-5 text-emerald-400" />,
-      title: 'Security-First Architecture',
-      description: 'Built-in SSRF protection firewall, isolated temporary sandbox folders, and strict parameter validation.',
+      icon: <ShieldCheck className="w-5 h-5 text-emerald-400" />,
+      title: 'DNS Pre-Lookup SSRF Firewall',
+      description:
+        'Blocks RFC 1918 private subnets, cloud metadata IPs, loopbacks, and intranet endpoints with strict pre-resolution.',
     },
     {
       icon: <Sliders className="w-5 h-5 text-indigo-400" />,
-      title: 'Multiple Quality Profiles',
-      description: 'Choose your desired resolution up to 4K Ultra HD or extract clean, high-fidelity audio (MP3 / M4A).',
+      title: 'Adaptive Video & Audio Muxing',
+      description:
+        'Automatically merges separate high-bitrate video streams and AAC audio tracks into standard MP4 containers.',
     },
     {
-      icon: <Lock className="w-5 h-5 text-purple-400" />,
-      title: 'Privacy & Automated Expiry',
-      description: 'No unnecessary persistent logs of your downloaded media files. Temporary files are auto-purged within 30 minutes.',
+      icon: <Layers className="w-5 h-5 text-purple-400" />,
+      title: 'Asynchronous Queue Architecture',
+      description:
+        'Powered by BullMQ and Redis for high-concurrency background job processing with seamless in-memory fallback.',
+    },
+    {
+      icon: <FileCheck className="w-5 h-5 text-teal-400" />,
+      title: 'HMAC-Signed Download Tokens',
+      description:
+        'Cryptographically signed ephemeral download URLs with automatic 30-minute expiration and background garbage collection.',
+    },
+    {
+      icon: <Server className="w-5 h-5 text-amber-400" />,
+      title: 'Universal Platform Providers',
+      description:
+        'Modular object-oriented provider registry supporting YouTube, TikTok, Instagram, X/Twitter, Facebook, Reddit, Pinterest, and Vimeo.',
     },
   ];
 
   return (
-    <section className="mt-24 w-full max-w-6xl mx-auto px-4">
-      <div className="text-center">
+    <section className="mx-auto max-w-6xl px-4 py-16 sm:py-24">
+      <div className="text-center mb-12">
         <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
           Engineered for Performance & Security
         </h2>
         <p className="mt-2 text-sm text-neutral-400 max-w-xl mx-auto">
-          Every layer of MediaDrop is built with enterprise standards from background queues to secure streaming.
+          MediaDrop combines cutting-edge full-stack architecture with enterprise-grade security.
         </p>
       </div>
 
-      <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
-        {features.map((f, i) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {features.map((f, idx) => (
           <div
-            key={i}
-            className="flex items-start gap-4 rounded-2xl border border-neutral-800 bg-neutral-950/40 p-6 backdrop-blur-sm"
+            key={idx}
+            className="rounded-3xl border border-neutral-800/80 bg-neutral-900/40 p-6 backdrop-blur-md transition-all hover:border-neutral-700 hover:bg-neutral-900/70 shadow-lg"
           >
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-neutral-900 border border-neutral-800">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-neutral-800/80 mb-4 ring-1 ring-white/10">
               {f.icon}
             </div>
-            <div>
-              <h3 className="text-base font-bold text-white">{f.title}</h3>
-              <p className="mt-1 text-xs sm:text-sm text-neutral-400 leading-relaxed">
-                {f.description}
-              </p>
-            </div>
+            <h3 className="text-base font-bold text-white mb-2">{f.title}</h3>
+            <p className="text-xs text-neutral-400 leading-relaxed">{f.description}</p>
           </div>
         ))}
       </div>

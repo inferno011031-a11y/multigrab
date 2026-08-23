@@ -2,11 +2,11 @@ import { NextResponse } from 'next/server';
 import { existsSync } from 'fs';
 import { SubprocessExecutor } from '@/core/process/executor';
 import { config } from '@/lib/config';
-import { HealthResponse } from '@/core/types/api';
 
 export async function GET(): Promise<NextResponse> {
   let extractorAvailable = false;
   let extractorVersion = 'unknown';
+  let ffmpegAvailable = false;
 
   try {
     const { cmd, baseArgs } = await SubprocessExecutor.getExtractorCommand();
@@ -17,9 +17,16 @@ export async function GET(): Promise<NextResponse> {
     extractorAvailable = false;
   }
 
+  try {
+    const ffmpegPath = await SubprocessExecutor.getFfmpegPath();
+    ffmpegAvailable = Boolean(ffmpegPath);
+  } catch {
+    ffmpegAvailable = false;
+  }
+
   const storageAvailable = existsSync(config.storage.tempDir);
 
-  const responseBody: HealthResponse = {
+  const responseBody = {
     success: true,
     data: {
       status: extractorAvailable && storageAvailable ? 'healthy' : 'degraded',
@@ -30,6 +37,9 @@ export async function GET(): Promise<NextResponse> {
         extractor: {
           available: extractorAvailable,
           version: extractorVersion,
+        },
+        ffmpeg: {
+          available: ffmpegAvailable,
         },
         storage: {
           available: storageAvailable,

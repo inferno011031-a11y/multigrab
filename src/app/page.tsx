@@ -36,11 +36,19 @@ export default function Home() {
 
   // History & Platforms state
   const [platforms, setPlatforms] = useState<PlatformInfo[]>([]);
-  const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [history, setHistory] = useState<HistoryItem[]>(() => {
+    if (typeof window === 'undefined') return [];
+    try {
+      const saved = localStorage.getItem('mediadrop_history');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isApiModalOpen, setIsApiModalOpen] = useState(false);
 
-  // Load platforms and client history from localStorage
+  // Load platforms
   useEffect(() => {
     fetch('/api/providers')
       .then((res) => res.json())
@@ -50,15 +58,6 @@ export default function Home() {
         }
       })
       .catch(() => {});
-
-    try {
-      const saved = localStorage.getItem('mediadrop_history');
-      if (saved) {
-        setHistory(JSON.parse(saved));
-      }
-    } catch {
-      // Ignore localStorage errors
-    }
   }, []);
 
   const saveToHistory = (item: HistoryItem) => {

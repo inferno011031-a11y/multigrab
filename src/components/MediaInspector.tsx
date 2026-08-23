@@ -13,7 +13,7 @@ import {
   Volume2,
   Tv,
 } from 'lucide-react';
-import { MediaMetadata, MediaFormat } from '@/core/types/media';
+import { MediaMetadata } from '@/core/types/media';
 
 interface MediaInspectorProps {
   metadata: MediaMetadata;

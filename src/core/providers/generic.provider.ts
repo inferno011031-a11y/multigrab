@@ -30,7 +30,7 @@ export class GenericMediaProvider extends BaseMediaProvider {
     const thumbnail = typeof raw.thumbnail === 'string' ? raw.thumbnail : undefined;
 
     const rawFormats = Array.isArray(raw.formats) ? (raw.formats as Array<Record<string, unknown>>) : [];
-    const normalized = this.normalizeExtractorFormats(rawFormats);
+    const normalized = this.normalizeExtractorFormats(rawFormats, duration);
 
     return {
       id,
