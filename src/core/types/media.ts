@@ -7,6 +7,7 @@ export type SupportedPlatform =
   | 'twitter'
   | 'reddit'
   | 'vimeo'
+  | 'spotify'
   | 'generic';
 
 export type MediaType = 'video' | 'audio' | 'image' | 'mixed';
@@ -29,24 +30,22 @@ export interface MediaFormat {
   hasAudio: boolean;
   url?: string;
   formatNote?: string;
-  tbr?: number; // Total bitrate
+  tbr?: number;
 }
 
 export interface MediaMetadata {
   id: string;
   originalUrl: string;
-  canonicalUrl: string;
+  canonicalUrl?: string;
   platform: SupportedPlatform;
   platformName: string;
   title: string;
   description?: string;
   author?: string;
   authorUrl?: string;
-  authorAvatar?: string;
-  duration?: number; // In seconds
+  duration?: number; // seconds
   durationFormatted?: string;
   thumbnail?: string;
-  thumbnails?: Array<{ url: string; width?: number; height?: number }>;
   viewCount?: number;
   likeCount?: number;
   uploadDate?: string;
@@ -58,20 +57,14 @@ export interface MediaMetadata {
   isLive?: boolean;
 }
 
-export type JobStatus =
-  | 'queued'
-  | 'processing'
-  | 'completed'
-  | 'failed'
-  | 'expired';
-
 export interface DownloadJob {
   id: string;
   url: string;
   formatId: string;
+  quality?: string;
   platform: SupportedPlatform;
   title: string;
-  status: JobStatus;
+  status: 'queued' | 'processing' | 'completed' | 'failed' | 'expired';
   progress: number; // 0 to 100
   speed?: string;
   eta?: string;
@@ -100,5 +93,5 @@ export interface PlatformInfo {
     hd: boolean;
     subtitles: boolean;
   };
-  examples: string[];
+  examples?: string[];
 }

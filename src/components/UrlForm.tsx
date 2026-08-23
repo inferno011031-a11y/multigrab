@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import {
   YoutubeIcon,
+  SpotifyIcon,
   TiktokIcon,
   InstagramIcon,
   TwitterIcon,
@@ -32,6 +33,7 @@ export function UrlForm({ onAnalyze, isLoading }: UrlFormProps) {
     if (!raw) return null;
 
     if (raw.includes('youtube.com') || raw.includes('youtu.be')) return 'youtube';
+    if (raw.includes('spotify.com') || raw.includes('spotify.link')) return 'spotify';
     if (raw.includes('tiktok.com')) return 'tiktok';
     if (raw.includes('instagram.com') || raw.includes('instagr.am')) return 'instagram';
     if (raw.includes('twitter.com') || raw.includes('x.com')) return 'twitter';
@@ -69,6 +71,13 @@ export function UrlForm({ onAnalyze, isLoading }: UrlFormProps) {
           <div className="flex items-center gap-1.5 rounded-xl bg-red-500/10 px-2.5 py-1 text-xs font-semibold text-red-400 ring-1 ring-red-500/30 animate-in fade-in zoom-in-95 duration-200">
             <YoutubeIcon className="w-3.5 h-3.5" />
             <span>YouTube</span>
+          </div>
+        );
+      case 'spotify':
+        return (
+          <div className="flex items-center gap-1.5 rounded-xl bg-emerald-500/10 px-2.5 py-1 text-xs font-semibold text-emerald-400 ring-1 ring-emerald-500/30 animate-in fade-in zoom-in-95 duration-200">
+            <SpotifyIcon className="w-3.5 h-3.5" />
+            <span>Spotify</span>
           </div>
         );
       case 'tiktok':
@@ -149,7 +158,7 @@ export function UrlForm({ onAnalyze, isLoading }: UrlFormProps) {
           required
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          placeholder="Paste public video URL (YouTube, TikTok, Instagram, X, etc.)..."
+          placeholder="Paste public link (YouTube, Spotify, TikTok, Instagram, X, etc.)..."
           className="h-12 w-full bg-transparent px-3 text-sm text-white placeholder-neutral-500 focus:outline-none sm:text-base"
         />
 

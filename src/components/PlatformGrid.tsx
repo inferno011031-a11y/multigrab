@@ -4,6 +4,7 @@ import React from 'react';
 import { PlatformInfo } from '@/core/types/media';
 import {
   YoutubeIcon,
+  SpotifyIcon,
   TiktokIcon,
   InstagramIcon,
   TwitterIcon,
@@ -24,6 +25,8 @@ export function PlatformGrid({ platforms, onSelectPlatformSample }: PlatformGrid
     switch (iconName) {
       case 'youtube':
         return <YoutubeIcon className="w-6 h-6 text-red-500" />;
+      case 'spotify':
+        return <SpotifyIcon className="w-6 h-6 text-emerald-400" />;
       case 'tiktok':
         return <TiktokIcon className="w-6 h-6 text-pink-400" />;
       case 'instagram':
@@ -50,11 +53,11 @@ export function PlatformGrid({ platforms, onSelectPlatformSample }: PlatformGrid
           Supported Media Platforms
         </h2>
         <p className="mt-2 text-sm text-neutral-400 max-w-xl mx-auto">
-          Built with an extensible modular provider engine supporting high-resolution downloads across the web.
+          Built with an extensible modular provider engine supporting high-resolution downloads and audio across the web.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {platforms.map((platform) => (
           <div
             key={platform.id}
@@ -91,9 +94,9 @@ export function PlatformGrid({ platforms, onSelectPlatformSample }: PlatformGrid
 
             <div className="mt-4 pt-3 border-t border-neutral-800/60 flex items-center justify-between text-[11px] text-neutral-500">
               <span className="truncate max-w-[150px] font-mono">{platform.domainPattern}</span>
-              {platform.examples && platform.examples[0] && onSelectPlatformSample && (
+              {Boolean(platform.examples && platform.examples.length > 0 && onSelectPlatformSample) && (
                 <button
-                  onClick={() => onSelectPlatformSample(platform.examples[0])}
+                  onClick={() => onSelectPlatformSample?.(platform.examples![0])}
                   className="text-indigo-400 hover:underline cursor-pointer"
                 >
                   Test Sample

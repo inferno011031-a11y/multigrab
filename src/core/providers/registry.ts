@@ -7,6 +7,7 @@ import { FacebookProvider } from './facebook.provider';
 import { RedditProvider } from './reddit.provider';
 import { PinterestProvider } from './pinterest.provider';
 import { VimeoProvider } from './vimeo.provider';
+import { SpotifyProvider } from './spotify.provider';
 import { GenericMediaProvider } from './generic.provider';
 import { PlatformInfo, SupportedPlatform } from '@/core/types/media';
 
@@ -27,6 +28,7 @@ export class ProviderRegistry {
     this.register(new RedditProvider());
     this.register(new PinterestProvider());
     this.register(new VimeoProvider());
+    this.register(new SpotifyProvider());
   }
 
   public static getInstance(): ProviderRegistry {
@@ -77,6 +79,16 @@ export class ProviderRegistry {
         badgeColor: 'from-red-500 to-red-600',
         supportedFeatures: { video: true, audio: true, hd: true, subtitles: true },
         examples: ['https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'https://youtu.be/kJQP7kiw5Fk'],
+      },
+      {
+        id: 'spotify',
+        name: 'Spotify',
+        domainPattern: 'spotify.com, open.spotify.com',
+        description: 'Extract and download public tracks and podcast episodes in high-fidelity MP3 / M4A audio.',
+        iconName: 'spotify',
+        badgeColor: 'from-emerald-500 to-green-600',
+        supportedFeatures: { video: false, audio: true, hd: true, subtitles: false },
+        examples: ['https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT'],
       },
       {
         id: 'tiktok',
