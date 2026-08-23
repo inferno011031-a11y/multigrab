@@ -63,10 +63,14 @@ export abstract class BaseMediaProvider {
     ];
 
     // Format selection logic
-    if (formatId === 'audio-mp3' || formatId === 'bestaudio') {
-      downloadArgs.push('-f', 'ba/b', '-x', '--audio-format', 'mp3');
+    if (formatId === 'audio-mp3-320' || formatId === 'audio-mp3') {
+      downloadArgs.push('-f', 'ba/b', '-x', '--audio-format', 'mp3', '--audio-quality', '320K');
+    } else if (formatId === 'audio-mp3-128') {
+      downloadArgs.push('-f', 'ba/b', '-x', '--audio-format', 'mp3', '--audio-quality', '128K');
     } else if (formatId === 'audio-m4a') {
       downloadArgs.push('-f', 'ba[ext=m4a]/ba/b', '-x', '--audio-format', 'm4a');
+    } else if (formatId === 'bestaudio') {
+      downloadArgs.push('-f', 'ba/b');
     } else if (formatId === 'best' || !formatId) {
       downloadArgs.push('-f', 'b/bv*+ba/best');
     } else {
@@ -176,18 +180,33 @@ export abstract class BaseMediaProvider {
       const tbr = typeof f.tbr === 'number' ? f.tbr : undefined;
       const formatNote = typeof f.format_note === 'string' ? f.format_note : undefined;
 
-      const isAudioOnly = vcodec === 'none' && acodec !== 'none';
-      const isVideoOnly = acodec === 'none' && vcodec !== 'none';
-      const hasVideo = vcodec !== 'none';
-      const hasAudio = acodec !== 'none';
+      const isAudioOnly = (vcodec === 'none' || !vcodec) && acodec !== 'none';
+      const isVideoOnly = (acodec === 'none' || !acodec) && vcodec !== 'none';
+      const hasVideo = vcodec !== 'none' && Boolean(vcodec);
+      const hasAudio = acodec !== 'none' && Boolean(acodec);
 
       let qualityLabel = '';
       let resolution = '';
 
       if (height) {
         resolution = width ? `${width}x${height}` : `${height}p`;
-        qualityLabel = `${height}p`;
-        if (fps && fps > 30) qualityLabel += `${fps}`;
+        if (height >= 2160) {
+          qualityLabel = '4K Ultra HD (2160p)';
+        } else if (height >= 1440) {
+          qualityLabel = '2K Quad HD (1440p)';
+        } else if (height >= 1080) {
+          qualityLabel = '1080p Full HD';
+        } else if (height >= 720) {
+          qualityLabel = '720p HD';
+        } else if (height >= 480) {
+          qualityLabel = '480p SD';
+        } else if (height >= 360) {
+          qualityLabel = '360p Medium';
+        } else {
+          qualityLabel = `${height}p Low`;
+        }
+
+        if (fps && fps > 30) qualityLabel += ` ${fps}fps`;
       } else if (isAudioOnly) {
         const abr = typeof f.abr === 'number' ? Math.round(f.abr) : Math.round(tbr || 128);
         qualityLabel = `${abr} kbps (${ext.toUpperCase()})`;
@@ -220,7 +239,7 @@ export abstract class BaseMediaProvider {
       if (isAudioOnly) {
         audioList.push(formatItem);
       } else if (hasVideo && height && height >= 144) {
-        // Group video formats by height, preferring MP4 / standard codecs
+        // Group by height to provide a clean list of resolutions
         const key = `${height}p`;
         const existing = videoMap.get(key);
         if (!existing || (ext === 'mp4' && existing.ext !== 'mp4') || (tbr && existing.tbr && tbr > existing.tbr)) {
@@ -229,13 +248,57 @@ export abstract class BaseMediaProvider {
       }
     }
 
-    // Sort video by height descending (e.g., 2160p -> 1080p -> 720p -> 480p -> 360p)
+    // Sort video by height descending (2160p -> 1440p -> 1080p -> 720p -> 480p -> 360p -> 240p)
     const sortedVideo = Array.from(videoMap.values()).sort((a, b) => (b.height || 0) - (a.height || 0));
 
-    // Sort audio by bitrate descending
-    const sortedAudio = audioList.sort((a, b) => (b.tbr || 0) - (a.tbr || 0));
+    // Curate separate audio tracks with specific bitrates
+    const curatedAudio: MediaFormat[] = [
+      {
+        formatId: 'audio-mp3-320',
+        ext: 'mp3',
+        qualityLabel: 'MP3 High Quality (320 kbps)',
+        isAudioOnly: true,
+        isVideoOnly: false,
+        hasVideo: false,
+        hasAudio: true,
+      },
+      {
+        formatId: 'audio-mp3-128',
+        ext: 'mp3',
+        qualityLabel: 'MP3 Standard Quality (128 kbps)',
+        isAudioOnly: true,
+        isVideoOnly: false,
+        hasVideo: false,
+        hasAudio: true,
+      },
+      {
+        formatId: 'audio-m4a',
+        ext: 'm4a',
+        qualityLabel: 'M4A / AAC Audio Stream',
+        isAudioOnly: true,
+        isVideoOnly: false,
+        hasVideo: false,
+        hasAudio: true,
+      },
+      {
+        formatId: 'bestaudio',
+        ext: 'mp3',
+        qualityLabel: 'Original Best Audio Track',
+        isAudioOnly: true,
+        isVideoOnly: false,
+        hasVideo: false,
+        hasAudio: true,
+      },
+    ];
 
-    // Ensure we always have sensible options
+    // Append direct source audio streams if available
+    for (const a of audioList.slice(0, 3)) {
+      if (!curatedAudio.some((c) => c.formatId === a.formatId)) {
+        curatedAudio.push(a);
+      }
+    }
+
+    // Ensure we always have sensible video options
     if (sortedVideo.length === 0) {
       sortedVideo.push({
         formatId: 'best',
@@ -248,17 +311,6 @@ export abstract class BaseMediaProvider {
       });
     }
 
-    // Add generic high-quality MP3 audio converter option
-    sortedAudio.unshift({
-      formatId: 'audio-mp3',
-      ext: 'mp3',
-      qualityLabel: 'High Quality MP3 (Audio)',
-      isAudioOnly: true,
-      isVideoOnly: false,
-      hasVideo: false,
-      hasAudio: true,
-    });
-
-    return { video: sortedVideo, audio: sortedAudio, all };
+    return { video: sortedVideo, audio: curatedAudio, all };
   }
 }

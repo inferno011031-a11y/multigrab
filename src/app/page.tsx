@@ -7,13 +7,12 @@ import { MediaInspector } from '@/components/MediaInspector';
 import { DownloadProgressModal } from '@/components/DownloadProgressModal';
 import { PlatformGrid } from '@/components/PlatformGrid';
 import { DownloadHistory } from '@/components/DownloadHistory';
-import { PricingSection } from '@/components/PricingSection';
 import { DeveloperApiModal } from '@/components/DeveloperApiModal';
 import { FeaturesSection } from '@/components/FeaturesSection';
 import { FaqSection } from '@/components/FaqSection';
 import { Footer } from '@/components/Footer';
 import { MediaMetadata, PlatformInfo, DownloadJob } from '@/core/types/media';
-import { AlertCircle, Sparkles, ShieldCheck, Zap, Crown, CheckCircle2 } from 'lucide-react';
+import { AlertCircle, Zap } from 'lucide-react';
 
 interface HistoryItem {
   id: string;
@@ -40,7 +39,6 @@ export default function Home() {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [isApiModalOpen, setIsApiModalOpen] = useState(false);
-  const [selectedPlanModal, setSelectedPlanModal] = useState<string | null>(null);
 
   // Load platforms and client history from localStorage
   useEffect(() => {
@@ -156,19 +154,11 @@ export default function Home() {
     }
   };
 
-  const scrollToPricing = () => {
-    const el = document.getElementById('pricing');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return (
     <div className="flex flex-col min-h-screen bg-neutral-950 text-neutral-100">
       <Navbar
         onOpenHistory={() => setIsHistoryOpen(true)}
         onOpenApi={() => setIsApiModalOpen(true)}
-        onOpenPricing={scrollToPricing}
         historyCount={history.length}
       />
 
@@ -182,20 +172,20 @@ export default function Home() {
             {/* Top pill badge */}
             <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3.5 py-1 text-xs font-semibold text-cyan-400 backdrop-blur-md mb-6 shadow-sm">
               <Zap className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Universal Cloud Media Downloader & Transcoder</span>
+              <span>Universal Free Cloud Media Downloader & Audio Extractor</span>
             </div>
 
             {/* Main Headline */}
             <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-white leading-[1.1]">
               Download Public Media in{' '}
               <span className="bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
-                Full HD & 4K
+                All Qualities & Audio
               </span>
             </h1>
 
             {/* Sub-headline */}
             <p className="mt-4 text-base sm:text-lg text-neutral-400 max-w-2xl mx-auto leading-relaxed">
-              Paste any public link from YouTube, TikTok, Instagram, X/Twitter, Reddit, Facebook, Pinterest or Vimeo. Instant, clean, and ad-free.
+              Paste any public link from YouTube, TikTok, Instagram, X/Twitter, Reddit, Facebook, Pinterest or Vimeo. Choose your video resolution or extract separate MP3 audio tracks instantly.
             </p>
 
             {/* URL Form Input */}
@@ -213,7 +203,7 @@ export default function Home() {
                 <span className="flex-1">{errorMessage}</span>
                 <button
                   onClick={() => setErrorMessage(null)}
-                  className="text-xs font-bold text-rose-400 hover:underline"
+                  className="text-xs font-bold text-rose-400 hover:underline cursor-pointer"
                 >
                   Dismiss
                 </button>
@@ -222,7 +212,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Media Inspector Preview & Format Selector */}
+        {/* Media Inspector Preview with All Video Qualities & Audio Tracks */}
         {metadata && (
           <section className="px-4">
             <MediaInspector
@@ -234,16 +224,17 @@ export default function Home() {
         )}
 
         {/* Supported Platforms Grid */}
-        <PlatformGrid
-          platforms={platforms}
-          onSelectPlatformSample={handleAnalyze}
-        />
-
-        {/* SaaS Pricing Section */}
-        <PricingSection onSelectPlan={(plan) => setSelectedPlanModal(plan)} />
+        <div id="platforms">
+          <PlatformGrid
+            platforms={platforms}
+            onSelectPlatformSample={handleAnalyze}
+          />
+        </div>
 
         {/* Features & Architecture Highlights */}
-        <FeaturesSection />
+        <div id="features">
+          <FeaturesSection />
+        </div>
 
         {/* FAQ & Fair Use Disclaimer */}
         <FaqSection />
@@ -263,27 +254,6 @@ export default function Home() {
         isOpen={isApiModalOpen}
         onClose={() => setIsApiModalOpen(false)}
       />
-
-      {/* Plan Selected Notification Modal */}
-      {selectedPlanModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
-          <div className="relative w-full max-w-md rounded-3xl border border-indigo-500/40 bg-neutral-950 p-6 text-center shadow-2xl">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 mb-4">
-              <Crown className="w-6 h-6 text-cyan-400" />
-            </div>
-            <h3 className="text-xl font-bold text-white">MediaDrop {selectedPlanModal}</h3>
-            <p className="mt-2 text-xs text-neutral-400 leading-relaxed">
-              You selected the <strong className="text-neutral-200">{selectedPlanModal}</strong> tier. In this demo release, all public downloader features and standard developer API endpoints are completely unlocked for your use!
-            </p>
-            <button
-              onClick={() => setSelectedPlanModal(null)}
-              className="mt-6 w-full rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-400 py-3 text-xs font-bold text-black hover:opacity-95 transition-all cursor-pointer"
-            >
-              Continue Downloading
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* History Drawer */}
       <DownloadHistory
