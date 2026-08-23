@@ -17,11 +17,24 @@ export class SubprocessExecutor {
   private static cachedFfmpegPath: string | null = null;
 
   /**
+   * Pre-warm executor paths on server startup.
+   */
+  public static async prewarm(): Promise<void> {
+    try {
+      await Promise.all([
+        SubprocessExecutor.getExtractorCommand(),
+        SubprocessExecutor.getFfmpegPath(),
+      ]);
+      logger.info('SubprocessExecutor pre-warmed successfully', 'EXECUTOR');
+    } catch {}
+  }
+
+  /**
    * Discovers ffmpeg executable path on the system.
    */
   public static async getFfmpegPath(): Promise<string | null> {
     if (SubprocessExecutor.cachedFfmpegPath !== null) {
-      return SubprocessExecutor.cachedFfmpegPath;
+      return SubprocessExecutor.cachedFfmpegPath || null;
     }
 
     // 1. Try direct system ffmpeg
@@ -35,7 +48,11 @@ export class SubprocessExecutor {
     const pythonExecs = [config.extractor.pythonPath, 'python3', 'python', 'py'];
     for (const py of pythonExecs) {
       try {
-        const out = await SubprocessExecutor.runRaw(py, ['-c', 'import imageio_ffmpeg; print(imageio_ffmpeg.get_ffmpeg_exe())'], { timeout: 4000 });
+        const out = await SubprocessExecutor.runRaw(
+          py,
+          ['-c', 'import imageio_ffmpeg; print(imageio_ffmpeg.get_ffmpeg_exe())'],
+          { timeout: 4000 }
+        );
         const ffmpegExe = out.stdout.trim();
         if (ffmpegExe && !ffmpegExe.includes('Traceback')) {
           SubprocessExecutor.cachedFfmpegPath = ffmpegExe;
@@ -58,125 +75,43 @@ export class SubprocessExecutor {
     }
 
     // 1. If custom binary is specified in config
-    if (config.extractor.customBinaryPath) {
-      SubprocessExecutor.cachedCommand = { cmd: config.extractor.customBinaryPath, baseArgs: [] };
+    if (config.extractor.customBinaryPath && config.extractor.customBinaryPath !== 'yt-dlp') {
+      SubprocessExecutor.cachedCommand = {
+        cmd: config.extractor.customBinaryPath,
+        baseArgs: [],
+      };
       return SubprocessExecutor.cachedCommand;
     }
 
-    // 2. Test direct `yt-dlp` binary
+    // 2. Try global yt-dlp binary
     try {
       await SubprocessExecutor.runRaw('yt-dlp', ['--version'], { timeout: 3000 });
       SubprocessExecutor.cachedCommand = { cmd: 'yt-dlp', baseArgs: [] };
       return SubprocessExecutor.cachedCommand;
-    } catch {
-      // direct binary not found, try python module
-    }
+    } catch {}
 
-    // 3. Test `python -m yt_dlp`
+    // 3. Try python module execution
     const pythonExecs = [config.extractor.pythonPath, 'python3', 'python', 'py'];
     for (const py of pythonExecs) {
       try {
         await SubprocessExecutor.runRaw(py, ['-m', 'yt_dlp', '--version'], { timeout: 4000 });
         SubprocessExecutor.cachedCommand = { cmd: py, baseArgs: ['-m', 'yt_dlp'] };
         return SubprocessExecutor.cachedCommand;
-      } catch {
-        // continue
-      }
+      } catch {}
     }
 
     // Fallback default
-    SubprocessExecutor.cachedCommand = { cmd: 'python', baseArgs: ['-m', 'yt_dlp'] };
+    SubprocessExecutor.cachedCommand = { cmd: 'yt-dlp', baseArgs: [] };
     return SubprocessExecutor.cachedCommand;
   }
 
   /**
-   * Executes a command directly via spawn without a shell to prevent injection.
+   * Fast metadata extraction via JSON with low socket timeout.
    */
-  public static runRaw(
-    cmd: string,
-    args: string[],
-    options?: { timeout?: number; cwd?: string; onProgress?: ProgressCallback }
-  ): Promise<ProcessOutput> {
-    return new Promise((resolve, reject) => {
-      const timeoutMs = options?.timeout || config.security.requestTimeoutMs;
-
-      // Notice: shell is explicitly FALSE to eliminate shell injection vulnerabilities
-      const child = spawn(cmd, args, {
-        cwd: options?.cwd,
-        shell: false,
-        windowsHide: true,
-        env: {
-          ...process.env,
-          PYTHONIOENCODING: 'utf-8',
-          LANG: 'en_US.UTF-8',
-        },
-      });
-
-      let stdout = '';
-      let stderr = '';
-      let killed = false;
-
-      const timer = setTimeout(() => {
-        killed = true;
-        child.kill('SIGKILL');
-        reject(new Error(`Subprocess timed out after ${timeoutMs}ms`));
-      }, timeoutMs);
-
-      child.stdout.setEncoding('utf8');
-      child.stderr.setEncoding('utf8');
-
-      child.stdout.on('data', (chunk: string) => {
-        stdout += chunk;
-        if (options?.onProgress) {
-          SubprocessExecutor.parseProgress(chunk, options.onProgress);
-        }
-      });
-
-      child.stderr.on('data', (chunk: string) => {
-        stderr += chunk;
-        if (options?.onProgress) {
-          SubprocessExecutor.parseProgress(chunk, options.onProgress);
-        }
-      });
-
-      child.on('error', (err) => {
-        clearTimeout(timer);
-        reject(err);
-      });
-
-      child.on('close', (exitCode) => {
-        clearTimeout(timer);
-        if (killed) return;
-        if (exitCode === 0) {
-          resolve({ stdout, stderr, exitCode: exitCode ?? 0 });
-        } else {
-          logger.warn(`Subprocess exited with code ${exitCode}`, 'EXECUTOR', { cmd, exitCode, stderr: stderr.slice(-300) });
-          reject(new Error(`Process exited with code ${exitCode}: ${stderr.slice(-300)}`));
-        }
-      });
-    });
-  }
-
-  /**
-   * Parses progress updates from standard yt-dlp output.
-   */
-  private static parseProgress(output: string, callback: ProgressCallback) {
-    // Example: [download]  45.2% of  12.34MiB at  2.45MiB/s ETA 00:03
-    const match = output.match(/\[download\]\s+([\d.]+)%\s+of\s+~?([^\s]+)\s+at\s+([^\s]+)\s+ETA\s+([^\s]+)/);
-    if (match) {
-      const percent = parseFloat(match[1]);
-      const speed = match[3];
-      const eta = match[4];
-      if (!isNaN(percent)) {
-        callback({ percent, speed, eta });
-      }
-    }
-  }
-
-  /**
-   * Executes the media extractor with strict arguments and safe JSON parsing.
-   */
-  public static async extractJson(url: string, extraArgs: string[] = []): Promise<Record<string, unknown>> {
+  public static async extractJson(
+    url: string,
+    extraArgs: string[] = []
+  ): Promise<Record<string, unknown>> {
     const { cmd, baseArgs } = await SubprocessExecutor.getExtractorCommand();
 
     const args = [
@@ -185,21 +120,124 @@ export class SubprocessExecutor {
       '--no-warnings',
       '--no-playlist',
       '--no-check-certificates',
+      '--skip-download',
       '--socket-timeout',
-      '20',
+      '8',
+      '--extractor-retries',
+      '2',
       ...extraArgs,
       url,
     ];
 
     logger.debug(`Extracting metadata via ${cmd}`, 'EXECUTOR');
-    const result = await SubprocessExecutor.runRaw(cmd, args, {
-      timeout: config.security.requestTimeoutMs,
+
+    const output = await SubprocessExecutor.runRaw(cmd, args, {
+      timeout: config.security.requestTimeoutMs || 30000,
     });
 
     try {
-      return JSON.parse(result.stdout) as Record<string, unknown>;
+      const json = JSON.parse(output.stdout);
+      return json;
     } catch {
-      throw new Error('Failed to parse extractor JSON output.');
+      throw new Error(`Failed to parse metadata extractor JSON output: ${output.stderr || output.stdout.slice(0, 100)}`);
+    }
+  }
+
+  /**
+   * Spawns a raw process securely without invoking a shell.
+   */
+  public static runRaw(
+    command: string,
+    args: string[],
+    options: {
+      cwd?: string;
+      timeout?: number;
+      onProgress?: ProgressCallback;
+    } = {}
+  ): Promise<ProcessOutput> {
+    return new Promise((resolve, reject) => {
+      const timeout = options.timeout ?? config.security.requestTimeoutMs ?? 30000;
+      const { cwd, onProgress } = options;
+
+      let stdout = '';
+      let stderr = '';
+      let isTimedOut = false;
+
+      const child = spawn(command, args, {
+        cwd,
+        shell: false,
+        windowsHide: true,
+        stdio: ['ignore', 'pipe', 'pipe'],
+      });
+
+      const timer = setTimeout(() => {
+        isTimedOut = true;
+        child.kill('SIGKILL');
+        reject(new Error(`Subprocess timed out after ${timeout}ms`));
+      }, timeout);
+
+      if (child.stdout) {
+        child.stdout.setEncoding('utf-8');
+        child.stdout.on('data', (chunk: string) => {
+          stdout += chunk;
+          if (onProgress) {
+            SubprocessExecutor.parseProgress(chunk, onProgress);
+          }
+        });
+      }
+
+      if (child.stderr) {
+        child.stderr.setEncoding('utf-8');
+        child.stderr.on('data', (chunk: string) => {
+          stderr += chunk;
+        });
+      }
+
+      child.on('error', (err) => {
+        clearTimeout(timer);
+        if (!isTimedOut) {
+          logger.warn(`Subprocess spawn error: ${err.message}`, 'EXECUTOR', { cmd: command });
+          reject(err);
+        }
+      });
+
+      child.on('close', (code) => {
+        clearTimeout(timer);
+        if (isTimedOut) return;
+
+        if (code === 0) {
+          resolve({ stdout, stderr, exitCode: code });
+        } else {
+          logger.warn(`Subprocess exited with code ${code}`, 'EXECUTOR', { cmd: command, exitCode: code, stderr: stderr.slice(0, 200) });
+          reject(new Error(stderr || `Process exited with code ${code}`));
+        }
+      });
+    });
+  }
+
+  /**
+   * Parses standard extractor download progress lines.
+   */
+  private static parseProgress(output: string, callback: ProgressCallback): void {
+    const lines = output.split('\n');
+    for (const line of lines) {
+      if (line.includes('[download]') && line.includes('%')) {
+        const percentMatch = line.match(/(\d+(?:\.\d+)?)%/);
+        const speedMatch = line.match(/at\s+([^\s]+)/);
+        const etaMatch = line.match(/ETA\s+([^\s]+)/);
+
+        if (percentMatch) {
+          const percent = parseFloat(percentMatch[1]);
+          callback({
+            percent: Math.min(Math.max(percent, 0), 100),
+            speed: speedMatch ? speedMatch[1] : undefined,
+            eta: etaMatch ? etaMatch[1] : undefined,
+          });
+        }
+      }
     }
   }
 }
+
+// Automatically trigger background pre-warm on module load
+SubprocessExecutor.prewarm().catch(() => {});

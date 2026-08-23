@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Navbar } from '@/components/Navbar';
 import { UrlForm } from '@/components/UrlForm';
 import { MediaInspector } from '@/components/MediaInspector';
+import { MediaInspectorSkeleton } from '@/components/MediaInspectorSkeleton';
 import { DownloadProgressModal } from '@/components/DownloadProgressModal';
 import { DownloadHistory } from '@/components/DownloadHistory';
 import { DeveloperApiModal } from '@/components/DeveloperApiModal';
@@ -251,8 +252,15 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
           </div>
         </section>
 
+        {/* Instant Skeleton Loading State */}
+        {isAnalyzing && (
+          <section className="px-4">
+            <MediaInspectorSkeleton />
+          </section>
+        )}
+
         {/* Media Inspector Preview */}
-        {metadata && (
+        {!isAnalyzing && metadata && (
           <section className="px-4">
             <MediaInspector
               metadata={metadata}

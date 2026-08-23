@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { Navbar } from '@/components/Navbar';
 import { UrlForm } from '@/components/UrlForm';
 import { MediaInspector } from '@/components/MediaInspector';
+import { MediaInspectorSkeleton } from '@/components/MediaInspectorSkeleton';
 import { DownloadProgressModal } from '@/components/DownloadProgressModal';
 import { PlatformGrid } from '@/components/PlatformGrid';
 import { DownloadHistory } from '@/components/DownloadHistory';
@@ -259,8 +260,15 @@ function MainContent() {
         {/* Optional Monetization Banner Slot */}
         <AdBanner slotId="hero-bottom" />
 
+        {/* Instant Skeleton Loading State */}
+        {isAnalyzing && (
+          <section className="px-4">
+            <MediaInspectorSkeleton />
+          </section>
+        )}
+
         {/* Media Inspector Preview with All Video Qualities & Audio Tracks */}
-        {metadata && (
+        {!isAnalyzing && metadata && (
           <section className="px-4 animate-in fade-in slide-in-from-bottom-4 duration-300">
             <MediaInspector
               metadata={metadata}
