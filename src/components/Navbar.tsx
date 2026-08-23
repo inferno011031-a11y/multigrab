@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ArrowDownToLine, History, Terminal, ChevronDown, Activity } from 'lucide-react';
+import { ArrowDownToLine, History, Terminal, ChevronDown, Activity, PlaySquare } from 'lucide-react';
 import { LanguageSelector } from '@/components/LanguageSelector';
 import { SupportedLocale } from '@/lib/i18n';
 
@@ -15,20 +15,31 @@ interface NavbarProps {
 
 export function Navbar({ onOpenHistory, onOpenApi, historyCount, locale = 'en' }: NavbarProps) {
   const [isToolsOpen, setIsToolsOpen] = useState(false);
+  const [isYoutubeOpen, setIsYoutubeOpen] = useState(false);
 
   const prefix = locale === 'en' ? '' : `/${locale}`;
 
-  const tools = [
-    { name: 'YouTube Downloader', href: `${prefix}/youtube-downloader` },
-    { name: 'YouTube to MP3', href: `${prefix}/youtube-to-mp3` },
-    { name: 'Spotify Downloader', href: `${prefix}/spotify-downloader` },
-    { name: 'TikTok Downloader', href: `${prefix}/tiktok-downloader` },
-    { name: 'Instagram Downloader', href: `${prefix}/instagram-downloader` },
-    { name: 'X / Twitter Downloader', href: `${prefix}/twitter-downloader` },
-    { name: 'Facebook Downloader', href: `${prefix}/facebook-downloader` },
-    { name: 'Reddit Downloader', href: `${prefix}/reddit-downloader` },
-    { name: 'Pinterest Downloader', href: `${prefix}/pinterest-downloader` },
-    { name: 'Vimeo Downloader', href: `${prefix}/vimeo-downloader` },
+  const youtubeTools = [
+    { name: 'YouTube Video Downloader (4K/1080p)', href: `${prefix}/youtube-downloader` },
+    { name: 'YouTube to MP3 (320 kbps)', href: `${prefix}/youtube-to-mp3` },
+    { name: 'YouTube Shorts Downloader', href: `${prefix}/youtube-shorts-downloader` },
+    { name: 'YouTube to MP4 Converter', href: `${prefix}/youtube-to-mp4` },
+    { name: 'YouTube 1080p 60FPS Downloader', href: `${prefix}/youtube-1080p-downloader` },
+    { name: 'YouTube 4K UHD Downloader', href: `${prefix}/youtube-4k-downloader` },
+    { name: 'YouTube Audio Extractor', href: `${prefix}/youtube-audio-downloader` },
+  ];
+
+  const otherTools = [
+    { name: 'Spotify Downloader (320kbps MP3)', href: `${prefix}/spotify-downloader` },
+    { name: 'Spotify to MP3', href: `${prefix}/spotify-to-mp3` },
+    { name: 'TikTok Downloader (No Watermark)', href: `${prefix}/tiktok-downloader` },
+    { name: 'TikTok to MP3', href: `${prefix}/tiktok-mp3-downloader` },
+    { name: 'Instagram Reels Downloader', href: `${prefix}/instagram-downloader` },
+    { name: 'X / Twitter Video Downloader', href: `${prefix}/twitter-downloader` },
+    { name: 'Facebook Video Downloader', href: `${prefix}/facebook-downloader` },
+    { name: 'Reddit Video Downloader', href: `${prefix}/reddit-downloader` },
+    { name: 'Pinterest Video Downloader', href: `${prefix}/pinterest-downloader` },
+    { name: 'Vimeo Video Downloader', href: `${prefix}/vimeo-downloader` },
   ];
 
   return (
@@ -57,25 +68,62 @@ export function Navbar({ onOpenHistory, onOpenApi, historyCount, locale = 'en' }
         </div>
 
         {/* Center Nav Links */}
-        <nav className="hidden md:flex items-center gap-6 text-xs font-semibold text-neutral-300">
+        <nav className="hidden md:flex items-center gap-5 text-xs font-semibold text-neutral-300">
           <Link href={prefix || '/'} className="hover:text-white transition-colors">
             Home
           </Link>
 
-          {/* Tools Dropdown */}
+          {/* YouTube Hub Dropdown */}
           <div className="relative">
             <button
-              onClick={() => setIsToolsOpen(!isToolsOpen)}
+              onClick={() => {
+                setIsYoutubeOpen(!isYoutubeOpen);
+                setIsToolsOpen(false);
+              }}
+              onBlur={() => setTimeout(() => setIsYoutubeOpen(false), 200)}
+              className="flex items-center gap-1.5 text-rose-400 hover:text-rose-300 transition-colors cursor-pointer"
+            >
+              <PlaySquare className="w-3.5 h-3.5" />
+              <span>YouTube Tools</span>
+              <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isYoutubeOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            {isYoutubeOpen && (
+              <div className="absolute top-full left-0 mt-2 w-64 rounded-2xl border border-neutral-800 bg-neutral-900/95 p-2 shadow-2xl backdrop-blur-xl animate-in fade-in zoom-in-95 duration-150 z-50">
+                <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-neutral-500">
+                  MediaDrop YouTube Cluster
+                </div>
+                {youtubeTools.map((t) => (
+                  <Link
+                    key={t.href}
+                    href={t.href}
+                    onClick={() => setIsYoutubeOpen(false)}
+                    className="block rounded-xl px-3 py-2 text-xs font-medium text-neutral-300 hover:bg-neutral-800 hover:text-rose-300 transition-colors"
+                  >
+                    {t.name}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* All Platforms Dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => {
+                setIsToolsOpen(!isToolsOpen);
+                setIsYoutubeOpen(false);
+              }}
               onBlur={() => setTimeout(() => setIsToolsOpen(false), 200)}
               className="flex items-center gap-1 hover:text-white transition-colors cursor-pointer"
             >
-              <span>Downloaders</span>
+              <span>Other Platforms</span>
               <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isToolsOpen ? 'rotate-180' : ''}`} />
             </button>
 
             {isToolsOpen && (
-              <div className="absolute top-full left-0 mt-2 w-56 rounded-2xl border border-neutral-800 bg-neutral-900/95 p-2 shadow-2xl backdrop-blur-xl animate-in fade-in zoom-in-95 duration-150 z-50">
-                {tools.map((t) => (
+              <div className="absolute top-full left-0 mt-2 w-60 rounded-2xl border border-neutral-800 bg-neutral-900/95 p-2 shadow-2xl backdrop-blur-xl animate-in fade-in zoom-in-95 duration-150 z-50">
+                {otherTools.map((t) => (
                   <Link
                     key={t.href}
                     href={t.href}
@@ -92,16 +140,13 @@ export function Navbar({ onOpenHistory, onOpenApi, historyCount, locale = 'en' }
           <Link href={`${prefix || ''}/#platforms`} className="hover:text-white transition-colors">
             Platforms
           </Link>
-          <Link href={`${prefix || ''}/#features`} className="hover:text-white transition-colors">
-            Features
-          </Link>
 
           <button
             onClick={onOpenApi}
             className="hover:text-white transition-colors flex items-center gap-1 cursor-pointer"
           >
             <Terminal className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Developer API</span>
+            <span>API</span>
           </button>
         </nav>
 

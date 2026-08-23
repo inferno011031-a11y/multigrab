@@ -19,6 +19,7 @@ import {
   AlertCircle,
   HelpCircle,
   Share2,
+  Sparkles,
 } from 'lucide-react';
 
 interface SeoLandingClientProps {
@@ -184,10 +185,10 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gradient-to-tr from-indigo-600/10 via-cyan-500/10 to-purple-600/10 blur-[120px] pointer-events-none -z-10" />
 
           <div className="mx-auto max-w-4xl">
-            {/* Breadcrumb */}
+            {/* Breadcrumb Navigation */}
             <div className="flex items-center justify-center gap-2 text-xs text-neutral-500 mb-4">
               <Link href="/" className="hover:text-neutral-300 transition-colors">
-                Home
+                MediaDrop Home
               </Link>
               <span>/</span>
               <span className="text-neutral-300 font-medium capitalize">{data.platform} Downloader</span>
@@ -224,7 +225,7 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
                 className="inline-flex items-center gap-1.5 rounded-xl border border-neutral-800 bg-neutral-900/60 px-3 py-1.5 text-neutral-400 hover:text-white transition-colors cursor-pointer"
               >
                 <Share2 className="w-3.5 h-3.5" />
-                <span>{copiedShare ? 'Link Copied!' : 'Share Tool'}</span>
+                <span>{copiedShare ? 'Link Copied!' : 'Share MediaDrop'}</span>
               </button>
 
               <button
@@ -270,14 +271,45 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
           </section>
         )}
 
+        {/* Related YouTube Tools Cluster (Silo Internal Linking) */}
+        {data.relatedTools && data.relatedTools.length > 0 && (
+          <section className="mx-auto max-w-5xl px-4 py-8">
+            <div className="rounded-3xl border border-neutral-800/80 bg-neutral-900/40 p-6 sm:p-8 backdrop-blur-md">
+              <div className="flex items-center gap-2 text-cyan-400 text-xs font-bold uppercase tracking-wider mb-4">
+                <Sparkles className="w-4 h-4" />
+                <span>Related MediaDrop Tools</span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {data.relatedTools.map((tool) => (
+                  <Link
+                    key={tool.slug}
+                    href={`/${tool.slug}`}
+                    className="group rounded-2xl border border-neutral-800/80 bg-neutral-950/60 p-4 hover:border-cyan-500/40 hover:bg-neutral-900/60 transition-all flex flex-col justify-between"
+                  >
+                    <div>
+                      <h4 className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors flex items-center justify-between">
+                        <span>{tool.name}</span>
+                        <ArrowRight className="w-3.5 h-3.5 text-neutral-500 group-hover:text-cyan-400 group-hover:translate-x-0.5 transition-transform" />
+                      </h4>
+                      <p className="mt-1 text-xs text-neutral-400 leading-relaxed">
+                        {tool.desc}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* How to Download Steps */}
         <section className="mx-auto max-w-5xl px-4 py-12 sm:py-16">
           <div className="text-center mb-10">
             <h2 className="text-xl sm:text-2xl font-extrabold text-white">
-              How to Download from {data.platform.toUpperCase()}
+              How to Download from {data.platform.toUpperCase()} with MediaDrop
             </h2>
             <p className="mt-1.5 text-xs sm:text-sm text-neutral-400">
-              Save your media in 3 simple steps.
+              Save your media in 3 simple steps without installing software.
             </p>
           </div>
 
@@ -301,7 +333,7 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
         <section className="mx-auto max-w-5xl px-4 py-10">
           <div className="rounded-3xl border border-neutral-800/80 bg-neutral-900/30 p-8">
             <h3 className="text-lg font-bold text-white mb-6 text-center">
-              Features
+              Why Use MediaDrop for {data.platform.toUpperCase()} Downloads?
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {data.features.map((feat, idx) => (

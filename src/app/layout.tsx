@@ -15,27 +15,32 @@ export const metadata: Metadata = {
     template: '%s | MediaDrop',
   },
   description:
-    'Free online tool to download videos and extract MP3 audio from YouTube, Spotify, TikTok, Instagram, X/Twitter, Reddit, Facebook, Pinterest, and Vimeo in top quality. Fast, free, and no software required.',
+    'MediaDrop is a fast, clean, and free online tool to download videos and extract MP3 audio from YouTube, Spotify, TikTok, Instagram, X/Twitter, Reddit, Facebook, Pinterest, and Vimeo in top quality (4K, 1080p, 320kbps). No software or login required.',
   keywords: [
-    'video downloader',
-    'youtube downloader',
-    'youtube to mp3',
-    'spotify downloader',
-    'spotify to mp3',
-    'tiktok downloader',
-    'tiktok without watermark',
-    'instagram reels downloader',
-    'twitter video downloader',
-    'reddit video downloader',
-    'pinterest video downloader',
-    'vimeo downloader',
-    'mp4 downloader',
-    'mp3 converter',
-    'mediadrop',
+    'MediaDrop',
+    'MediaDrop YouTube Downloader',
+    'MediaDrop video downloader',
+    'YouTube video downloader',
+    'free YouTube downloader',
+    'YouTube to MP3',
+    'YouTube to MP4',
+    'YouTube shorts downloader',
+    'YouTube 1080p downloader',
+    'YouTube 4k downloader',
+    'Spotify downloader',
+    'Spotify to MP3',
+    'TikTok downloader without watermark',
+    'Instagram reels downloader',
+    'Twitter video downloader',
+    'Reddit video downloader with audio',
+    'online video downloader',
+    'MP3 converter',
   ],
-  authors: [{ name: 'MediaDrop Team' }],
+  authors: [{ name: 'MediaDrop Team', url: 'https://mediadrop.live' }],
   creator: 'MediaDrop',
   publisher: 'MediaDrop',
+  applicationName: 'MediaDrop',
+  category: 'Multimedia Utility',
   robots: {
     index: true,
     follow: true,
@@ -54,13 +59,13 @@ export const metadata: Metadata = {
     siteName: 'MediaDrop',
     title: 'MediaDrop — Free Universal Video & Audio Downloader',
     description:
-      'Download videos and MP3 audio from YouTube, Spotify, TikTok, Instagram, and more in 4K, 1080p, and 320kbps. Free, fast, and no software required.',
+      'Download videos and MP3 audio from YouTube, Spotify, TikTok, Instagram, and more in 4K, 1080p, and 320kbps with MediaDrop. Free, fast, and no software required.',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'MediaDrop — Free Universal Video & Audio Downloader',
     description:
-      'Download videos and MP3 audio from YouTube, Spotify, TikTok, Instagram, and more in 4K, 1080p, and 320kbps.',
+      'Download videos and MP3 audio from YouTube, Spotify, TikTok, Instagram, and more in 4K, 1080p, and 320kbps with MediaDrop.',
   },
   alternates: {
     canonical: 'https://mediadrop.live',
@@ -74,25 +79,57 @@ export default function RootLayout({
 }) {
   const rootSchema = {
     '@context': 'https://schema.org',
-    '@type': 'WebApplication',
-    name: 'MediaDrop',
-    url: 'https://mediadrop.live',
-    applicationCategory: 'MultimediaApplication',
-    operatingSystem: 'All (Web, iOS, Android, Windows, macOS, Linux)',
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'USD',
-    },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      reviewCount: '15400',
-      bestRating: '5',
-      worstRating: '1',
-    },
-    description:
-      'Free online tool to download videos and extract MP3 audio from YouTube, Spotify, TikTok, Instagram, X/Twitter, Reddit, Facebook, Pinterest, and Vimeo in full quality.',
+    '@graph': [
+      {
+        '@type': 'Organization',
+        '@id': 'https://mediadrop.live/#organization',
+        name: 'MediaDrop',
+        url: 'https://mediadrop.live',
+        logo: 'https://mediadrop.live/favicon.ico',
+        description: 'Universal online video downloader and audio converter platform.',
+        sameAs: ['https://twitter.com/mediadrop', 'https://github.com/mediadrop'],
+      },
+      {
+        '@type': 'WebApplication',
+        '@id': 'https://mediadrop.live/#webapp',
+        name: 'MediaDrop - Universal Video & Audio Downloader',
+        url: 'https://mediadrop.live',
+        applicationCategory: 'MultimediaApplication',
+        operatingSystem: 'All (Web, iOS, Android, Windows, macOS, Linux)',
+        browserRequirements: 'Requires JavaScript. Requires HTML5.',
+        provider: {
+          '@id': 'https://mediadrop.live/#organization',
+        },
+        offers: {
+          '@type': 'Offer',
+          price: '0',
+          priceCurrency: 'USD',
+        },
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: '4.9',
+          reviewCount: '15400',
+          bestRating: '5',
+          worstRating: '1',
+        },
+        description:
+          'Free online tool by MediaDrop to download videos and extract MP3 audio from YouTube, Spotify, TikTok, Instagram, X/Twitter, Reddit, Facebook, Pinterest, and Vimeo in full quality.',
+      },
+      {
+        '@type': 'WebSite',
+        '@id': 'https://mediadrop.live/#website',
+        url: 'https://mediadrop.live',
+        name: 'MediaDrop',
+        publisher: {
+          '@id': 'https://mediadrop.live/#organization',
+        },
+        potentialAction: {
+          '@type': 'SearchAction',
+          target: 'https://mediadrop.live/?url={search_term_string}',
+          'query-input': 'required name=search_term_string',
+        },
+      },
+    ],
   };
 
   return (
