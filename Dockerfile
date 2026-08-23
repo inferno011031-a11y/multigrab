@@ -1,55 +1,35 @@
-# Multi-stage production build for MediaDrop
-FROM node:20-alpine AS base
+# Base image with Node.js
+FROM node:20-bullseye-slim
 
-# Install Python3, yt-dlp, and ffmpeg
-RUN apk add --no-cache \
+# Install Python 3, pip, and ffmpeg
+RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
-    py3-pip \
+    python3-pip \
     ffmpeg \
+    ca-certificates \
     curl \
-    && pip install --no-cache-dir --break-system-packages yt-dlp
+    && rm -rf /var/lib/apt/lists/*
+
+# Install yt-dlp via pip
+RUN pip3 install --no-cache-dir yt-dlp
 
 WORKDIR /app
 
-# Dependencies stage
-FROM base AS deps
-COPY package.json package-lock.json* ./
-COPY prisma ./prisma/
+# Install dependencies
+COPY package*.json ./
 RUN npm ci
 
-# Builder stage
-FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+# Copy source code
 COPY . .
 
+# Build Next.js app
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
-
-RUN npx prisma generate
 RUN npm run build
 
-# Runner stage
-FROM base AS runner
-WORKDIR /app
-
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
-ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
-
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-# Create temp download storage directory with proper permissions
-RUN mkdir -p /app/tmp/downloads && chown -R nextjs:nodejs /app/tmp
-
-COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-USER nextjs
-
+# Expose port
 EXPOSE 3000
+ENV PORT=3000
 
-CMD ["node", "server.js"]
+# Start production server
+CMD ["npm", "start"]
