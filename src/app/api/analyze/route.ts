@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
+import crypto from 'crypto';
 import { AnalyzeRequestSchema } from '@/core/security/validator';
 import { validateUrlSecurity } from '@/core/security/ssrf';
 import { rateLimiter, getClientIp } from '@/core/security/rate-limiter';
 import { providerRegistry } from '@/core/providers/registry';
+import { MetadataCache } from '@/core/providers/cache';
+import { TelemetryTracker } from '@/core/analytics/telemetry';
 import { ApiErrorResponse, ApiSuccessResponse } from '@/core/types/api';
 import { MediaMetadata } from '@/core/types/media';
 import { logger } from '@/lib/logger';
@@ -12,7 +15,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const clientIp = getClientIp(req);
 
   // 1. Rate Limiting
-  const rateResult = rateLimiter.check(`analyze:${clientIp}`, 40, 60);
+  const rateResult = rateLimiter.check(`analyze:${clientIp}`, 60, 60);
   if (!rateResult.allowed) {
     const errorBody: ApiErrorResponse = {
       success: false,
@@ -60,7 +63,25 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   const rawUrl = parseResult.data.url;
 
-  // 3. Strict SSRF and URL validation
+  // 3. Fast Cache Lookup (< 2ms)
+  const cached = MetadataCache.get(rawUrl);
+  if (cached) {
+    TelemetryTracker.recordAnalysis(cached.platform);
+    const responseBody: ApiSuccessResponse<MediaMetadata> = {
+      success: true,
+      data: cached,
+      meta: {
+        timestamp: Date.now(),
+        processingTimeMs: Date.now() - startTime,
+      },
+    };
+    return NextResponse.json(responseBody, {
+      status: 200,
+      headers: { 'X-Cache': 'HIT' },
+    });
+  }
+
+  // 4. Strict SSRF and URL validation
   const securityCheck = await validateUrlSecurity(rawUrl);
   if (!securityCheck.valid || !securityCheck.sanitizedUrl) {
     const errorBody: ApiErrorResponse = {
@@ -73,15 +94,22 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json(errorBody, { status: 400 });
   }
 
-  // 4. Resolve Provider
+  // 5. Resolve Provider
   const provider = providerRegistry.resolveProvider(securityCheck.sanitizedUrl);
   logger.info(`Analyzing URL for platform: ${provider.platform}`, 'API_ANALYZE', {
     url: securityCheck.sanitizedUrl,
   });
 
-  // 5. Fetch Metadata
+  // 6. Fetch Metadata
   try {
     const metadata = await provider.getMetadata(securityCheck.sanitizedUrl);
+
+    // Save to fast cache
+    MetadataCache.set(rawUrl, metadata);
+    MetadataCache.set(securityCheck.sanitizedUrl, metadata);
+
+    // Record Telemetry
+    TelemetryTracker.recordAnalysis(provider.platform);
 
     const responseBody: ApiSuccessResponse<MediaMetadata> = {
       success: true,
@@ -92,7 +120,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       },
     };
 
-    return NextResponse.json(responseBody, { status: 200 });
+    return NextResponse.json(responseBody, {
+      status: 200,
+      headers: { 'X-Cache': 'MISS' },
+    });
   } catch (err: unknown) {
     const errorMessage = err instanceof Error ? err.message : String(err);
     logger.error(`Analysis failed for ${securityCheck.sanitizedUrl}: ${errorMessage}`, 'API_ANALYZE');

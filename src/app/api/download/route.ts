@@ -5,13 +5,14 @@ import { validateUrlSecurity } from '@/core/security/ssrf';
 import { rateLimiter, getClientIp } from '@/core/security/rate-limiter';
 import { providerRegistry } from '@/core/providers/registry';
 import { jobQueue } from '@/core/queue';
+import { TelemetryTracker } from '@/core/analytics/telemetry';
 import { ApiErrorResponse, DownloadResponse } from '@/core/types/api';
 import { logger } from '@/lib/logger';
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const clientIp = getClientIp(req);
 
-  // 1. Rate Limiting (10 download jobs per minute)
+  // 1. Rate Limiting (15 download jobs per minute)
   const rateResult = rateLimiter.check(`download:${clientIp}`, 15, 60);
   if (!rateResult.allowed) {
     const errorBody: ApiErrorResponse = {
@@ -83,6 +84,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       platform: provider.platform,
       title: 'Processing Media',
     });
+
+    TelemetryTracker.recordDownload(provider.platform);
 
     const responseBody: DownloadResponse = {
       success: true,
