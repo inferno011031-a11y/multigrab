@@ -56,22 +56,22 @@ async function downloadMedia(url: string) {
 }`;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-2xl rounded-3xl border border-neutral-800 bg-neutral-900 p-6 sm:p-8 shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="relative w-full max-w-2xl rounded-2xl border border-neutral-800 bg-neutral-950 p-6 sm:p-8 shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
         {/* Modal Header */}
         <div className="flex items-center justify-between border-b border-neutral-800 pb-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600/20 text-indigo-400">
-              <Terminal className="h-5 w-5" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-neutral-900 border border-neutral-800 text-white">
+              <Terminal className="h-4 w-4" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-white">Developer REST API</h3>
+              <h3 className="text-base font-bold text-white">Developer REST API</h3>
               <p className="text-xs text-neutral-400">Public HTTP Endpoints for MediaDrop Engine</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="rounded-xl p-2 text-neutral-400 hover:bg-neutral-800 hover:text-white transition-colors cursor-pointer"
+            className="rounded-xl p-1.5 text-neutral-400 hover:bg-neutral-900 hover:text-white transition-colors cursor-pointer"
           >
             <X className="h-5 w-5" />
           </button>
@@ -83,20 +83,20 @@ async function downloadMedia(url: string) {
           <div>
             <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-400 mb-2">Available Endpoints</h4>
             <div className="space-y-2 text-xs">
-              <div className="flex items-center justify-between rounded-xl border border-neutral-800 bg-neutral-950 p-3">
-                <span className="font-mono text-cyan-400 font-bold">POST /api/analyze</span>
+              <div className="flex items-center justify-between rounded-xl border border-neutral-800 bg-neutral-900/50 p-3">
+                <span className="font-mono text-white font-bold">POST /api/analyze</span>
                 <span className="text-neutral-400">Extracts video metadata & formats</span>
               </div>
-              <div className="flex items-center justify-between rounded-xl border border-neutral-800 bg-neutral-950 p-3">
-                <span className="font-mono text-indigo-400 font-bold">POST /api/download</span>
+              <div className="flex items-center justify-between rounded-xl border border-neutral-800 bg-neutral-900/50 p-3">
+                <span className="font-mono text-white font-bold">POST /api/download</span>
                 <span className="text-neutral-400">Queues background muxing job</span>
               </div>
-              <div className="flex items-center justify-between rounded-xl border border-neutral-800 bg-neutral-950 p-3">
-                <span className="font-mono text-emerald-400 font-bold">GET /api/job/:id</span>
+              <div className="flex items-center justify-between rounded-xl border border-neutral-800 bg-neutral-900/50 p-3">
+                <span className="font-mono text-white font-bold">GET /api/job/:id</span>
                 <span className="text-neutral-400">Polls real-time download progress</span>
               </div>
-              <div className="flex items-center justify-between rounded-xl border border-neutral-800 bg-neutral-950 p-3">
-                <span className="font-mono text-purple-400 font-bold">GET /api/file/:token</span>
+              <div className="flex items-center justify-between rounded-xl border border-neutral-800 bg-neutral-900/50 p-3">
+                <span className="font-mono text-white font-bold">GET /api/file/:token</span>
                 <span className="text-neutral-400">Streams HMAC signed media binary</span>
               </div>
             </div>
@@ -108,13 +108,13 @@ async function downloadMedia(url: string) {
               <span className="text-xs font-bold uppercase tracking-wider text-neutral-400">cURL Example</span>
               <button
                 onClick={() => copyToClipboard(curlExample, 'curl')}
-                className="flex items-center gap-1 text-xs text-neutral-400 hover:text-white cursor-pointer"
+                className="flex items-center gap-1 text-xs text-neutral-400 hover:text-white cursor-pointer font-medium"
               >
-                {copiedTab === 'curl' ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                {copiedTab === 'curl' ? <Check className="w-3.5 h-3.5 text-white" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copiedTab === 'curl' ? 'Copied' : 'Copy'}</span>
               </button>
             </div>
-            <pre className="rounded-2xl border border-neutral-800 bg-neutral-950 p-4 text-xs font-mono text-neutral-300 overflow-x-auto">
+            <pre className="rounded-xl border border-neutral-800 bg-neutral-900/40 p-4 text-xs font-mono text-neutral-300 overflow-x-auto">
               {curlExample}
             </pre>
           </div>
@@ -125,13 +125,13 @@ async function downloadMedia(url: string) {
               <span className="text-xs font-bold uppercase tracking-wider text-neutral-400">Node.js / TypeScript Example</span>
               <button
                 onClick={() => copyToClipboard(nodeExample, 'node')}
-                className="flex items-center gap-1 text-xs text-neutral-400 hover:text-white cursor-pointer"
+                className="flex items-center gap-1 text-xs text-neutral-400 hover:text-white cursor-pointer font-medium"
               >
-                {copiedTab === 'node' ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                {copiedTab === 'node' ? <Check className="w-3.5 h-3.5 text-white" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copiedTab === 'node' ? 'Copied' : 'Copy'}</span>
               </button>
             </div>
-            <pre className="rounded-2xl border border-neutral-800 bg-neutral-950 p-4 text-xs font-mono text-neutral-300 overflow-x-auto">
+            <pre className="rounded-xl border border-neutral-800 bg-neutral-900/40 p-4 text-xs font-mono text-neutral-300 overflow-x-auto">
               {nodeExample}
             </pre>
           </div>

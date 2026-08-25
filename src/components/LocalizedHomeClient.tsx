@@ -189,7 +189,7 @@ export function LocalizedHomeClient({ locale }: { locale: SupportedLocale }) {
   return (
     <div
       dir={locale === 'ar' ? 'rtl' : 'ltr'}
-      className="flex flex-col min-h-screen bg-neutral-950 text-neutral-100 selection:bg-cyan-500/30 selection:text-cyan-200"
+      className="flex flex-col min-h-screen bg-black text-neutral-100"
     >
       <Navbar
         onOpenHistory={() => setIsHistoryOpen(true)}
@@ -200,26 +200,26 @@ export function LocalizedHomeClient({ locale }: { locale: SupportedLocale }) {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative overflow-hidden pt-10 pb-8 sm:pt-20 sm:pb-12 px-4 text-center">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gradient-to-tr from-indigo-600/10 via-cyan-500/10 to-purple-600/10 blur-[120px] pointer-events-none -z-10" />
+        <section className="relative overflow-hidden pt-12 pb-10 sm:pt-24 sm:pb-16 px-4 text-center">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[450px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-neutral-900/60 via-black to-black pointer-events-none -z-10" />
 
           <div className="mx-auto max-w-4xl">
             {/* Top pill badge */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-neutral-800 bg-neutral-900/80 px-3.5 py-1 text-xs font-semibold text-neutral-300 backdrop-blur-md mb-6 shadow-sm">
-              <ArrowDownToLine className="w-3.5 h-3.5 text-cyan-400" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-neutral-800 bg-neutral-900 px-3.5 py-1 text-xs font-medium text-neutral-300 mb-6">
+              <ArrowDownToLine className="w-3.5 h-3.5 text-white" />
               <span>{t.heroBadge}</span>
             </div>
 
             {/* Main Headline */}
-            <h1 className="text-3xl sm:text-6xl font-black tracking-tight text-white leading-[1.15]">
+            <h1 className="text-4xl sm:text-7xl font-bold tracking-tight text-white leading-[1.1]">
               {t.heroHeadline1}{' '}
-              <span className="bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
+              <span className="text-neutral-400">
                 {t.heroHeadline2}
               </span>
             </h1>
 
             {/* Sub-headline */}
-            <p className="mt-4 text-sm sm:text-base text-neutral-400 max-w-2xl mx-auto leading-relaxed">
+            <p className="mt-5 text-sm sm:text-base text-neutral-400 max-w-2xl mx-auto leading-relaxed font-normal">
               {t.heroSubhead}
             </p>
 
@@ -235,7 +235,7 @@ export function LocalizedHomeClient({ locale }: { locale: SupportedLocale }) {
             <div className="mt-4 flex items-center justify-center gap-2">
               <button
                 onClick={handleShareApp}
-                className="inline-flex items-center gap-1.5 rounded-full border border-neutral-800 bg-neutral-900/60 px-3 py-1 text-xs text-neutral-400 hover:text-white transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 rounded-full border border-neutral-800 bg-neutral-950 px-3.5 py-1 text-xs text-neutral-400 hover:text-white hover:border-neutral-700 transition-colors cursor-pointer"
               >
                 <Share2 className="w-3.5 h-3.5" />
                 <span>{shareCopied ? t.shareCopied : t.shareTool}</span>
@@ -244,12 +244,12 @@ export function LocalizedHomeClient({ locale }: { locale: SupportedLocale }) {
 
             {/* Error Notification */}
             {errorMessage && (
-              <div className="mt-6 mx-auto max-w-xl flex items-center gap-3 rounded-2xl border border-rose-500/30 bg-rose-500/10 p-4 text-left text-sm text-rose-300 animate-in fade-in zoom-in-95 duration-200">
-                <AlertCircle className="w-5 h-5 text-rose-400 shrink-0" />
+              <div className="mt-6 mx-auto max-w-xl flex items-center gap-3 rounded-2xl border border-neutral-800 bg-neutral-950 p-4 text-left text-sm text-neutral-200">
+                <AlertCircle className="w-5 h-5 text-white shrink-0" />
                 <span className="flex-1">{errorMessage}</span>
                 <button
                   onClick={() => setErrorMessage(null)}
-                  className="text-xs font-bold text-rose-400 hover:underline cursor-pointer"
+                  className="text-xs font-bold text-white hover:underline cursor-pointer"
                 >
                   Dismiss
                 </button>

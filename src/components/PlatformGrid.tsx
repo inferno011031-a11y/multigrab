@@ -24,36 +24,36 @@ export function PlatformGrid({ platforms, onSelectPlatformSample }: PlatformGrid
   const getIcon = (iconName: string) => {
     switch (iconName) {
       case 'youtube':
-        return <YoutubeIcon className="w-6 h-6 text-red-500" />;
+        return <YoutubeIcon className="w-5 h-5 text-white" />;
       case 'spotify':
-        return <SpotifyIcon className="w-6 h-6 text-emerald-400" />;
+        return <SpotifyIcon className="w-5 h-5 text-white" />;
       case 'tiktok':
-        return <TiktokIcon className="w-6 h-6 text-pink-400" />;
+        return <TiktokIcon className="w-5 h-5 text-white" />;
       case 'instagram':
-        return <InstagramIcon className="w-6 h-6 text-pink-500" />;
+        return <InstagramIcon className="w-5 h-5 text-white" />;
       case 'twitter':
-        return <TwitterIcon className="w-6 h-6 text-cyan-400" />;
+        return <TwitterIcon className="w-5 h-5 text-white" />;
       case 'facebook':
-        return <FacebookIcon className="w-6 h-6 text-blue-500" />;
+        return <FacebookIcon className="w-5 h-5 text-white" />;
       case 'reddit':
-        return <RedditIcon className="w-6 h-6 text-orange-500" />;
+        return <RedditIcon className="w-5 h-5 text-white" />;
       case 'pinterest':
-        return <PinterestIcon className="w-6 h-6 text-rose-500" />;
+        return <PinterestIcon className="w-5 h-5 text-white" />;
       case 'vimeo':
-        return <VimeoIcon className="w-6 h-6 text-cyan-500" />;
+        return <VimeoIcon className="w-5 h-5 text-white" />;
       default:
-        return <Globe className="w-6 h-6 text-indigo-400" />;
+        return <Globe className="w-5 h-5 text-white" />;
     }
   };
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-16 sm:py-24">
       <div className="text-center mb-12">
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+        <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
           Supported Media Platforms
         </h2>
         <p className="mt-2 text-sm text-neutral-400 max-w-xl mx-auto">
-          Built with an extensible modular provider engine supporting high-resolution downloads and audio across the web.
+          Fast, universal video and audio extraction across all major services.
         </p>
       </div>
 
@@ -61,23 +61,23 @@ export function PlatformGrid({ platforms, onSelectPlatformSample }: PlatformGrid
         {platforms.map((platform) => (
           <div
             key={platform.id}
-            className="group relative flex flex-col justify-between rounded-3xl border border-neutral-800/80 bg-neutral-900/40 p-5 backdrop-blur-md transition-all hover:border-neutral-700 hover:bg-neutral-900/80 shadow-lg"
+            className="group relative flex flex-col justify-between rounded-2xl border border-neutral-800 bg-neutral-950 p-5 transition-all hover:border-neutral-700 hover:bg-neutral-900/50"
           >
             <div>
               <div className="flex items-center justify-between">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-neutral-800/80 ring-1 ring-white/10 group-hover:scale-105 transition-transform">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-neutral-900 border border-neutral-800 transition-transform group-hover:scale-105">
                   {getIcon(platform.iconName)}
                 </div>
-                <div className="flex items-center gap-1.5 text-[10px] font-semibold text-neutral-400">
+                <div className="flex items-center gap-1.5 text-[10px] font-medium text-neutral-400">
                   {platform.supportedFeatures.video && (
-                    <span className="flex items-center gap-0.5 rounded-md bg-neutral-800 px-1.5 py-0.5">
-                      <Video className="w-2.5 h-2.5 text-cyan-400" />
+                    <span className="flex items-center gap-1 rounded-md bg-neutral-900 border border-neutral-800 px-2 py-0.5">
+                      <Video className="w-3 h-3 text-neutral-300" />
                       <span>Video</span>
                     </span>
                   )}
                   {platform.supportedFeatures.audio && (
-                    <span className="flex items-center gap-0.5 rounded-md bg-neutral-800 px-1.5 py-0.5">
-                      <Music className="w-2.5 h-2.5 text-purple-400" />
+                    <span className="flex items-center gap-1 rounded-md bg-neutral-900 border border-neutral-800 px-2 py-0.5">
+                      <Music className="w-3 h-3 text-neutral-300" />
                       <span>Audio</span>
                     </span>
                   )}
@@ -92,12 +92,12 @@ export function PlatformGrid({ platforms, onSelectPlatformSample }: PlatformGrid
               </p>
             </div>
 
-            <div className="mt-4 pt-3 border-t border-neutral-800/60 flex items-center justify-between text-[11px] text-neutral-500">
+            <div className="mt-4 pt-3 border-t border-neutral-800/80 flex items-center justify-between text-[11px] text-neutral-500">
               <span className="truncate max-w-[150px] font-mono">{platform.domainPattern}</span>
               {Boolean(platform.examples && platform.examples.length > 0 && onSelectPlatformSample) && (
                 <button
                   onClick={() => onSelectPlatformSample?.(platform.examples![0])}
-                  className="text-indigo-400 hover:underline cursor-pointer"
+                  className="text-white hover:underline cursor-pointer font-medium"
                 >
                   Test Sample
                 </button>

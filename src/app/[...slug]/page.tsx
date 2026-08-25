@@ -188,7 +188,7 @@ export default async function CatchAllSlugPage({ params }: Props) {
     if (isLocale) {
       const validLocale = slug[0] as SupportedLocale;
       return (
-        <Suspense fallback={<div className="min-h-screen bg-neutral-950" />}>
+        <Suspense fallback={<div className="min-h-screen bg-black" />}>
           <LocalizedHomeClient locale={validLocale} />
         </Suspense>
       );

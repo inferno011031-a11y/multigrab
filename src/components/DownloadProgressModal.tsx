@@ -71,49 +71,30 @@ export function DownloadProgressModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg rounded-3xl border border-neutral-800 bg-neutral-900 p-6 sm:p-8 shadow-2xl overflow-hidden">
-        {/* Top ambient glow */}
-        <div
-          className={`absolute -top-24 left-1/2 -translate-x-1/2 w-64 h-32 blur-[80px] pointer-events-none ${
-            job?.status === 'completed'
-              ? 'bg-emerald-500/20'
-              : job?.status === 'failed'
-              ? 'bg-rose-500/20'
-              : 'bg-indigo-500/20'
-          }`}
-        />
-
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="relative w-full max-w-lg rounded-2xl border border-neutral-800 bg-neutral-950 p-6 sm:p-8 shadow-2xl overflow-hidden">
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 rounded-full p-1.5 text-neutral-400 hover:bg-neutral-800 hover:text-white transition-colors cursor-pointer"
+          className="absolute top-5 right-5 rounded-full p-1.5 text-neutral-400 hover:bg-neutral-900 hover:text-white transition-colors cursor-pointer"
         >
           <X className="h-5 w-5" />
         </button>
 
         {/* Header Status */}
         <div className="flex items-center gap-4">
-          <div
-            className={`flex h-12 w-12 items-center justify-center rounded-2xl ${
-              job?.status === 'completed'
-                ? 'bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/30'
-                : job?.status === 'failed'
-                ? 'bg-rose-500/10 text-rose-400 ring-1 ring-rose-500/30'
-                : 'bg-indigo-500/10 text-indigo-400 ring-1 ring-indigo-500/30'
-            }`}
-          >
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-neutral-900 border border-neutral-800 text-white">
             {job?.status === 'completed' ? (
-              <CheckCircle2 className="h-6 w-6" />
+              <CheckCircle2 className="h-5 w-5 text-white" />
             ) : job?.status === 'failed' ? (
-              <AlertTriangle className="h-6 w-6" />
+              <AlertTriangle className="h-5 w-5 text-neutral-400" />
             ) : (
-              <Loader2 className="h-6 w-6 animate-spin" />
+              <Loader2 className="h-5 w-5 animate-spin text-white" />
             )}
           </div>
 
           <div>
-            <h3 className="text-lg font-bold text-white tracking-tight">
+            <h3 className="text-base font-bold text-white tracking-tight">
               {job?.status === 'completed'
                 ? 'Ready for Download'
                 : job?.status === 'failed'
@@ -132,7 +113,7 @@ export function DownloadProgressModal({
 
         {/* Progress Bar & Indicators */}
         <div className="mt-6">
-          <div className="flex items-center justify-between text-xs font-semibold text-neutral-400 mb-2">
+          <div className="flex items-center justify-between text-xs font-medium text-neutral-400 mb-2">
             <span>
               {job?.status === 'queued'
                 ? 'In Queue...'
@@ -146,14 +127,14 @@ export function DownloadProgressModal({
           </div>
 
           {/* Bar */}
-          <div className="h-3 w-full overflow-hidden rounded-full bg-neutral-900 border border-neutral-800 p-0.5">
+          <div className="h-2 w-full overflow-hidden rounded-full bg-neutral-900 border border-neutral-800">
             <div
               className={`h-full rounded-full transition-all duration-300 ${
                 job?.status === 'completed'
-                  ? 'bg-gradient-to-r from-emerald-500 to-teal-400'
+                  ? 'bg-white'
                   : job?.status === 'failed'
-                  ? 'bg-rose-500'
-                  : 'bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-400 animate-pulse'
+                  ? 'bg-neutral-600'
+                  : 'bg-white animate-pulse'
               }`}
               style={{ width: `${job?.progress || (job?.status === 'processing' ? 25 : 5)}%` }}
             />
@@ -161,7 +142,7 @@ export function DownloadProgressModal({
 
           {/* Speed / ETA info */}
           {job?.status === 'processing' && (job.speed || job.eta) && (
-            <div className="mt-2 flex items-center justify-between text-[11px] text-neutral-500">
+            <div className="mt-2 flex items-center justify-between text-[11px] text-neutral-500 font-mono">
               <span>Speed: {job.speed || 'Calculating...'}</span>
               <span>ETA: {job.eta || 'A few seconds'}</span>
             </div>
@@ -170,12 +151,12 @@ export function DownloadProgressModal({
 
         {/* Output details when completed */}
         {job?.status === 'completed' && (
-          <div className="mt-6 rounded-2xl border border-neutral-800 bg-neutral-900/50 p-4">
+          <div className="mt-6 rounded-xl border border-neutral-800 bg-neutral-900/60 p-4">
             <div className="flex items-center justify-between text-xs">
-              <span className="text-neutral-400 font-medium truncate max-w-[260px]">
+              <span className="text-neutral-300 font-medium truncate max-w-[260px]">
                 {job.filename}
               </span>
-              <span className="text-neutral-300 font-bold">
+              <span className="text-white font-bold font-mono">
                 {formatFileSize(job.fileSize)}
               </span>
             </div>
@@ -184,16 +165,16 @@ export function DownloadProgressModal({
               <a
                 href={job.downloadUrl}
                 download={job.filename}
-                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-500/20 hover:opacity-95 transition-all text-center cursor-pointer"
+                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-white px-4 py-2.5 text-xs sm:text-sm font-bold text-black hover:bg-neutral-200 transition-all text-center cursor-pointer"
               >
-                <Download className="h-4 w-4" />
+                <Download className="h-4 w-4 stroke-[2.5]" />
                 <span>Save File to Device</span>
               </a>
               <a
                 href={job.downloadUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center rounded-xl border border-neutral-800 bg-neutral-900 px-3.5 py-3 text-neutral-400 hover:text-white hover:border-neutral-700 transition-colors"
+                className="flex items-center justify-center rounded-xl border border-neutral-800 bg-neutral-900 px-3 py-2.5 text-neutral-400 hover:text-white hover:border-neutral-700 transition-colors"
                 title="Direct Stream Link"
               >
                 <ExternalLink className="h-4 w-4" />
@@ -203,10 +184,10 @@ export function DownloadProgressModal({
         )}
 
         {/* Footer info */}
-        <div className="mt-6 flex items-center justify-between border-t border-neutral-800 pt-4 text-[11px] text-neutral-500">
+        <div className="mt-6 flex items-center justify-between border-t border-neutral-800/80 pt-4 text-[11px] text-neutral-500">
           <div className="flex items-center gap-1.5">
-            <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
-            <span>Encrypted with HMAC SHA-256</span>
+            <ShieldCheck className="h-3.5 w-3.5 text-white" />
+            <span>Encrypted Token</span>
           </div>
           <span>Automatic disk cleanup</span>
         </div>

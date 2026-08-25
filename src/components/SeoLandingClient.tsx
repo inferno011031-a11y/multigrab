@@ -19,7 +19,6 @@ import {
   AlertCircle,
   HelpCircle,
   Share2,
-  Sparkles,
 } from 'lucide-react';
 
 interface SeoLandingClientProps {
@@ -172,7 +171,7 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-neutral-950 text-neutral-100">
+    <div className="flex flex-col min-h-screen bg-black text-neutral-100">
       <Navbar
         onOpenHistory={() => setIsHistoryOpen(true)}
         onOpenApi={() => setIsApiModalOpen(true)}
@@ -181,8 +180,8 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative overflow-hidden pt-10 pb-8 sm:pt-16 sm:pb-12 px-4 text-center">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gradient-to-tr from-indigo-600/10 via-cyan-500/10 to-purple-600/10 blur-[120px] pointer-events-none -z-10" />
+        <section className="relative overflow-hidden pt-12 pb-10 sm:pt-20 sm:pb-14 px-4 text-center">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[400px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-neutral-900/60 via-black to-black pointer-events-none -z-10" />
 
           <div className="mx-auto max-w-4xl">
             {/* Breadcrumb Navigation */}
@@ -195,13 +194,13 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
             </div>
 
             {/* Top pill badge */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-neutral-800 bg-neutral-900/80 px-3.5 py-1 text-xs font-semibold text-neutral-300 backdrop-blur-md mb-6 shadow-sm">
-              <ArrowDownToLine className="w-3.5 h-3.5 text-cyan-400" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-neutral-800 bg-neutral-900 px-3.5 py-1 text-xs font-medium text-neutral-300 mb-6">
+              <ArrowDownToLine className="w-3.5 h-3.5 text-white" />
               <span>{data.heroBadge}</span>
             </div>
 
             {/* Main Headline */}
-            <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-[1.15]">
+            <h1 className="text-3xl sm:text-6xl font-bold tracking-tight text-white leading-[1.15]">
               {data.heading}
             </h1>
 
@@ -222,15 +221,15 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
             <div className="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs">
               <button
                 onClick={handleShare}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-neutral-800 bg-neutral-900/60 px-3 py-1.5 text-neutral-400 hover:text-white transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-neutral-800 bg-neutral-950 px-3 py-1.5 text-neutral-400 hover:text-white transition-colors cursor-pointer"
               >
                 <Share2 className="w-3.5 h-3.5" />
-                <span>{copiedShare ? 'Link Copied!' : 'Share MediaDrop'}</span>
+                <span>{copiedShare ? 'Link Copied' : 'Share MediaDrop'}</span>
               </button>
 
               <button
                 onClick={() => handleAnalyze(data.exampleUrl)}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-neutral-800 bg-neutral-900/60 px-3 py-1.5 text-cyan-400 hover:text-cyan-300 transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-neutral-800 bg-neutral-950 px-3 py-1.5 text-neutral-300 hover:text-white hover:border-neutral-700 transition-colors cursor-pointer"
               >
                 <span>Test with Sample URL</span>
                 <ArrowRight className="w-3 h-3" />
@@ -239,12 +238,12 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
 
             {/* Error Notification */}
             {errorMessage && (
-              <div className="mt-6 mx-auto max-w-xl flex items-center gap-3 rounded-2xl border border-rose-500/30 bg-rose-500/10 p-4 text-left text-sm text-rose-300">
-                <AlertCircle className="w-5 h-5 text-rose-400 shrink-0" />
+              <div className="mt-6 mx-auto max-w-xl flex items-center gap-3 rounded-2xl border border-neutral-800 bg-neutral-950 p-4 text-left text-sm text-neutral-200">
+                <AlertCircle className="w-5 h-5 text-white shrink-0" />
                 <span className="flex-1">{errorMessage}</span>
                 <button
                   onClick={() => setErrorMessage(null)}
-                  className="text-xs font-bold text-rose-400 hover:underline cursor-pointer"
+                  className="text-xs font-bold text-white hover:underline cursor-pointer"
                 >
                   Dismiss
                 </button>
@@ -271,25 +270,24 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
           </section>
         )}
 
-        {/* Related YouTube Tools Cluster (Silo Internal Linking) */}
+        {/* Related Tools Cluster (Silo Internal Linking) */}
         {data.relatedTools && data.relatedTools.length > 0 && (
           <section className="mx-auto max-w-5xl px-4 py-8">
-            <div className="rounded-3xl border border-neutral-800/80 bg-neutral-900/40 p-6 sm:p-8 backdrop-blur-md">
-              <div className="flex items-center gap-2 text-cyan-400 text-xs font-bold uppercase tracking-wider mb-4">
-                <Sparkles className="w-4 h-4" />
-                <span>Related MediaDrop Tools</span>
+            <div className="rounded-3xl border border-neutral-800 bg-neutral-950 p-6 sm:p-8">
+              <div className="text-neutral-400 text-xs font-bold uppercase tracking-wider mb-4">
+                Related MediaDrop Tools
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {data.relatedTools.map((tool) => (
                   <Link
                     key={tool.slug}
                     href={`/${tool.slug}`}
-                    className="group rounded-2xl border border-neutral-800/80 bg-neutral-950/60 p-4 hover:border-cyan-500/40 hover:bg-neutral-900/60 transition-all flex flex-col justify-between"
+                    className="group rounded-2xl border border-neutral-800 bg-neutral-900/40 p-4 hover:border-neutral-700 hover:bg-neutral-900 transition-all flex flex-col justify-between"
                   >
                     <div>
-                      <h4 className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors flex items-center justify-between">
+                      <h4 className="text-sm font-bold text-white group-hover:text-neutral-200 transition-colors flex items-center justify-between">
                         <span>{tool.name}</span>
-                        <ArrowRight className="w-3.5 h-3.5 text-neutral-500 group-hover:text-cyan-400 group-hover:translate-x-0.5 transition-transform" />
+                        <ArrowRight className="w-3.5 h-3.5 text-neutral-500 group-hover:text-white group-hover:translate-x-0.5 transition-transform" />
                       </h4>
                       <p className="mt-1 text-xs text-neutral-400 leading-relaxed">
                         {tool.desc}
@@ -305,8 +303,8 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
         {/* How to Download Steps */}
         <section className="mx-auto max-w-5xl px-4 py-12 sm:py-16">
           <div className="text-center mb-10">
-            <h2 className="text-xl sm:text-2xl font-extrabold text-white">
-              How to Download from {data.platform.toUpperCase()} with MediaDrop
+            <h2 className="text-xl sm:text-2xl font-bold text-white">
+              How to Download from {data.platform.toUpperCase()}
             </h2>
             <p className="mt-1.5 text-xs sm:text-sm text-neutral-400">
               Save your media in 3 simple steps without installing software.
@@ -317,9 +315,9 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
             {data.steps.map((s, idx) => (
               <div
                 key={idx}
-                className="relative rounded-3xl border border-neutral-800/80 bg-neutral-900/40 p-6 backdrop-blur-md"
+                className="rounded-2xl border border-neutral-800 bg-neutral-950 p-6"
               >
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600/20 text-sm font-bold text-cyan-400 mb-4">
+                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-white text-xs font-bold text-black mb-4">
                   0{idx + 1}
                 </div>
                 <h3 className="text-base font-bold text-white mb-2">{s.title}</h3>
@@ -331,14 +329,14 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
 
         {/* Features Highlights */}
         <section className="mx-auto max-w-5xl px-4 py-10">
-          <div className="rounded-3xl border border-neutral-800/80 bg-neutral-900/30 p-8">
+          <div className="rounded-3xl border border-neutral-800 bg-neutral-950 p-8">
             <h3 className="text-lg font-bold text-white mb-6 text-center">
               Why Use MediaDrop for {data.platform.toUpperCase()} Downloads?
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {data.features.map((feat, idx) => (
                 <div key={idx} className="flex items-center gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-white shrink-0" />
                   <span className="text-xs sm:text-sm text-neutral-300">{feat}</span>
                 </div>
               ))}
@@ -349,11 +347,11 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
         {/* Platform FAQs */}
         <section className="mx-auto max-w-4xl px-4 py-12 sm:py-16">
           <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 text-indigo-400 text-xs font-semibold mb-2">
+            <div className="inline-flex items-center gap-2 text-neutral-400 text-xs font-medium mb-2">
               <HelpCircle className="w-4 h-4" />
               <span>Questions & Answers</span>
             </div>
-            <h2 className="text-xl sm:text-2xl font-extrabold text-white">
+            <h2 className="text-xl sm:text-2xl font-bold text-white">
               {data.platform.toUpperCase()} Downloader FAQs
             </h2>
           </div>
@@ -362,7 +360,7 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
             {data.faqs.map((faq, idx) => (
               <div
                 key={idx}
-                className="rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-5 backdrop-blur-md"
+                className="rounded-2xl border border-neutral-800 bg-neutral-950 p-5"
               >
                 <h3 className="text-sm sm:text-base font-bold text-white mb-2">
                   {faq.q}

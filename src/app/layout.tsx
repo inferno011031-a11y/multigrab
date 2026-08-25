@@ -5,7 +5,7 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
-  themeColor: '#0a0a0a',
+  themeColor: '#000000',
 };
 
 export const metadata: Metadata = {
@@ -135,7 +135,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className="dark bg-neutral-950 text-neutral-100 antialiased selection:bg-cyan-500 selection:text-black"
+      className="dark bg-black text-neutral-100 antialiased selection:bg-white selection:text-black"
     >
       <head>
         <script
@@ -143,7 +143,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(rootSchema) }}
         />
       </head>
-      <body className="min-h-screen bg-neutral-950 flex flex-col font-sans">
+      <body className="min-h-screen bg-black text-neutral-100 flex flex-col font-sans">
         {children}
       </body>
     </html>

@@ -65,80 +65,40 @@ export function UrlForm({ onAnalyze, isLoading }: UrlFormProps) {
   };
 
   const renderPlatformBadge = () => {
-    switch (detectedPlatform) {
-      case 'youtube':
-        return (
-          <div className="flex items-center gap-1.5 rounded-xl bg-red-500/10 px-2.5 py-1 text-xs font-semibold text-red-400 ring-1 ring-red-500/30 animate-in fade-in zoom-in-95 duration-200">
-            <YoutubeIcon className="w-3.5 h-3.5" />
-            <span>YouTube</span>
-          </div>
-        );
-      case 'spotify':
-        return (
-          <div className="flex items-center gap-1.5 rounded-xl bg-emerald-500/10 px-2.5 py-1 text-xs font-semibold text-emerald-400 ring-1 ring-emerald-500/30 animate-in fade-in zoom-in-95 duration-200">
-            <SpotifyIcon className="w-3.5 h-3.5" />
-            <span>Spotify</span>
-          </div>
-        );
-      case 'tiktok':
-        return (
-          <div className="flex items-center gap-1.5 rounded-xl bg-pink-500/10 px-2.5 py-1 text-xs font-semibold text-pink-400 ring-1 ring-pink-500/30 animate-in fade-in zoom-in-95 duration-200">
-            <TiktokIcon className="w-3.5 h-3.5" />
-            <span>TikTok</span>
-          </div>
-        );
-      case 'instagram':
-        return (
-          <div className="flex items-center gap-1.5 rounded-xl bg-purple-500/10 px-2.5 py-1 text-xs font-semibold text-purple-400 ring-1 ring-purple-500/30 animate-in fade-in zoom-in-95 duration-200">
-            <InstagramIcon className="w-3.5 h-3.5" />
-            <span>Instagram</span>
-          </div>
-        );
-      case 'twitter':
-        return (
-          <div className="flex items-center gap-1.5 rounded-xl bg-cyan-500/10 px-2.5 py-1 text-xs font-semibold text-cyan-400 ring-1 ring-cyan-500/30 animate-in fade-in zoom-in-95 duration-200">
-            <TwitterIcon className="w-3.5 h-3.5" />
-            <span>X / Twitter</span>
-          </div>
-        );
-      case 'facebook':
-        return (
-          <div className="flex items-center gap-1.5 rounded-xl bg-blue-500/10 px-2.5 py-1 text-xs font-semibold text-blue-400 ring-1 ring-blue-500/30 animate-in fade-in zoom-in-95 duration-200">
-            <FacebookIcon className="w-3.5 h-3.5" />
-            <span>Facebook</span>
-          </div>
-        );
-      case 'reddit':
-        return (
-          <div className="flex items-center gap-1.5 rounded-xl bg-orange-500/10 px-2.5 py-1 text-xs font-semibold text-orange-400 ring-1 ring-orange-500/30 animate-in fade-in zoom-in-95 duration-200">
-            <RedditIcon className="w-3.5 h-3.5" />
-            <span>Reddit</span>
-          </div>
-        );
-      case 'pinterest':
-        return (
-          <div className="flex items-center gap-1.5 rounded-xl bg-rose-500/10 px-2.5 py-1 text-xs font-semibold text-rose-400 ring-1 ring-rose-500/30 animate-in fade-in zoom-in-95 duration-200">
-            <PinterestIcon className="w-3.5 h-3.5" />
-            <span>Pinterest</span>
-          </div>
-        );
-      case 'vimeo':
-        return (
-          <div className="flex items-center gap-1.5 rounded-xl bg-sky-500/10 px-2.5 py-1 text-xs font-semibold text-sky-400 ring-1 ring-sky-500/30 animate-in fade-in zoom-in-95 duration-200">
-            <VimeoIcon className="w-3.5 h-3.5" />
-            <span>Vimeo</span>
-          </div>
-        );
-      case 'generic':
-        return (
-          <div className="flex items-center gap-1.5 rounded-xl bg-neutral-800 px-2.5 py-1 text-xs font-semibold text-neutral-300 ring-1 ring-neutral-700 animate-in fade-in zoom-in-95 duration-200">
-            <Globe className="w-3.5 h-3.5 text-indigo-400" />
-            <span>Direct Web</span>
-          </div>
-        );
-      default:
-        return null;
-    }
+    if (!detectedPlatform) return null;
+
+    const iconMap: Record<string, React.ReactNode> = {
+      youtube: <YoutubeIcon className="w-3.5 h-3.5 text-white" />,
+      spotify: <SpotifyIcon className="w-3.5 h-3.5 text-white" />,
+      tiktok: <TiktokIcon className="w-3.5 h-3.5 text-white" />,
+      instagram: <InstagramIcon className="w-3.5 h-3.5 text-white" />,
+      twitter: <TwitterIcon className="w-3.5 h-3.5 text-white" />,
+      facebook: <FacebookIcon className="w-3.5 h-3.5 text-white" />,
+      reddit: <RedditIcon className="w-3.5 h-3.5 text-white" />,
+      pinterest: <PinterestIcon className="w-3.5 h-3.5 text-white" />,
+      vimeo: <VimeoIcon className="w-3.5 h-3.5 text-white" />,
+      generic: <Globe className="w-3.5 h-3.5 text-white" />,
+    };
+
+    const labelMap: Record<string, string> = {
+      youtube: 'YouTube',
+      spotify: 'Spotify',
+      tiktok: 'TikTok',
+      instagram: 'Instagram',
+      twitter: 'X / Twitter',
+      facebook: 'Facebook',
+      reddit: 'Reddit',
+      pinterest: 'Pinterest',
+      vimeo: 'Vimeo',
+      generic: 'Direct Web',
+    };
+
+    return (
+      <div className="flex items-center gap-1.5 rounded-xl bg-neutral-900 border border-neutral-800 px-2.5 py-1 text-xs font-medium text-white animate-in fade-in zoom-in-95 duration-200">
+        {iconMap[detectedPlatform]}
+        <span>{labelMap[detectedPlatform]}</span>
+      </div>
+    );
   };
 
   return (
@@ -146,10 +106,10 @@ export function UrlForm({ onAnalyze, isLoading }: UrlFormProps) {
       onSubmit={handleSubmit}
       className="relative mx-auto w-full max-w-3xl"
     >
-      <div className="relative flex flex-col sm:flex-row items-center rounded-3xl border border-neutral-800 bg-neutral-900/80 p-2 sm:p-2.5 shadow-2xl backdrop-blur-xl transition-all focus-within:border-indigo-500/50 focus-within:ring-4 focus-within:ring-indigo-500/10">
+      <div className="relative flex flex-col sm:flex-row items-center rounded-2xl border border-neutral-800 bg-neutral-950 p-2 sm:p-2.5 shadow-2xl transition-all focus-within:border-neutral-600 focus-within:ring-1 focus-within:ring-white/10">
         {/* Left platform detected badge or globe */}
         <div className="hidden sm:flex items-center pl-3 pr-2">
-          {renderPlatformBadge() || <Globe className="h-5 w-5 text-neutral-500" />}
+          {renderPlatformBadge() || <Globe className="h-5 w-5 text-neutral-600" />}
         </div>
 
         {/* Input field */}
@@ -168,7 +128,7 @@ export function UrlForm({ onAnalyze, isLoading }: UrlFormProps) {
             <button
               type="button"
               onClick={handlePaste}
-              className="flex items-center gap-1.5 rounded-2xl border border-neutral-800 bg-neutral-800/80 px-3.5 py-2.5 text-xs font-semibold text-neutral-300 transition-colors hover:border-neutral-700 hover:bg-neutral-700 hover:text-white cursor-pointer"
+              className="flex items-center gap-1.5 rounded-xl border border-neutral-800 bg-neutral-900 px-3.5 py-2.5 text-xs font-medium text-neutral-300 transition-colors hover:bg-neutral-800 hover:text-white cursor-pointer"
             >
               <Clipboard className="h-3.5 w-3.5" />
               <span>Paste</span>
@@ -178,17 +138,17 @@ export function UrlForm({ onAnalyze, isLoading }: UrlFormProps) {
           <button
             type="submit"
             disabled={isLoading || !url.trim()}
-            className="flex flex-1 sm:flex-initial items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-400 px-6 py-2.5 text-xs sm:text-sm font-bold text-white shadow-lg shadow-indigo-500/25 transition-all hover:opacity-95 hover:shadow-indigo-500/40 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+            className="flex flex-1 sm:flex-initial items-center justify-center gap-2 rounded-xl bg-white text-black px-6 py-2.5 text-xs sm:text-sm font-semibold transition-all hover:bg-neutral-200 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
           >
             {isLoading ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin" />
+                <Loader2 className="h-4 w-4 animate-spin text-black" />
                 <span>Extracting...</span>
               </>
             ) : (
               <>
                 <span>Download</span>
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-4 w-4 stroke-[2.5]" />
               </>
             )}
           </button>

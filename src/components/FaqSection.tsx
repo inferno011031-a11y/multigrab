@@ -29,7 +29,7 @@ export function FaqSection() {
   return (
     <section className="mx-auto max-w-4xl px-4 py-16 sm:py-24">
       <div className="text-center mb-12">
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+        <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
           Frequently Asked Questions
         </h2>
         <p className="mt-2 text-sm text-neutral-400">
@@ -41,7 +41,7 @@ export function FaqSection() {
         {faqs.map((faq, idx) => (
           <div
             key={idx}
-            className="rounded-2xl border border-neutral-800/80 bg-neutral-900/40 p-5 sm:p-6 backdrop-blur-md"
+            className="rounded-2xl border border-neutral-800 bg-neutral-950 p-5 sm:p-6"
           >
             <h3 className="text-sm sm:text-base font-bold text-white mb-2">
               {faq.q}

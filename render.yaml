@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: mediadrop
+    env: docker
+    plan: free
+    region: oregon
+    branch: master
+    healthCheckPath: /api/health
+    envVars:
+      - key: PORT
+        value: "3000"
+      - key: NODE_ENV
+        value: production
+      - key: TOKEN_SECRET
+        generateValue: true
+      - key: RATE_LIMIT_MAX_REQUESTS
+        value: "60"

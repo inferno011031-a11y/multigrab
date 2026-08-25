@@ -43,32 +43,30 @@ export function Navbar({ onOpenHistory, onOpenApi, historyCount, locale = 'en' }
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-neutral-800/80 bg-neutral-950/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 w-full border-b border-neutral-900 bg-black/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand Logo */}
         <div className="flex items-center gap-3">
           <Link href={prefix || '/'} className="flex items-center gap-3 group">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-600 via-violet-500 to-cyan-400 p-0.5 shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
-              <div className="flex h-full w-full items-center justify-center rounded-[10px] bg-neutral-950">
-                <ArrowDownToLine className="h-5 w-5 text-cyan-400" />
-              </div>
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-black transition-transform group-hover:scale-105">
+              <ArrowDownToLine className="h-4 w-4 stroke-[2.5]" />
             </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
-                <span className="text-lg font-bold tracking-tight text-white">
-                  Media<span className="bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">Drop</span>
+                <span className="text-base font-bold tracking-tight text-white">
+                  MediaDrop
                 </span>
-                <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-400 ring-1 ring-emerald-500/30">
+                <span className="rounded-full bg-neutral-900 px-2 py-0.5 text-[10px] font-medium text-neutral-400 border border-neutral-800">
                   FREE
                 </span>
               </div>
-              <span className="text-[11px] text-neutral-400">Universal Video & Audio Downloader</span>
+              <span className="text-[11px] text-neutral-500">Universal Downloader</span>
             </div>
           </Link>
         </div>
 
         {/* Center Nav Links */}
-        <nav className="hidden md:flex items-center gap-5 text-xs font-semibold text-neutral-300">
+        <nav className="hidden md:flex items-center gap-5 text-xs font-medium text-neutral-400">
           <Link href={prefix || '/'} className="hover:text-white transition-colors">
             Home
           </Link>
@@ -81,24 +79,24 @@ export function Navbar({ onOpenHistory, onOpenApi, historyCount, locale = 'en' }
                 setIsToolsOpen(false);
               }}
               onBlur={() => setTimeout(() => setIsYoutubeOpen(false), 200)}
-              className="flex items-center gap-1.5 text-rose-400 hover:text-rose-300 transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer"
             >
               <PlaySquare className="w-3.5 h-3.5" />
-              <span>YouTube Tools</span>
+              <span>YouTube</span>
               <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isYoutubeOpen ? 'rotate-180' : ''}`} />
             </button>
 
             {isYoutubeOpen && (
-              <div className="absolute top-full left-0 mt-2 w-64 rounded-2xl border border-neutral-800 bg-neutral-900/95 p-2 shadow-2xl backdrop-blur-xl animate-in fade-in zoom-in-95 duration-150 z-50">
+              <div className="absolute top-full left-0 mt-2 w-64 rounded-2xl border border-neutral-800 bg-neutral-950 p-2 shadow-2xl backdrop-blur-xl animate-in fade-in zoom-in-95 duration-150 z-50">
                 <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-neutral-500">
-                  MediaDrop YouTube Cluster
+                  YouTube Tools
                 </div>
                 {youtubeTools.map((t) => (
                   <Link
                     key={t.href}
                     href={t.href}
                     onClick={() => setIsYoutubeOpen(false)}
-                    className="block rounded-xl px-3 py-2 text-xs font-medium text-neutral-300 hover:bg-neutral-800 hover:text-rose-300 transition-colors"
+                    className="block rounded-xl px-3 py-2 text-xs font-medium text-neutral-300 hover:bg-neutral-900 hover:text-white transition-colors"
                   >
                     {t.name}
                   </Link>
@@ -117,18 +115,18 @@ export function Navbar({ onOpenHistory, onOpenApi, historyCount, locale = 'en' }
               onBlur={() => setTimeout(() => setIsToolsOpen(false), 200)}
               className="flex items-center gap-1 hover:text-white transition-colors cursor-pointer"
             >
-              <span>Other Platforms</span>
+              <span>Platforms</span>
               <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isToolsOpen ? 'rotate-180' : ''}`} />
             </button>
 
             {isToolsOpen && (
-              <div className="absolute top-full left-0 mt-2 w-60 rounded-2xl border border-neutral-800 bg-neutral-900/95 p-2 shadow-2xl backdrop-blur-xl animate-in fade-in zoom-in-95 duration-150 z-50">
+              <div className="absolute top-full left-0 mt-2 w-60 rounded-2xl border border-neutral-800 bg-neutral-950 p-2 shadow-2xl backdrop-blur-xl animate-in fade-in zoom-in-95 duration-150 z-50">
                 {otherTools.map((t) => (
                   <Link
                     key={t.href}
                     href={t.href}
                     onClick={() => setIsToolsOpen(false)}
-                    className="block rounded-xl px-3 py-2 text-xs font-medium text-neutral-300 hover:bg-neutral-800 hover:text-white transition-colors"
+                    className="block rounded-xl px-3 py-2 text-xs font-medium text-neutral-300 hover:bg-neutral-900 hover:text-white transition-colors"
                   >
                     {t.name}
                   </Link>
@@ -137,15 +135,15 @@ export function Navbar({ onOpenHistory, onOpenApi, historyCount, locale = 'en' }
             )}
           </div>
 
-          <Link href={`${prefix || ''}/#platforms`} className="hover:text-white transition-colors">
-            Platforms
+          <Link href={`${prefix || ''}/#features`} className="hover:text-white transition-colors">
+            Features
           </Link>
 
           <button
             onClick={onOpenApi}
             className="hover:text-white transition-colors flex items-center gap-1 cursor-pointer"
           >
-            <Terminal className="w-3.5 h-3.5 text-cyan-400" />
+            <Terminal className="w-3.5 h-3.5" />
             <span>API</span>
           </button>
         </nav>
@@ -160,9 +158,9 @@ export function Navbar({ onOpenHistory, onOpenApi, historyCount, locale = 'en' }
             target="_blank"
             rel="noopener noreferrer"
             title="Live Status"
-            className="hidden lg:flex items-center gap-1 rounded-xl border border-neutral-800 bg-neutral-900/60 px-2.5 py-1.5 text-[11px] font-medium text-neutral-400 hover:text-emerald-400 hover:border-emerald-500/30 transition-colors"
+            className="hidden lg:flex items-center gap-1.5 rounded-xl border border-neutral-800 bg-neutral-900/60 px-2.5 py-1.5 text-[11px] font-medium text-neutral-400 hover:text-white hover:border-neutral-700 transition-colors"
           >
-            <Activity className="w-3.5 h-3.5 text-emerald-400" />
+            <Activity className="w-3 h-3 text-white" />
             <span>Status</span>
           </Link>
 
@@ -170,10 +168,10 @@ export function Navbar({ onOpenHistory, onOpenApi, historyCount, locale = 'en' }
             onClick={onOpenHistory}
             className="group relative flex items-center gap-2 rounded-xl border border-neutral-800 bg-neutral-900/90 px-3 py-1.5 text-xs font-medium text-neutral-300 transition-all hover:border-neutral-700 hover:bg-neutral-800 hover:text-white cursor-pointer"
           >
-            <History className="h-4 w-4 text-neutral-400 transition-transform group-hover:rotate-[-20deg] group-hover:text-cyan-400" />
+            <History className="h-4 w-4 text-neutral-400 transition-transform group-hover:text-white" />
             <span className="hidden sm:inline">History</span>
             {historyCount > 0 && (
-              <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-indigo-500/20 px-1 text-[11px] font-bold text-indigo-400 ring-1 ring-indigo-500/40">
+              <span className="flex h-4 min-w-[18px] items-center justify-center rounded-full bg-white px-1 text-[10px] font-bold text-black">
                 {historyCount}
               </span>
             )}
