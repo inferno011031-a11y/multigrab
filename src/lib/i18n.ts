@@ -45,6 +45,10 @@ export interface UiTranslations {
   featuresTitle: string;
   faqTitle: string;
   allPlatforms: string;
+  navTools: string;
+  navPlatforms: string;
+  navFeatures: string;
+  navHistory: string;
   step1Title: string;
   step1Desc: string;
   step2Title: string;
@@ -81,6 +85,10 @@ export const UI_DICTIONARY: Record<SupportedLocale, UiTranslations> = {
     featuresTitle: 'Why Use MediaDrop?',
     faqTitle: 'Frequently Asked Questions',
     allPlatforms: 'All Platforms',
+    navTools: 'Tools',
+    navPlatforms: 'Platforms',
+    navFeatures: 'Features',
+    navHistory: 'History',
     step1Title: 'Copy URL Link',
     step1Desc: 'Copy the link of the video, song, or reel you want to download.',
     step2Title: 'Paste in MediaDrop',
@@ -115,6 +123,10 @@ export const UI_DICTIONARY: Record<SupportedLocale, UiTranslations> = {
     featuresTitle: '¿Por qué usar MediaDrop?',
     faqTitle: 'Preguntas Frecuentes',
     allPlatforms: 'Todas las Plataformas',
+    navTools: 'Herramientas',
+    navPlatforms: 'Plataformas',
+    navFeatures: 'Características',
+    navHistory: 'Historial',
     step1Title: 'Copiar Enlace',
     step1Desc: 'Copia el enlace del video, canción o reel que deseas guardar.',
     step2Title: 'Pegar en MediaDrop',
@@ -149,6 +161,10 @@ export const UI_DICTIONARY: Record<SupportedLocale, UiTranslations> = {
     featuresTitle: 'Por que usar o MediaDrop?',
     faqTitle: 'Perguntas Frequentes',
     allPlatforms: 'Todas as Plataformas',
+    navTools: 'Ferramentas',
+    navPlatforms: 'Plataformas',
+    navFeatures: 'Recursos',
+    navHistory: 'Histórico',
     step1Title: 'Copiar Link',
     step1Desc: 'Copie o link do vídeo, música ou reel que você deseja salvar.',
     step2Title: 'Colar no MediaDrop',
@@ -183,6 +199,10 @@ export const UI_DICTIONARY: Record<SupportedLocale, UiTranslations> = {
     featuresTitle: 'MediaDrop क्यों चुनें?',
     faqTitle: 'अक्सर पूछे जाने वाले प्रश्न',
     allPlatforms: 'सभी प्लेटफ़ॉर्म',
+    navTools: 'टूल्स',
+    navPlatforms: 'प्लेटफ़ॉर्म',
+    navFeatures: 'विशेषताएं',
+    navHistory: 'इतिहास',
     step1Title: 'लिंक कॉपी करें',
     step1Desc: 'उस वीडियो या गाने का लिंक कॉपी करें जिसे आप डाउनलोड करना चाहते हैं।',
     step2Title: 'MediaDrop पर पेस्ट करें',
@@ -217,6 +237,10 @@ export const UI_DICTIONARY: Record<SupportedLocale, UiTranslations> = {
     featuresTitle: 'Pourquoi choisir MediaDrop ?',
     faqTitle: 'Foire Aux Questions',
     allPlatforms: 'Toutes les Plateformes',
+    navTools: 'Outils',
+    navPlatforms: 'Plateformes',
+    navFeatures: 'Fonctionnalités',
+    navHistory: 'Historique',
     step1Title: 'Copier le Lien',
     step1Desc: 'Copiez le lien de la vidéo ou du morceau que vous souhaitez enregistrer.',
     step2Title: 'Coller dans MediaDrop',
@@ -251,6 +275,10 @@ export const UI_DICTIONARY: Record<SupportedLocale, UiTranslations> = {
     featuresTitle: 'Warum MediaDrop?',
     faqTitle: 'Häufig gestellte Fragen',
     allPlatforms: 'Alle Plattformen',
+    navTools: 'Tools',
+    navPlatforms: 'Plattformen',
+    navFeatures: 'Funktionen',
+    navHistory: 'Verlauf',
     step1Title: 'Link kopieren',
     step1Desc: 'Kopiere den Link des Videos oder Songs, den du speichern möchtest.',
     step2Title: 'Bei MediaDrop einfügen',
@@ -285,6 +313,10 @@ export const UI_DICTIONARY: Record<SupportedLocale, UiTranslations> = {
     featuresTitle: 'لماذا تختار MediaDrop؟',
     faqTitle: 'الأسئلة الشائعة',
     allPlatforms: 'جميع المنصات',
+    navTools: 'الأدوات',
+    navPlatforms: 'المنصات',
+    navFeatures: 'المميزات',
+    navHistory: 'السجل',
     step1Title: 'نسخ الرابط',
     step1Desc: 'انسخ رابط الفيديو أو الأغنية التي تريد تحميلها.',
     step2Title: 'لصق في MediaDrop',
@@ -319,6 +351,10 @@ export const UI_DICTIONARY: Record<SupportedLocale, UiTranslations> = {
     featuresTitle: 'Mengapa Memilih MediaDrop?',
     faqTitle: 'Pertanyaan Umum (FAQ)',
     allPlatforms: 'Semua Platform',
+    navTools: 'Alat',
+    navPlatforms: 'Platform',
+    navFeatures: 'Fitur',
+    navHistory: 'Riwayat',
     step1Title: 'Salin Tautan',
     step1Desc: 'Salin tautan video, musik, atau reel yang ingin Anda unduh.',
     step2Title: 'Tempel di MediaDrop',

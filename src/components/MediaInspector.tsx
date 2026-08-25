@@ -10,7 +10,6 @@ import {
   Download,
   ExternalLink,
   Layers,
-  Sparkles,
   CheckCircle2,
 } from 'lucide-react';
 import { MediaMetadata } from '@/core/types/media';

@@ -9,7 +9,6 @@ import { MediaInspectorSkeleton } from '@/components/MediaInspectorSkeleton';
 import { DownloadProgressModal } from '@/components/DownloadProgressModal';
 import { PlatformGrid } from '@/components/PlatformGrid';
 import { DownloadHistory } from '@/components/DownloadHistory';
-import { DeveloperApiModal } from '@/components/DeveloperApiModal';
 import { FeaturesSection } from '@/components/FeaturesSection';
 import { FaqSection } from '@/components/FaqSection';
 import { Footer } from '@/components/Footer';
@@ -50,7 +49,6 @@ export function LocalizedHomeClient({ locale }: { locale: SupportedLocale }) {
     }
   });
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-  const [isApiModalOpen, setIsApiModalOpen] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
 
   useEffect(() => {
@@ -193,7 +191,6 @@ export function LocalizedHomeClient({ locale }: { locale: SupportedLocale }) {
     >
       <Navbar
         onOpenHistory={() => setIsHistoryOpen(true)}
-        onOpenApi={() => setIsApiModalOpen(true)}
         historyCount={history.length}
         locale={locale}
       />
@@ -304,12 +301,6 @@ export function LocalizedHomeClient({ locale }: { locale: SupportedLocale }) {
           onCompleted={handleJobCompleted}
         />
       )}
-
-      {/* Developer API Documentation Modal */}
-      <DeveloperApiModal
-        isOpen={isApiModalOpen}
-        onClose={() => setIsApiModalOpen(false)}
-      />
 
       {/* History Drawer */}
       <DownloadHistory

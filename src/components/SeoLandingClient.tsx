@@ -8,13 +8,11 @@ import { MediaInspector } from '@/components/MediaInspector';
 import { MediaInspectorSkeleton } from '@/components/MediaInspectorSkeleton';
 import { DownloadProgressModal } from '@/components/DownloadProgressModal';
 import { DownloadHistory } from '@/components/DownloadHistory';
-import { DeveloperApiModal } from '@/components/DeveloperApiModal';
 import { Footer } from '@/components/Footer';
 import { SeoPlatformData } from '@/lib/seo-platforms';
 import { MediaMetadata, DownloadJob } from '@/core/types/media';
 import {
   CheckCircle2,
-  ArrowDownToLine,
   ArrowRight,
   AlertCircle,
   HelpCircle,
@@ -57,7 +55,6 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
   });
 
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-  const [isApiModalOpen, setIsApiModalOpen] = useState(false);
   const [copiedShare, setCopiedShare] = useState(false);
 
   const saveToHistory = (item: HistoryItem) => {
@@ -176,7 +173,6 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
     <div className="flex flex-col min-h-screen bg-black text-zinc-100 selection:bg-cyan-500/30 selection:text-cyan-200">
       <Navbar
         onOpenHistory={() => setIsHistoryOpen(true)}
-        onOpenApi={() => setIsApiModalOpen(true)}
         historyCount={history.length}
       />
 
@@ -385,12 +381,6 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
           onCompleted={handleJobCompleted}
         />
       )}
-
-      {/* Developer API Documentation Modal */}
-      <DeveloperApiModal
-        isOpen={isApiModalOpen}
-        onClose={() => setIsApiModalOpen(false)}
-      />
 
       {/* History Drawer */}
       <DownloadHistory

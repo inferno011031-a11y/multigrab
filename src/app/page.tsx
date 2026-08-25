@@ -9,13 +9,12 @@ import { MediaInspectorSkeleton } from '@/components/MediaInspectorSkeleton';
 import { DownloadProgressModal } from '@/components/DownloadProgressModal';
 import { PlatformGrid } from '@/components/PlatformGrid';
 import { DownloadHistory } from '@/components/DownloadHistory';
-import { DeveloperApiModal } from '@/components/DeveloperApiModal';
 import { FeaturesSection } from '@/components/FeaturesSection';
 import { FaqSection } from '@/components/FaqSection';
 import { Footer } from '@/components/Footer';
 import { AdBanner } from '@/components/AdBanner';
 import { MediaMetadata, PlatformInfo, DownloadJob } from '@/core/types/media';
-import { AlertCircle, ArrowDownToLine, Share2, Sparkles, Zap } from 'lucide-react';
+import { AlertCircle, Share2, Zap } from 'lucide-react';
 
 interface HistoryItem {
   id: string;
@@ -50,7 +49,6 @@ function MainContent() {
     }
   });
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-  const [isApiModalOpen, setIsApiModalOpen] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
 
   // Load platforms
@@ -192,7 +190,6 @@ function MainContent() {
     <div className="flex flex-col min-h-screen bg-black text-zinc-100 selection:bg-cyan-500/30 selection:text-cyan-200">
       <Navbar
         onOpenHistory={() => setIsHistoryOpen(true)}
-        onOpenApi={() => setIsApiModalOpen(true)}
         historyCount={history.length}
       />
 
@@ -304,12 +301,6 @@ function MainContent() {
           onCompleted={handleJobCompleted}
         />
       )}
-
-      {/* Developer API Documentation Modal */}
-      <DeveloperApiModal
-        isOpen={isApiModalOpen}
-        onClose={() => setIsApiModalOpen(false)}
-      />
 
       {/* History Drawer */}
       <DownloadHistory

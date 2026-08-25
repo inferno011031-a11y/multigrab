@@ -5,27 +5,21 @@ import Link from 'next/link';
 import {
   ArrowDownToLine,
   Clock,
-  Code2,
   ChevronDown,
   Menu,
   X,
-  Radio,
-  CheckCircle2,
-  Sparkles,
 } from 'lucide-react';
 import { LanguageSelector } from '@/components/LanguageSelector';
 import { SupportedLocale, UI_DICTIONARY } from '@/lib/i18n';
 
 interface NavbarProps {
   onOpenHistory: () => void;
-  onOpenApi: () => void;
   historyCount: number;
   locale?: SupportedLocale;
 }
 
 export function Navbar({
   onOpenHistory,
-  onOpenApi,
   historyCount,
   locale = 'en',
 }: NavbarProps) {
@@ -146,15 +140,6 @@ export function Navbar({
             )}
           </button>
 
-          {/* Developer API Trigger */}
-          <button
-            onClick={onOpenApi}
-            className="hidden sm:flex items-center gap-1.5 rounded-xl border border-zinc-800 bg-zinc-900/80 px-3 py-1.5 text-xs font-semibold text-zinc-300 hover:border-zinc-700 hover:text-white transition-all cursor-pointer"
-          >
-            <Code2 className="h-3.5 w-3.5 text-cyan-400" />
-            <span>API</span>
-          </button>
-
           {/* Language Switcher */}
           <LanguageSelector currentLocale={locale} />
 
@@ -188,19 +173,6 @@ export function Navbar({
                 </span>
               </Link>
             ))}
-          </div>
-
-          <div className="pt-2 border-t border-zinc-800 flex items-center justify-between">
-            <button
-              onClick={() => {
-                setIsMobileMenuOpen(false);
-                onOpenApi();
-              }}
-              className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white font-medium"
-            >
-              <Code2 className="h-3.5 w-3.5 text-cyan-400" />
-              <span>Developer API</span>
-            </button>
           </div>
         </div>
       )}
