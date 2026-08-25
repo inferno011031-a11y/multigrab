@@ -6,6 +6,7 @@ import {
   Clipboard,
   Loader2,
   Globe,
+  Sparkles,
 } from 'lucide-react';
 import {
   YoutubeIcon,
@@ -65,51 +66,94 @@ export function UrlForm({ onAnalyze, isLoading }: UrlFormProps) {
   };
 
   const renderPlatformBadge = () => {
-    if (!detectedPlatform) return null;
-
-    const iconMap: Record<string, React.ReactNode> = {
-      youtube: <YoutubeIcon className="w-3.5 h-3.5 text-white" />,
-      spotify: <SpotifyIcon className="w-3.5 h-3.5 text-white" />,
-      tiktok: <TiktokIcon className="w-3.5 h-3.5 text-white" />,
-      instagram: <InstagramIcon className="w-3.5 h-3.5 text-white" />,
-      twitter: <TwitterIcon className="w-3.5 h-3.5 text-white" />,
-      facebook: <FacebookIcon className="w-3.5 h-3.5 text-white" />,
-      reddit: <RedditIcon className="w-3.5 h-3.5 text-white" />,
-      pinterest: <PinterestIcon className="w-3.5 h-3.5 text-white" />,
-      vimeo: <VimeoIcon className="w-3.5 h-3.5 text-white" />,
-      generic: <Globe className="w-3.5 h-3.5 text-white" />,
-    };
-
-    const labelMap: Record<string, string> = {
-      youtube: 'YouTube',
-      spotify: 'Spotify',
-      tiktok: 'TikTok',
-      instagram: 'Instagram',
-      twitter: 'X / Twitter',
-      facebook: 'Facebook',
-      reddit: 'Reddit',
-      pinterest: 'Pinterest',
-      vimeo: 'Vimeo',
-      generic: 'Direct Web',
-    };
-
-    return (
-      <div className="flex items-center gap-1.5 rounded-xl bg-neutral-900 border border-neutral-800 px-2.5 py-1 text-xs font-medium text-white animate-in fade-in zoom-in-95 duration-200">
-        {iconMap[detectedPlatform]}
-        <span>{labelMap[detectedPlatform]}</span>
-      </div>
-    );
+    switch (detectedPlatform) {
+      case 'youtube':
+        return (
+          <div className="flex items-center gap-1.5 rounded-xl bg-red-500/10 border border-red-500/30 px-2.5 py-1 text-xs font-semibold text-red-400 shadow-sm shadow-red-500/10 animate-in fade-in zoom-in-95 duration-200">
+            <YoutubeIcon className="w-4 h-4" />
+            <span>YouTube</span>
+          </div>
+        );
+      case 'spotify':
+        return (
+          <div className="flex items-center gap-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-1 text-xs font-semibold text-emerald-400 shadow-sm shadow-emerald-500/10 animate-in fade-in zoom-in-95 duration-200">
+            <SpotifyIcon className="w-4 h-4" />
+            <span>Spotify</span>
+          </div>
+        );
+      case 'tiktok':
+        return (
+          <div className="flex items-center gap-1.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 px-2.5 py-1 text-xs font-semibold text-cyan-300 shadow-sm shadow-cyan-500/10 animate-in fade-in zoom-in-95 duration-200">
+            <TiktokIcon className="w-4 h-4" />
+            <span>TikTok</span>
+          </div>
+        );
+      case 'instagram':
+        return (
+          <div className="flex items-center gap-1.5 rounded-xl bg-pink-500/10 border border-pink-500/30 px-2.5 py-1 text-xs font-semibold text-pink-400 shadow-sm shadow-pink-500/10 animate-in fade-in zoom-in-95 duration-200">
+            <InstagramIcon className="w-4 h-4" />
+            <span>Instagram</span>
+          </div>
+        );
+      case 'twitter':
+        return (
+          <div className="flex items-center gap-1.5 rounded-xl bg-sky-500/10 border border-sky-500/30 px-2.5 py-1 text-xs font-semibold text-sky-400 shadow-sm shadow-sky-500/10 animate-in fade-in zoom-in-95 duration-200">
+            <TwitterIcon className="w-4 h-4" />
+            <span>X / Twitter</span>
+          </div>
+        );
+      case 'facebook':
+        return (
+          <div className="flex items-center gap-1.5 rounded-xl bg-blue-500/10 border border-blue-500/30 px-2.5 py-1 text-xs font-semibold text-blue-400 shadow-sm shadow-blue-500/10 animate-in fade-in zoom-in-95 duration-200">
+            <FacebookIcon className="w-4 h-4" />
+            <span>Facebook</span>
+          </div>
+        );
+      case 'reddit':
+        return (
+          <div className="flex items-center gap-1.5 rounded-xl bg-orange-500/10 border border-orange-500/30 px-2.5 py-1 text-xs font-semibold text-orange-400 shadow-sm shadow-orange-500/10 animate-in fade-in zoom-in-95 duration-200">
+            <RedditIcon className="w-4 h-4" />
+            <span>Reddit</span>
+          </div>
+        );
+      case 'pinterest':
+        return (
+          <div className="flex items-center gap-1.5 rounded-xl bg-red-600/10 border border-red-600/30 px-2.5 py-1 text-xs font-semibold text-red-400 shadow-sm shadow-red-600/10 animate-in fade-in zoom-in-95 duration-200">
+            <PinterestIcon className="w-4 h-4" />
+            <span>Pinterest</span>
+          </div>
+        );
+      case 'vimeo':
+        return (
+          <div className="flex items-center gap-1.5 rounded-xl bg-sky-500/10 border border-sky-500/30 px-2.5 py-1 text-xs font-semibold text-sky-400 shadow-sm shadow-sky-500/10 animate-in fade-in zoom-in-95 duration-200">
+            <VimeoIcon className="w-4 h-4" />
+            <span>Vimeo</span>
+          </div>
+        );
+      case 'generic':
+        return (
+          <div className="flex items-center gap-1.5 rounded-xl bg-indigo-500/10 border border-indigo-500/30 px-2.5 py-1 text-xs font-semibold text-indigo-300 animate-in fade-in zoom-in-95 duration-200">
+            <Globe className="w-4 h-4 text-indigo-400" />
+            <span>Direct Web</span>
+          </div>
+        );
+      default:
+        return null;
+    }
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="relative mx-auto w-full max-w-3xl"
+      className="relative mx-auto w-full max-w-3xl group/form"
     >
-      <div className="relative flex flex-col sm:flex-row items-center rounded-2xl border border-neutral-800 bg-neutral-950 p-2 sm:p-2.5 shadow-2xl transition-all focus-within:border-neutral-600 focus-within:ring-1 focus-within:ring-white/10">
+      {/* Outer ambient glow on focus */}
+      <div className="absolute -inset-0.5 rounded-[26px] bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-cyan-500/20 opacity-0 blur-xl transition duration-500 group-focus-within/form:opacity-100 -z-10" />
+
+      <div className="relative flex flex-col sm:flex-row items-center rounded-3xl border border-zinc-800/90 bg-zinc-950/90 p-2 sm:p-2.5 shadow-2xl backdrop-blur-2xl transition-all duration-300 focus-within:border-zinc-700 focus-within:ring-4 focus-within:ring-indigo-500/10">
         {/* Left platform detected badge or globe */}
         <div className="hidden sm:flex items-center pl-3 pr-2">
-          {renderPlatformBadge() || <Globe className="h-5 w-5 text-neutral-600" />}
+          {renderPlatformBadge() || <Globe className="h-5 w-5 text-zinc-500" />}
         </div>
 
         {/* Input field */}
@@ -119,7 +163,7 @@ export function UrlForm({ onAnalyze, isLoading }: UrlFormProps) {
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           placeholder="Paste public link (YouTube, Spotify, TikTok, Instagram, X, etc.)..."
-          className="h-12 w-full bg-transparent px-3 text-sm text-white placeholder-neutral-500 focus:outline-none sm:text-base"
+          className="h-12 w-full bg-transparent px-3 text-sm text-white placeholder-zinc-500 focus:outline-none sm:text-base selection:bg-cyan-500/30 selection:text-cyan-200"
         />
 
         {/* Action buttons */}
@@ -128,9 +172,9 @@ export function UrlForm({ onAnalyze, isLoading }: UrlFormProps) {
             <button
               type="button"
               onClick={handlePaste}
-              className="flex items-center gap-1.5 rounded-xl border border-neutral-800 bg-neutral-900 px-3.5 py-2.5 text-xs font-medium text-neutral-300 transition-colors hover:bg-neutral-800 hover:text-white cursor-pointer"
+              className="flex items-center gap-1.5 rounded-2xl border border-zinc-800 bg-zinc-900/90 px-3.5 py-2.5 text-xs font-semibold text-zinc-300 transition-all hover:border-zinc-700 hover:bg-zinc-800 hover:text-white cursor-pointer"
             >
-              <Clipboard className="h-3.5 w-3.5" />
+              <Clipboard className="h-3.5 w-3.5 text-zinc-400" />
               <span>Paste</span>
             </button>
           )}
@@ -138,17 +182,18 @@ export function UrlForm({ onAnalyze, isLoading }: UrlFormProps) {
           <button
             type="submit"
             disabled={isLoading || !url.trim()}
-            className="flex flex-1 sm:flex-initial items-center justify-center gap-2 rounded-xl bg-white text-black px-6 py-2.5 text-xs sm:text-sm font-semibold transition-all hover:bg-neutral-200 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+            className="group relative flex flex-1 sm:flex-initial items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-400 px-6 py-2.5 text-xs sm:text-sm font-bold text-white shadow-lg shadow-indigo-500/25 transition-all duration-300 hover:opacity-95 hover:shadow-indigo-500/40 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
           >
             {isLoading ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin text-black" />
+                <Loader2 className="h-4 w-4 animate-spin text-white" />
                 <span>Extracting...</span>
               </>
             ) : (
               <>
+                <Sparkles className="h-3.5 w-3.5 opacity-80 group-hover:rotate-12 transition-transform" />
                 <span>Download</span>
-                <ArrowRight className="h-4 w-4 stroke-[2.5]" />
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </>
             )}
           </button>
