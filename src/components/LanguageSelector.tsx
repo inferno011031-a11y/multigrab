@@ -33,7 +33,9 @@ export function LanguageSelector({ currentLocale = 'en' }: { currentLocale?: Sup
         onClick={() => setIsOpen(!isOpen)}
         onBlur={() => setTimeout(() => setIsOpen(false), 200)}
         className="flex items-center gap-1.5 rounded-xl border border-neutral-800 bg-neutral-900 px-2.5 py-1.5 text-xs font-medium text-neutral-300 hover:border-neutral-700 hover:text-white transition-all cursor-pointer"
-        aria-label="Select Language"
+        aria-label={`${current.flag} ${current.nativeName} (${current.code.toUpperCase()}) - Select Language`}
+        aria-haspopup="menu"
+        aria-expanded={isOpen}
       >
         <Globe className="w-3.5 h-3.5 text-white" />
         <span className="hidden sm:inline">{current.flag} {current.nativeName}</span>

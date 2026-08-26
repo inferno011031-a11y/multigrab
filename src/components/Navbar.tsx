@@ -66,6 +66,9 @@ export function Navbar({
                 onClick={() => setIsToolsOpen(!isToolsOpen)}
                 onBlur={() => setTimeout(() => setIsToolsOpen(false), 200)}
                 className="flex items-center gap-1.5 rounded-xl px-3 py-1.5 hover:bg-zinc-900 hover:text-white transition-colors cursor-pointer"
+                aria-haspopup="menu"
+                aria-expanded={isToolsOpen}
+                aria-label={t.navTools}
               >
                 <span>{t.navTools}</span>
                 <ChevronDown
@@ -129,6 +132,7 @@ export function Navbar({
           {/* History Drawer Trigger */}
           <button
             onClick={onOpenHistory}
+            aria-label={t.navHistory}
             className="flex items-center gap-1.5 rounded-xl border border-zinc-800 bg-zinc-900/80 px-3 py-1.5 text-xs font-semibold text-zinc-300 hover:border-zinc-700 hover:text-white hover:bg-zinc-900 transition-all cursor-pointer shadow-sm"
           >
             <Clock className="h-3.5 w-3.5 text-zinc-400" />
@@ -146,6 +150,7 @@ export function Navbar({
           {/* Mobile menu button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle navigation menu"
             className="flex md:hidden rounded-xl border border-zinc-800 p-2 text-zinc-400 hover:bg-zinc-900 hover:text-white"
           >
             {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
