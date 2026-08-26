@@ -2,24 +2,15 @@ import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: [
-      {
-        userAgent: '*',
-        allow: '/',
-        disallow: ['/api/', '/tmp/'],
-      },
-      {
-        userAgent: 'Googlebot',
-        allow: '/',
-        disallow: ['/api/', '/tmp/'],
-      },
-      {
-        userAgent: 'Bingbot',
-        allow: '/',
-        disallow: ['/api/', '/tmp/'],
-      },
+    rules: {
+      userAgent: '*',
+      allow: '/',
+      disallow: ['/api/'],
+    },
+    sitemap: [
+      'https://www.multigrab.online/sitemap.xml',
+      'https://multigrab.online/sitemap.xml',
     ],
-    sitemap: 'https://multigrab.online/sitemap.xml',
-    host: 'https://multigrab.online',
+    host: 'https://www.multigrab.online',
   };
 }
