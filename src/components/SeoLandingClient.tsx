@@ -1,13 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { Navbar } from '@/components/Navbar';
 import { UrlForm } from '@/components/UrlForm';
 import { MediaInspector } from '@/components/MediaInspector';
 import { MediaInspectorSkeleton } from '@/components/MediaInspectorSkeleton';
-import { DownloadProgressModal } from '@/components/DownloadProgressModal';
-import { DownloadHistory } from '@/components/DownloadHistory';
 import { Footer } from '@/components/Footer';
 import { SeoPlatformData } from '@/lib/seo-platforms';
 import { MediaMetadata, DownloadJob } from '@/core/types/media';
@@ -20,6 +19,16 @@ import {
   Sparkles,
   Zap,
 } from 'lucide-react';
+
+const DownloadProgressModal = dynamic(
+  () => import('@/components/DownloadProgressModal').then((m) => m.DownloadProgressModal),
+  { ssr: false }
+);
+
+const DownloadHistory = dynamic(
+  () => import('@/components/DownloadHistory').then((m) => m.DownloadHistory),
+  { ssr: false }
+);
 
 interface SeoLandingClientProps {
   data: SeoPlatformData;
@@ -375,7 +384,7 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
         </section>
       </main>
 
-      {/* Real-time Download Progress Modal */}
+      {/* Real-time Download Progress Modal (Lazy Loaded) */}
       {activeJobId && (
         <DownloadProgressModal
           jobId={activeJobId}
@@ -384,17 +393,19 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
         />
       )}
 
-      {/* History Drawer */}
-      <DownloadHistory
-        isOpen={isHistoryOpen}
-        onClose={() => setIsHistoryOpen(false)}
-        history={history}
-        onClearHistory={handleClearHistory}
-        onSelectUrl={(url) => {
-          handleAnalyze(url);
-          setIsHistoryOpen(false);
-        }}
-      />
+      {/* History Drawer (Lazy Loaded) */}
+      {isHistoryOpen && (
+        <DownloadHistory
+          isOpen={isHistoryOpen}
+          onClose={() => setIsHistoryOpen(false)}
+          history={history}
+          onClearHistory={handleClearHistory}
+          onSelectUrl={(url) => {
+            handleAnalyze(url);
+            setIsHistoryOpen(false);
+          }}
+        />
+      )}
 
       <Footer />
     </div>

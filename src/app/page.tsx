@@ -1,20 +1,30 @@
 'use client';
 
 import React, { useState, useEffect, Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 import { Navbar } from '@/components/Navbar';
 import { UrlForm } from '@/components/UrlForm';
 import { MediaInspector } from '@/components/MediaInspector';
 import { MediaInspectorSkeleton } from '@/components/MediaInspectorSkeleton';
-import { DownloadProgressModal } from '@/components/DownloadProgressModal';
 import { PlatformGrid } from '@/components/PlatformGrid';
-import { DownloadHistory } from '@/components/DownloadHistory';
 import { FeaturesSection } from '@/components/FeaturesSection';
 import { FaqSection } from '@/components/FaqSection';
 import { Footer } from '@/components/Footer';
 import { AdBanner } from '@/components/AdBanner';
-import { MediaMetadata, PlatformInfo, DownloadJob } from '@/core/types/media';
+import { MediaMetadata, DownloadJob } from '@/core/types/media';
+import { DEFAULT_PLATFORMS_INFO } from '@/lib/constants';
 import { AlertCircle, Share2, Zap } from 'lucide-react';
+
+const DownloadProgressModal = dynamic(
+  () => import('@/components/DownloadProgressModal').then((m) => m.DownloadProgressModal),
+  { ssr: false }
+);
+
+const DownloadHistory = dynamic(
+  () => import('@/components/DownloadHistory').then((m) => m.DownloadHistory),
+  { ssr: false }
+);
 
 interface HistoryItem {
   id: string;
@@ -37,8 +47,7 @@ function MainContent() {
   const [activeJobId, setActiveJobId] = useState<string | null>(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
-  // History & Platforms state
-  const [platforms, setPlatforms] = useState<PlatformInfo[]>([]);
+  // History state
   const [history, setHistory] = useState<HistoryItem[]>(() => {
     if (typeof window === 'undefined') return [];
     try {
@@ -50,18 +59,6 @@ function MainContent() {
   });
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
-
-  // Load platforms
-  useEffect(() => {
-    fetch('/api/providers')
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success && data.data) {
-          setPlatforms(data.data);
-        }
-      })
-      .catch(() => {});
-  }, []);
 
   const saveToHistory = (item: HistoryItem) => {
     setHistory((prev) => {
@@ -279,7 +276,7 @@ function MainContent() {
         {/* Supported Platforms Grid */}
         <div id="platforms">
           <PlatformGrid
-            platforms={platforms}
+            platforms={DEFAULT_PLATFORMS_INFO}
             onSelectPlatformSample={handleAnalyze}
           />
         </div>
@@ -293,7 +290,7 @@ function MainContent() {
         <FaqSection />
       </main>
 
-      {/* Real-time Download Progress Modal */}
+      {/* Real-time Download Progress Modal (Lazy Loaded) */}
       {activeJobId && (
         <DownloadProgressModal
           jobId={activeJobId}
@@ -302,17 +299,19 @@ function MainContent() {
         />
       )}
 
-      {/* History Drawer */}
-      <DownloadHistory
-        isOpen={isHistoryOpen}
-        onClose={() => setIsHistoryOpen(false)}
-        history={history}
-        onClearHistory={handleClearHistory}
-        onSelectUrl={(url) => {
-          handleAnalyze(url);
-          setIsHistoryOpen(false);
-        }}
-      />
+      {/* History Drawer (Lazy Loaded) */}
+      {isHistoryOpen && (
+        <DownloadHistory
+          isOpen={isHistoryOpen}
+          onClose={() => setIsHistoryOpen(false)}
+          history={history}
+          onClearHistory={handleClearHistory}
+          onSelectUrl={(url) => {
+            handleAnalyze(url);
+            setIsHistoryOpen(false);
+          }}
+        />
+      )}
 
       <Footer />
     </div>

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { PlatformInfo } from '@/core/types/media';
+import { DEFAULT_PLATFORMS_INFO } from '@/lib/constants';
 import {
   YoutubeIcon,
   SpotifyIcon,
@@ -16,11 +17,13 @@ import {
 import { Globe, Video, Music, ArrowRight } from 'lucide-react';
 
 interface PlatformGridProps {
-  platforms: PlatformInfo[];
+  platforms?: PlatformInfo[];
   onSelectPlatformSample?: (url: string) => void;
 }
 
-export function PlatformGrid({ platforms, onSelectPlatformSample }: PlatformGridProps) {
+export function PlatformGrid({ platforms = DEFAULT_PLATFORMS_INFO, onSelectPlatformSample }: PlatformGridProps) {
+  const displayPlatforms = platforms && platforms.length > 0 ? platforms : DEFAULT_PLATFORMS_INFO;
+
   const getPlatformConfig = (iconName: string) => {
     switch (iconName) {
       case 'youtube':
@@ -111,7 +114,7 @@ export function PlatformGrid({ platforms, onSelectPlatformSample }: PlatformGrid
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {platforms.map((platform) => {
+        {displayPlatforms.map((platform) => {
           const config = getPlatformConfig(platform.iconName);
           return (
             <div
