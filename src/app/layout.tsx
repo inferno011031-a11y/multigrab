@@ -9,7 +9,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://multigrab.online'),
+  metadataBase: new URL('https://www.multigrab.online'),
   title: {
     default: 'MultiGrab - Universal Video & Audio Downloader',
     template: '%s | MultiGrab',
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     'online video downloader',
     'MP3 converter',
   ],
-  authors: [{ name: 'MultiGrab Team', url: 'https://multigrab.online' }],
+  authors: [{ name: 'MultiGrab Team', url: 'https://www.multigrab.online' }],
   creator: 'MultiGrab',
   publisher: 'MultiGrab',
   applicationName: 'MultiGrab',
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://multigrab.online',
+    url: 'https://www.multigrab.online',
     siteName: 'MultiGrab',
     title: 'MultiGrab - Universal Video & Audio Downloader',
     description:
@@ -70,7 +70,7 @@ export const metadata: Metadata = {
       'Download videos and MP3 audio from YouTube, Spotify, TikTok, Instagram, and more in 4K, 1080p, and 320kbps with MultiGrab.',
   },
   alternates: {
-    canonical: 'https://multigrab.online',
+    canonical: 'https://www.multigrab.online',
   },
 };
 
