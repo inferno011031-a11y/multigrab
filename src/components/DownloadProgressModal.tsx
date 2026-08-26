@@ -61,63 +61,6 @@ export function DownloadProgressModal({
     };
   }, [jobId, onCompleted]);
 
-  const [isSaving, setIsSaving] = useState(false);
-
-  const handleSaveFile = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (!job?.downloadUrl || isSaving) return;
-
-    setIsSaving(true);
-    try {
-      const res = await fetch(job.downloadUrl, { cache: 'no-store' });
-      if (!res.ok) {
-        throw new Error('Server returned HTTP ' + res.status);
-      }
-      const buffer = await res.arrayBuffer();
-      if (!buffer || buffer.byteLength === 0) {
-        throw new Error('Empty file buffer received');
-      }
-
-      const mimeType = job.mimeType || (job.filename?.endsWith('.mp3') ? 'audio/mpeg' : 'application/octet-stream');
-      const blob = new Blob([buffer], { type: mimeType });
-      const url = window.URL.createObjectURL(blob);
-
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
-      a.download = job.filename || 'media-download.mp3';
-      document.body.appendChild(a);
-      a.click();
-
-      setTimeout(() => {
-        try {
-          document.body.removeChild(a);
-        } catch {}
-        setIsSaving(false);
-      }, 1000);
-
-      // Keep blob URL alive for 2 minutes so browser download manager writes all bytes
-      setTimeout(() => {
-        try {
-          window.URL.revokeObjectURL(url);
-        } catch {}
-      }, 120000);
-    } catch (err) {
-      console.error('Blob download failed, falling back to direct link:', err);
-      setIsSaving(false);
-      const fallbackA = document.createElement('a');
-      fallbackA.href = job.downloadUrl;
-      fallbackA.download = job.filename || 'media-download.mp3';
-      document.body.appendChild(fallbackA);
-      fallbackA.click();
-      setTimeout(() => {
-        try {
-          document.body.removeChild(fallbackA);
-        } catch {}
-      }, 1000);
-    }
-  };
-
   const formatFileSize = (bytes?: number) => {
     if (!bytes) return 'Calculating...';
     const mb = bytes / (1024 * 1024);
@@ -182,7 +125,7 @@ export function DownloadProgressModal({
             </h3>
             <p className="text-xs text-zinc-400">
               {job?.status === 'completed'
-                ? 'Secure download token generated. Ready to save.'
+                ? 'Secure download link generated. Ready to save.'
                 : job?.status === 'failed'
                 ? job.error || 'Could not process format. Please try another quality.'
                 : 'Streaming and muxing media directly...'}
@@ -253,23 +196,14 @@ export function DownloadProgressModal({
             )}
 
             <div className="mt-4 flex flex-col sm:flex-row gap-2">
-              <button
-                onClick={handleSaveFile}
-                disabled={isSaving}
-                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-3 text-xs sm:text-sm font-bold text-white shadow-lg shadow-emerald-500/20 hover:opacity-95 transition-all text-center cursor-pointer disabled:opacity-75"
+              <a
+                href={job.downloadUrl}
+                download={job.filename || 'media-download.mp3'}
+                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-3.5 text-xs sm:text-sm font-bold text-white shadow-lg shadow-emerald-500/20 hover:opacity-95 active:scale-[0.98] transition-all text-center cursor-pointer"
               >
-                {isSaving ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin stroke-[2.5]" />
-                    <span>Saving to device...</span>
-                  </>
-                ) : (
-                  <>
-                    <Download className="h-4 w-4 stroke-[2.5]" />
-                    <span>Save File to Device</span>
-                  </>
-                )}
-              </button>
+                <Download className="h-4 w-4 stroke-[2.5]" />
+                <span>Save File to Device</span>
+              </a>
               <a
                 href={job.downloadUrl}
                 target="_blank"

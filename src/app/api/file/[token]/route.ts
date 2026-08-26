@@ -106,7 +106,7 @@ export async function GET(
       headers: {
         'Content-Type': mimeType,
         'Content-Length': String(fileBuffer.length),
-        'Content-Disposition': `attachment; filename="${asciiFilename}"; filename*=UTF-8''${utf8Encoded}`,
+        'Content-Disposition': `attachment; filename="${asciiFilename}"`,
         'Cache-Control': 'no-store, no-cache, must-revalidate',
         'Accept-Ranges': 'bytes',
         'X-Content-Type-Options': 'nosniff',
