@@ -74,6 +74,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { A11yGuardian } from '@/components/A11yGuardian';
+
 export default function RootLayout({
   children,
 }: {
@@ -154,6 +156,7 @@ export default function RootLayout({
         suppressHydrationWarning
         className="min-h-screen bg-black text-neutral-100 flex flex-col font-sans"
       >
+        <A11yGuardian />
         {children}
       </body>
     </html>

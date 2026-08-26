@@ -162,6 +162,7 @@ export function UrlForm({ onAnalyze, isLoading }: UrlFormProps) {
           required
           value={url}
           onChange={(e) => setUrl(e.target.value)}
+          aria-label="Enter video or audio link to download"
           placeholder="Paste public link (YouTube, Spotify, TikTok, Instagram, X, etc.)..."
           className="h-12 w-full bg-transparent px-3 text-sm text-white placeholder-zinc-500 focus:outline-none sm:text-base selection:bg-cyan-500/30 selection:text-cyan-200"
         />
@@ -172,6 +173,7 @@ export function UrlForm({ onAnalyze, isLoading }: UrlFormProps) {
             <button
               type="button"
               onClick={handlePaste}
+              aria-label="Paste URL from clipboard"
               className="flex items-center gap-1.5 rounded-2xl border border-zinc-800 bg-zinc-900/90 px-3.5 py-2.5 text-xs font-semibold text-zinc-300 transition-all hover:border-zinc-700 hover:bg-zinc-800 hover:text-white cursor-pointer"
             >
               <Clipboard className="h-3.5 w-3.5 text-zinc-400" />
@@ -182,6 +184,7 @@ export function UrlForm({ onAnalyze, isLoading }: UrlFormProps) {
           <button
             type="submit"
             disabled={isLoading || !url.trim()}
+            aria-label="Extract and download media"
             className="group relative flex flex-1 sm:flex-initial items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-400 px-6 py-2.5 text-xs sm:text-sm font-bold text-white shadow-lg shadow-indigo-500/25 transition-all duration-300 hover:opacity-95 hover:shadow-indigo-500/40 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
           >
             {isLoading ? (
