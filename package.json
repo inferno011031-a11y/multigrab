@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "dev": "next dev",
-    "build": "pip3 install --break-system-packages --no-cache-dir yt-dlp imageio-ffmpeg 2>/dev/null || pip install --no-cache-dir yt-dlp imageio-ffmpeg 2>/dev/null || true; next build",
+    "build": "node scripts/setup-deps.js && next build",
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",

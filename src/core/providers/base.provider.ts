@@ -48,6 +48,7 @@ export abstract class BaseMediaProvider {
 
     const downloadArgs = [
       ...baseArgs,
+      ...SubprocessExecutor.getCloudBypassArgs(),
       '--no-warnings',
       '--no-playlist',
       '--no-check-certificates',
