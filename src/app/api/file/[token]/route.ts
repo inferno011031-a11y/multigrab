@@ -98,10 +98,11 @@ export async function GET(
       .replace(/['()]/g, (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`)
       .replace(/\*/g, '%2A');
 
-    // Read complete file buffer
+    // Read complete file buffer into Uint8Array
     const fileBuffer = await fsp.readFile(targetPath);
+    const uint8 = new Uint8Array(fileBuffer);
 
-    return new Response(fileBuffer, {
+    return new NextResponse(uint8, {
       status: 200,
       headers: {
         'Content-Type': mimeType,
