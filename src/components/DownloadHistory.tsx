@@ -124,10 +124,18 @@ export function DownloadHistory({
                           a.download = item.filename || 'download';
                           document.body.appendChild(a);
                           a.click();
+
                           setTimeout(() => {
-                            document.body.removeChild(a);
-                            window.URL.revokeObjectURL(url);
-                          }, 1000);
+                            try {
+                              document.body.removeChild(a);
+                            } catch {}
+                          }, 500);
+
+                          setTimeout(() => {
+                            try {
+                              window.URL.revokeObjectURL(url);
+                            } catch {}
+                          }, 60000);
                         } catch {
                           window.location.href = item.downloadUrl!;
                         }

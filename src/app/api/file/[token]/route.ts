@@ -98,14 +98,14 @@ export async function GET(
       .replace(/['()]/g, (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`)
       .replace(/\*/g, '%2A');
 
-    // Create high-performance web stream
-    const fileStream = Readable.toWeb(fs.createReadStream(targetPath)) as ReadableStream<Uint8Array>;
+    // Read complete file buffer
+    const fileBuffer = await fsp.readFile(targetPath);
 
-    return new Response(fileStream, {
+    return new Response(fileBuffer, {
       status: 200,
       headers: {
         'Content-Type': mimeType,
-        'Content-Length': String(stat.size),
+        'Content-Length': String(fileBuffer.length),
         'Content-Disposition': `attachment; filename="${asciiFilename}"; filename*=UTF-8''${utf8Encoded}`,
         'Cache-Control': 'no-store, no-cache, must-revalidate',
         'Accept-Ranges': 'bytes',

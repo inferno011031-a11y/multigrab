@@ -81,11 +81,20 @@ export function DownloadProgressModal({
       a.download = job.filename || 'media-download.mp3';
       document.body.appendChild(a);
       a.click();
+
       setTimeout(() => {
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
+        try {
+          document.body.removeChild(a);
+        } catch {}
         setIsSaving(false);
-      }, 1000);
+      }, 500);
+
+      // Keep blob URL alive for 60 seconds so browser download manager finishes writing all bytes
+      setTimeout(() => {
+        try {
+          window.URL.revokeObjectURL(url);
+        } catch {}
+      }, 60000);
     } catch (err) {
       console.error('Blob download failed, falling back to direct URL:', err);
       setIsSaving(false);
