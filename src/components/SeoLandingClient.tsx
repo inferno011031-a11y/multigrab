@@ -192,11 +192,11 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
 
           <div className="mx-auto max-w-4xl">
             {/* Breadcrumb Navigation */}
-            <nav aria-label="Breadcrumb" className="flex items-center justify-center gap-2 text-xs text-zinc-500 mb-4">
-              <Link href="/" className="hover:text-cyan-400 transition-colors">
+            <nav aria-label="Breadcrumb" className="flex items-center justify-center gap-2 text-xs text-zinc-400 mb-4">
+              <Link href="/" className="text-zinc-300 hover:text-cyan-400 transition-colors font-medium">
                 MultiGrab Home
               </Link>
-              <span>/</span>
+              <span className="text-zinc-500">/</span>
               <span className="text-zinc-300 font-medium capitalize">{data.platform} Downloader</span>
             </nav>
 

@@ -89,7 +89,7 @@ export function DownloadProgressModal({
         {/* Close button */}
         <button
           onClick={onClose}
-          aria-label="Close download progress"
+          aria-label="Close"
           className="absolute top-5 right-5 rounded-full p-1.5 text-zinc-400 hover:bg-zinc-900 hover:text-white transition-colors cursor-pointer"
         >
           <X className="h-5 w-5" />

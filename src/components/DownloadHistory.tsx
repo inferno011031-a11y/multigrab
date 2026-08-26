@@ -43,7 +43,13 @@ export function DownloadHistory({
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative flex h-full w-full max-w-md flex-col bg-neutral-950 border-l border-neutral-800 p-6 shadow-2xl">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Download History"
+        tabIndex={0}
+        className="relative flex h-full w-full max-w-md flex-col bg-neutral-950 border-l border-neutral-800 p-6 shadow-2xl focus:outline-none"
+      >
         {/* Drawer Header */}
         <div className="flex items-center justify-between border-b border-neutral-800 pb-4">
           <div className="flex items-center gap-2.5">
@@ -67,8 +73,8 @@ export function DownloadHistory({
             )}
             <button
               onClick={onClose}
-              aria-label="Close download history"
-              className="rounded-xl p-1.5 text-neutral-400 hover:bg-neutral-900 hover:text-white transition-colors cursor-pointer"
+              aria-label="Close"
+              className="rounded-xl p-1.5 text-neutral-400 hover:bg-neutral-900 hover:text-white transition-colors cursor-pointer size-10 flex items-center justify-center"
             >
               <X className="h-5 w-5" />
             </button>
