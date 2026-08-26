@@ -187,9 +187,28 @@ export class SpotifyProvider extends BaseMediaProvider {
       if (trackArtist === 'Spotify Artist' && typeof entry.uploader === 'string') {
         trackArtist = entry.uploader;
       }
-    } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : String(err);
-      logger.warn(`Could not match public audio for Spotify search: ${errorMessage}`, 'SPOTIFY_PROVIDER');
+    } catch {
+      // Fallback: SoundCloud search (unrestricted on cloud datacenters)
+      try {
+        const scTarget = `scsearch1:${info.searchQuery}`;
+        const scData = await SubprocessExecutor.extractJson(scTarget, ['--default-search', 'scsearch']);
+        const scEntry = Array.isArray(scData.entries) && scData.entries[0]
+          ? (scData.entries[0] as Record<string, unknown>)
+          : scData;
+
+        if (typeof scEntry.duration === 'number') {
+          duration = scEntry.duration;
+        }
+        if (scEntry.id) {
+          matchedId = String(scEntry.id);
+        }
+        if (!thumbnail && typeof scEntry.thumbnail === 'string') {
+          thumbnail = scEntry.thumbnail;
+        }
+      } catch (scErr: unknown) {
+        const errorMessage = scErr instanceof Error ? scErr.message : String(scErr);
+        logger.warn(`Could not match public audio for Spotify search: ${errorMessage}`, 'SPOTIFY_PROVIDER');
+      }
     }
 
     const curatedAudio: MediaFormat[] = [
@@ -274,6 +293,7 @@ export class SpotifyProvider extends BaseMediaProvider {
 
     const downloadArgs = [
       ...baseArgs,
+      ...SubprocessExecutor.getCloudBypassArgs(),
       '--no-warnings',
       '--no-playlist',
       '--no-check-certificates',
@@ -299,18 +319,34 @@ export class SpotifyProvider extends BaseMediaProvider {
     } else if (formatId === 'audio-m4a') {
       downloadArgs.push('-f', 'ba[ext=m4a]/ba/b', '-x', '--audio-format', 'm4a');
     } else {
-      downloadArgs.push('-f', 'ba/b', '-x', '--audio-format', 'mp3', '--audio-quality', '0');
+      downloadArgs.push('-f', 'ba/b', '-x', '--audio-format', 'mp3', '--audio-quality', '320K');
     }
 
     downloadArgs.push(query);
 
-    logger.info(`Starting Spotify audio download for ${jobId}`, 'SPOTIFY_PROVIDER', { query, hasFfmpeg: Boolean(ffmpegPath) });
+    logger.info(`Starting Spotify audio match download via ${cmd}`, 'SPOTIFY_PROVIDER', { query });
 
-    await SubprocessExecutor.runRaw(cmd, downloadArgs, {
-      cwd: jobDir,
-      timeout: config.security.downloadTimeoutMs,
-      onProgress,
-    });
+    try {
+      await SubprocessExecutor.runRaw(cmd, downloadArgs, {
+        cwd: jobDir,
+        timeout: config.security.downloadTimeoutMs,
+        onProgress,
+      });
+    } catch (err: unknown) {
+      const errMsg = String(err);
+      if (errMsg.includes('Sign in to confirm') || errMsg.includes('bot') || errMsg.includes('blocked')) {
+        logger.warn(`YouTube bot check encountered, retrying Spotify audio match via SoundCloud`, 'SPOTIFY_PROVIDER');
+        const scQuery = `scsearch1:${info.searchQuery}`;
+        const scArgs = downloadArgs.map((arg) => (arg === query ? scQuery : arg));
+        await SubprocessExecutor.runRaw(cmd, scArgs, {
+          cwd: jobDir,
+          timeout: config.security.downloadTimeoutMs,
+          onProgress,
+        });
+      } else {
+        throw err;
+      }
+    }
 
     const fileResult = await TempStorageManager.findJobFile(jobId);
     if (!fileResult) {

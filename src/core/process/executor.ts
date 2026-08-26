@@ -1,4 +1,6 @@
 import { spawn } from 'child_process';
+import fs from 'fs';
+import path from 'path';
 import { config } from '@/lib/config';
 import { logger } from '@/lib/logger';
 
@@ -15,6 +17,51 @@ export interface ProgressCallback {
 export class SubprocessExecutor {
   private static cachedCommand: { cmd: string; baseArgs: string[] } | null = null;
   private static cachedFfmpegPath: string | null = null;
+
+  /**
+   * Helper that prepares cookies from environment variables or disk.
+   */
+  public static getCookiesPath(): string | null {
+    const rawCookies = process.env.YOUTUBE_COOKIES || process.env.COOKIES_DATA || process.env.COOKIES_TXT;
+    const cookiesFilePath = path.join(config.storage.tempDir, 'cookies.txt');
+
+    if (rawCookies) {
+      try {
+        if (!fs.existsSync(config.storage.tempDir)) {
+          fs.mkdirSync(config.storage.tempDir, { recursive: true });
+        }
+        fs.writeFileSync(cookiesFilePath, rawCookies, 'utf-8');
+        return cookiesFilePath;
+      } catch {}
+    }
+
+    if (fs.existsSync(cookiesFilePath)) {
+      return cookiesFilePath;
+    }
+
+    return null;
+  }
+
+  /**
+   * Returns anti-bot arguments for cloud datacenters (Render, AWS, GCP).
+   */
+  public static getCloudBypassArgs(): string[] {
+    const args = [
+      '--geo-bypass',
+      '--force-ipv4',
+      '--user-agent',
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+      '--extractor-args',
+      'youtube:player_client=android,ios,web_creator;player_skip=configs',
+    ];
+
+    const cookiesPath = SubprocessExecutor.getCookiesPath();
+    if (cookiesPath) {
+      args.push('--cookies', cookiesPath);
+    }
+
+    return args;
+  }
 
   /**
    * Pre-warm executor paths on server startup.
@@ -124,6 +171,7 @@ export class SubprocessExecutor {
 
     const args = [
       ...baseArgs,
+      ...SubprocessExecutor.getCloudBypassArgs(),
       '--dump-single-json',
       '--no-warnings',
       '--no-playlist',
