@@ -17,7 +17,13 @@ export class TwitterProvider extends BaseMediaProvider {
   public async getMetadata(url: string): Promise<MediaMetadata> {
     logger.info(`Fetching metadata for X/Twitter URL`, 'TWITTER_PROVIDER');
 
-    const raw = await SubprocessExecutor.extractJson(url);
+    // Normalize x.com -> twitter.com for optimal yt-dlp extractor matching
+    const normalizedUrl = url.replace(/\/\/(?:www\.)?x\.com\//i, '//twitter.com/');
+
+    const raw = await SubprocessExecutor.extractJson(normalizedUrl, [
+      '--extractor-args',
+      'twitter:api=syndication',
+    ]);
 
     const id = String(raw.id || '');
     const title = String(raw.title || raw.description || 'X/Twitter Post');

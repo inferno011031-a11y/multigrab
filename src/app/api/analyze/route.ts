@@ -128,15 +128,19 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const errorMessage = err instanceof Error ? err.message : String(err);
     logger.error(`Analysis failed for ${securityCheck.sanitizedUrl}: ${errorMessage}`, 'API_ANALYZE');
 
-    let userMessage = 'Could not extract media metadata from the provided URL.';
+    let userMessage = 'Could not extract media from the provided URL. Please verify the link is public and active.';
     let code = 'EXTRACTION_FAILED';
     let statusCode = 422;
 
-    if (errorMessage.includes('Private video') || errorMessage.includes('Sign in') || errorMessage.includes('login')) {
-      userMessage = 'This content is private or requires authentication, which is not supported.';
+    if (errorMessage.includes('No video could be found') || errorMessage.includes('does not contain any video')) {
+      userMessage = 'No downloadable video or audio was found in this link. Please check that the post contains a video clip.';
+      code = 'NO_VIDEO_FOUND';
+      statusCode = 404;
+    } else if (errorMessage.includes('Private video') || errorMessage.includes('Private account') || errorMessage.includes('login required')) {
+      userMessage = 'This post is from a private account or requires authentication.';
       code = 'AUTHENTICATION_REQUIRED';
       statusCode = 403;
-    } else if (errorMessage.includes('Video unavailable') || errorMessage.includes('does not exist')) {
+    } else if (errorMessage.includes('Video unavailable') || errorMessage.includes('does not exist') || errorMessage.includes('HTTP Error 404')) {
       userMessage = 'This media is unavailable, deleted, or region-restricted.';
       code = 'MEDIA_UNAVAILABLE';
       statusCode = 404;

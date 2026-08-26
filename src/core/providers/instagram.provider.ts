@@ -15,7 +15,13 @@ export class InstagramProvider extends BaseMediaProvider {
   public async getMetadata(url: string): Promise<MediaMetadata> {
     logger.info(`Fetching metadata for Instagram URL`, 'INSTAGRAM_PROVIDER');
 
-    const raw = await SubprocessExecutor.extractJson(url);
+    // Strip tracking parameters (?igsh=..., ?utm_source=...)
+    const cleanUrl = url.split('?')[0];
+
+    const raw = await SubprocessExecutor.extractJson(cleanUrl, [
+      '--add-header',
+      'Accept-Language: en-US,en;q=0.9',
+    ]);
 
     const id = String(raw.id || '');
     const title = String(raw.title || raw.description || 'Instagram Post');
