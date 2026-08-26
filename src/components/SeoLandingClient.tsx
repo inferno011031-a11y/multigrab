@@ -183,13 +183,13 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
 
           <div className="mx-auto max-w-4xl">
             {/* Breadcrumb Navigation */}
-            <div className="flex items-center justify-center gap-2 text-xs text-zinc-500 mb-4">
+            <nav aria-label="Breadcrumb" className="flex items-center justify-center gap-2 text-xs text-zinc-500 mb-4">
               <Link href="/" className="hover:text-cyan-400 transition-colors">
                 MultiGrab Home
               </Link>
               <span>/</span>
               <span className="text-zinc-300 font-medium capitalize">{data.platform} Downloader</span>
-            </div>
+            </nav>
 
             {/* Top pill badge */}
             <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1 text-xs font-semibold text-indigo-300 mb-6 shadow-sm shadow-indigo-500/10">
@@ -197,7 +197,7 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
               <span>{data.heroBadge}</span>
             </div>
 
-            {/* Main Headline */}
+            {/* Main Headline (H1) */}
             <h1 className="text-3xl sm:text-6xl font-extrabold tracking-tight text-white leading-[1.15]">
               {data.heading}
             </h1>
@@ -268,13 +268,15 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
           </section>
         )}
 
-        {/* Related Tools Cluster (Silo Internal Linking) */}
+        {/* Related Tools Cluster (Hub-and-Spoke Silo Internal Linking) */}
         {data.relatedTools && data.relatedTools.length > 0 && (
           <section className="mx-auto max-w-5xl px-4 py-8">
             <div className="rounded-3xl border border-zinc-800/80 bg-zinc-950/60 p-6 sm:p-8 backdrop-blur-xl">
-              <div className="text-zinc-400 text-xs font-bold uppercase tracking-wider mb-4 flex items-center gap-2">
-                <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Related MultiGrab Tools</span>
+              <div className="flex items-center gap-2 mb-4">
+                <Sparkles className="w-4 h-4 text-cyan-400" />
+                <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+                  Related MultiGrab Tools & Spokes
+                </h2>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {data.relatedTools.map((tool) => (
@@ -284,10 +286,10 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
                     className="group rounded-2xl border border-zinc-800/80 bg-zinc-900/50 p-4 hover:border-indigo-500/40 hover:bg-zinc-900 transition-all duration-300 flex flex-col justify-between shadow-sm"
                   >
                     <div>
-                      <h4 className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors flex items-center justify-between">
+                      <h3 className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors flex items-center justify-between">
                         <span>{tool.name}</span>
                         <ArrowRight className="w-3.5 h-3.5 text-zinc-500 group-hover:text-cyan-400 group-hover:translate-x-0.5 transition-transform" />
-                      </h4>
+                      </h3>
                       <p className="mt-1 text-xs text-zinc-400 leading-relaxed">
                         {tool.desc}
                       </p>
@@ -299,7 +301,7 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
           </section>
         )}
 
-        {/* How to Download Steps */}
+        {/* How to Download Steps (H2) */}
         <section className="mx-auto max-w-5xl px-4 py-12 sm:py-16">
           <div className="text-center mb-10">
             <h2 className="text-xl sm:text-3xl font-extrabold text-white">
@@ -326,12 +328,12 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
           </div>
         </section>
 
-        {/* Features Highlights */}
+        {/* Features Highlights (H2) */}
         <section className="mx-auto max-w-5xl px-4 py-10">
           <div className="rounded-3xl border border-zinc-800/80 bg-zinc-950/60 p-8 backdrop-blur-xl">
-            <h3 className="text-lg font-bold text-white mb-6 text-center">
+            <h2 className="text-xl sm:text-2xl font-bold text-white mb-6 text-center">
               Why Use MultiGrab for {data.platform.toUpperCase()} Downloads?
-            </h3>
+            </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {data.features.map((feat, idx) => (
                 <div key={idx} className="flex items-center gap-3">
@@ -343,7 +345,7 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
           </div>
         </section>
 
-        {/* Platform FAQs */}
+        {/* Platform FAQs (H2) */}
         <section className="mx-auto max-w-4xl px-4 py-12 sm:py-16">
           <div className="text-center mb-8">
             <div className="inline-flex items-center gap-2 text-indigo-400 text-xs font-semibold mb-2">

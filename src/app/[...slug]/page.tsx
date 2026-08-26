@@ -58,8 +58,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         id: 'MultiGrab — Pengunduh Video dan Audio MP3 Gratis (YouTube, TikTok, Spotify)',
       };
 
+      const title = titles[validLocale] || titles.en;
+
       return {
-        title: titles[validLocale] || titles.en,
+        title,
         description: t.heroSubhead,
         alternates: {
           canonical: `https://multigrab.online/${validLocale}`,
@@ -76,15 +78,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           },
         },
         openGraph: {
-          title: titles[validLocale] || titles.en,
+          title,
           description: t.heroSubhead,
           url: `https://multigrab.online/${validLocale}`,
           siteName: 'MultiGrab',
+          locale: validLocale,
+          type: 'website',
+        },
+        twitter: {
+          card: 'summary_large_image',
+          title,
+          description: t.heroSubhead,
         },
       };
     }
 
-    // Case B: English SEO landing page (e.g. ['youtube-downloader'])
+    // Case B: English SEO landing page (e.g. ['youtube-downloader', 'instagram-downloader'])
     const platformData = SEO_PLATFORMS[slug[0]];
     if (platformData) {
       return {
@@ -93,6 +102,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         keywords: [
           platformData.platform,
           `${platformData.platform} downloader`,
+          `${platformData.platform} video downloader`,
           `${platformData.platform} mp3`,
           'free video downloader',
           'multigrab',
@@ -116,6 +126,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           description: platformData.metaDescription,
           url: `https://multigrab.online/${platformData.slug}`,
           siteName: 'MultiGrab',
+          locale: 'en_US',
+          type: 'website',
+        },
+        twitter: {
+          card: 'summary_large_image',
+          title: platformData.title,
+          description: platformData.metaDescription,
         },
       };
     }
@@ -166,6 +183,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           description: platformData.metaDescription,
           url: `https://multigrab.online/${validLocale}/${platformData.slug}`,
           siteName: 'MultiGrab',
+          locale: validLocale,
+          type: 'website',
+        },
+        twitter: {
+          card: 'summary_large_image',
+          title: pageTitle,
+          description: platformData.metaDescription,
         },
       };
     }
@@ -243,6 +267,25 @@ export default async function CatchAllSlugPage({ params }: Props) {
         })),
       };
 
+      const breadcrumbSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: 'https://multigrab.online',
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: platformData.heading,
+            item: `https://multigrab.online/${platformData.slug}`,
+          },
+        ],
+      };
+
       return (
         <>
           <script
@@ -256,6 +299,10 @@ export default async function CatchAllSlugPage({ params }: Props) {
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+          />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
           />
           <SeoLandingClient data={platformData} />
         </>
@@ -319,6 +366,25 @@ export default async function CatchAllSlugPage({ params }: Props) {
         })),
       };
 
+      const breadcrumbSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: `https://multigrab.online/${validLocale}`,
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: platformData.heading,
+            item: `https://multigrab.online/${validLocale}/${platformData.slug}`,
+          },
+        ],
+      };
+
       return (
         <div dir={validLocale === 'ar' ? 'rtl' : 'ltr'}>
           <script
@@ -332,6 +398,10 @@ export default async function CatchAllSlugPage({ params }: Props) {
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+          />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
           />
           <SeoLandingClient data={platformData} />
         </div>
