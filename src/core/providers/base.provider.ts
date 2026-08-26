@@ -70,28 +70,55 @@ export abstract class BaseMediaProvider {
       ['139', '140', '249', '250', '251', 'ba'].includes(formatId);
 
     if (isAudioOnly) {
-      if (formatId === 'audio-mp3-320') {
-        downloadArgs.push('-f', 'ba/b', '-x', '--audio-format', 'mp3', '--audio-quality', '320K');
-      } else if (formatId === 'audio-mp3-128') {
-        downloadArgs.push('-f', 'ba/b', '-x', '--audio-format', 'mp3', '--audio-quality', '128K');
-      } else if (formatId === 'audio-m4a') {
-        downloadArgs.push('-f', 'ba[ext=m4a]/ba/b', '-x', '--audio-format', 'm4a');
-      } else if (formatId === 'bestaudio') {
-        downloadArgs.push('-f', 'ba/b', '-x', '--audio-format', 'mp3', '--audio-quality', '0');
+      if (ffmpegPath) {
+        if (formatId === 'audio-mp3-320') {
+          downloadArgs.push('-f', 'ba/b', '-x', '--audio-format', 'mp3', '--audio-quality', '320K');
+        } else if (formatId === 'audio-mp3-128') {
+          downloadArgs.push('-f', 'ba/b', '-x', '--audio-format', 'mp3', '--audio-quality', '128K');
+        } else if (formatId === 'audio-m4a') {
+          downloadArgs.push('-f', 'ba[ext=m4a]/ba/b', '-x', '--audio-format', 'm4a');
+        } else {
+          downloadArgs.push('-f', 'ba/b', '-x', '--audio-format', 'mp3');
+        }
       } else {
-        downloadArgs.push('-f', `${formatId}/ba/b`, '-x', '--audio-format', 'mp3');
+        downloadArgs.push('-f', 'ba/b');
       }
     } else {
-      // For video downloads: download the video stream, mux with best audio stream,
-      // and encode audio track as standard AAC 192k for 100% universal playback on all devices and players
-      downloadArgs.push(
-        '-f',
-        `${formatId}+ba/bestvideo[format_id=${formatId}]+bestaudio/bestvideo+bestaudio/best`,
-        '--merge-output-format',
-        'mp4',
-        '--postprocessor-args',
-        'ffmpeg:-c:a aac -b:a 192k'
-      );
+      let formatSelector: string;
+      if (formatId === '1080p' || formatId === '1080') {
+        formatSelector = ffmpegPath
+          ? 'bv*[height<=1080]+ba/b[height<=1080]/b'
+          : 'b[height<=1080]/b';
+      } else if (formatId === '720p' || formatId === '720') {
+        formatSelector = ffmpegPath
+          ? 'bv*[height<=720]+ba/b[height<=720]/b'
+          : 'b[height<=720]/b';
+      } else if (formatId === '480p' || formatId === '480') {
+        formatSelector = ffmpegPath
+          ? 'bv*[height<=480]+ba/b[height<=480]/b'
+          : 'b[height<=480]/b';
+      } else if (formatId === '360p' || formatId === '360') {
+        formatSelector = ffmpegPath
+          ? 'bv*[height<=360]+ba/b[height<=360]/b'
+          : 'b[height<=360]/b';
+      } else if (/^\d+$/.test(formatId)) {
+        formatSelector = ffmpegPath
+          ? `${formatId}+ba/bestvideo[format_id=${formatId}]+bestaudio/b`
+          : `${formatId}/b`;
+      } else {
+        formatSelector = ffmpegPath
+          ? `${formatId}+ba/b`
+          : `${formatId}/b`;
+      }
+
+      downloadArgs.push('-f', formatSelector);
+
+      if (ffmpegPath) {
+        downloadArgs.push(
+          '--merge-output-format',
+          'mp4'
+        );
+      }
     }
 
     downloadArgs.push(url);
@@ -102,11 +129,32 @@ export abstract class BaseMediaProvider {
       hasFfmpeg: Boolean(ffmpegPath),
     });
 
-    await SubprocessExecutor.runRaw(cmd, downloadArgs, {
-      cwd: jobDir,
-      timeout: config.security.downloadTimeoutMs,
-      onProgress,
-    });
+    try {
+      await SubprocessExecutor.runRaw(cmd, downloadArgs, {
+        cwd: jobDir,
+        timeout: config.security.downloadTimeoutMs,
+        onProgress,
+      });
+    } catch (primaryErr: unknown) {
+      logger.warn(`Primary download args failed: ${String(primaryErr)}, retrying with universal fallback`, 'PROVIDER');
+      const fallbackArgs = [
+        ...baseArgs,
+        ...SubprocessExecutor.getCloudBypassArgs(),
+        '--no-warnings',
+        '--no-playlist',
+        '--no-check-certificates',
+        '-f',
+        isAudioOnly ? 'ba/b' : 'b/bv+ba/best',
+        '-o',
+        outputTemplate,
+        url,
+      ];
+      await SubprocessExecutor.runRaw(cmd, fallbackArgs, {
+        cwd: jobDir,
+        timeout: config.security.downloadTimeoutMs,
+        onProgress,
+      });
+    }
 
     // Locate the downloaded file
     const fileResult = await TempStorageManager.findJobFile(jobId);
