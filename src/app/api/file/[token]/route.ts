@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs/promises';
-import { existsSync } from 'fs';
+import fs from 'fs';
+import fsp from 'fs/promises';
+import { Readable } from 'stream';
 import path from 'path';
 import { verifySignedDownloadToken, sanitizeFilename } from '@/core/security/sanitize';
 import { TempStorageManager } from '@/core/storage/temp-storage';
@@ -12,7 +13,8 @@ export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ token: string }> }
 ): Promise<NextResponse | Response> {
-  const { token } = await params;
+  const { token: rawToken } = await params;
+  const token = decodeURIComponent(rawToken || '');
 
   if (!token) {
     const errorBody: ApiErrorResponse = {
@@ -57,19 +59,19 @@ export async function GET(
   let targetPath = normalizedPath;
 
   // 2. If sanitized path does not exist, check exact token filename or find job file
-  if (!existsSync(targetPath)) {
+  if (!fs.existsSync(targetPath)) {
     const directPath = path.normalize(path.join(normalizedTempDir, safeJobId, tokenData.filename));
-    if (directPath.startsWith(normalizedTempDir) && existsSync(directPath)) {
+    if (directPath.startsWith(normalizedTempDir) && fs.existsSync(directPath)) {
       targetPath = directPath;
     } else {
       const jobFile = await TempStorageManager.findJobFile(safeJobId);
-      if (jobFile && existsSync(jobFile.filePath)) {
+      if (jobFile && fs.existsSync(jobFile.filePath)) {
         targetPath = jobFile.filePath;
       }
     }
   }
 
-  if (!existsSync(targetPath)) {
+  if (!fs.existsSync(targetPath)) {
     const errorBody: ApiErrorResponse = {
       success: false,
       error: { code: 'FILE_NOT_FOUND', message: 'File no longer exists on server or has expired.' },
@@ -78,7 +80,7 @@ export async function GET(
   }
 
   try {
-    const stat = await fs.stat(targetPath);
+    const stat = await fsp.stat(targetPath);
     const meta = await TempStorageManager.getJobMetadata(safeJobId);
     const mimeType = meta?.mimeType || 'application/octet-stream';
 
@@ -96,10 +98,10 @@ export async function GET(
       .replace(/['()]/g, (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`)
       .replace(/\*/g, '%2A');
 
-    // Read and return binary stream safely
-    const fileBuffer = await fs.readFile(targetPath);
+    // Create high-performance web stream
+    const fileStream = Readable.toWeb(fs.createReadStream(targetPath)) as ReadableStream<Uint8Array>;
 
-    return new Response(fileBuffer, {
+    return new Response(fileStream, {
       status: 200,
       headers: {
         'Content-Type': mimeType,

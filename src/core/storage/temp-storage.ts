@@ -86,7 +86,19 @@ export class TempStorageManager {
       });
 
       const best = candidates[0];
-      return { filePath: best.filePath, filename: best.filename, size: best.size };
+      const cleanName = sanitizeFilename(best.filename, 'media-download.mp4');
+      const cleanPath = path.join(jobDir, cleanName);
+
+      if (cleanName !== best.filename && existsSync(best.filePath)) {
+        try {
+          await fs.rename(best.filePath, cleanPath);
+          return { filePath: cleanPath, filename: cleanName, size: best.size };
+        } catch {
+          // If rename fails, return original path
+        }
+      }
+
+      return { filePath: best.filePath, filename: cleanName, size: best.size };
     } catch {
       return null;
     }

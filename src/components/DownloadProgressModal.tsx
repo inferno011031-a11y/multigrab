@@ -184,7 +184,7 @@ export function DownloadProgressModal({
             <div className="mt-4 flex flex-col sm:flex-row gap-2">
               <a
                 href={job.downloadUrl}
-                download={job.filename}
+                download={job.filename || 'media-download'}
                 className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-3 text-xs sm:text-sm font-bold text-white shadow-lg shadow-emerald-500/20 hover:opacity-95 transition-all text-center cursor-pointer"
               >
                 <Download className="h-4 w-4 stroke-[2.5]" />
