@@ -19,7 +19,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/api/', '/tmp/'],
       },
     ],
-    sitemap: 'https://mediadrop.live/sitemap.xml',
-    host: 'https://mediadrop.live',
+    sitemap: 'https://multigrab.online/sitemap.xml',
+    host: 'https://multigrab.online',
   };
 }

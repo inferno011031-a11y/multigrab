@@ -42,7 +42,7 @@ export function LocalizedHomeClient({ locale }: { locale: SupportedLocale }) {
   const [history, setHistory] = useState<HistoryItem[]>(() => {
     if (typeof window === 'undefined') return [];
     try {
-      const saved = localStorage.getItem('mediadrop_history');
+      const saved = localStorage.getItem('multigrab_history');
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
@@ -67,7 +67,7 @@ export function LocalizedHomeClient({ locale }: { locale: SupportedLocale }) {
       const filtered = prev.filter((h) => h.id !== item.id);
       const updated = [item, ...filtered].slice(0, 30);
       try {
-        localStorage.setItem('mediadrop_history', JSON.stringify(updated));
+        localStorage.setItem('multigrab_history', JSON.stringify(updated));
       } catch {}
       return updated;
     });
@@ -76,7 +76,7 @@ export function LocalizedHomeClient({ locale }: { locale: SupportedLocale }) {
   const handleClearHistory = () => {
     setHistory([]);
     try {
-      localStorage.removeItem('mediadrop_history');
+      localStorage.removeItem('multigrab_history');
     } catch {}
   };
 
@@ -169,7 +169,7 @@ export function LocalizedHomeClient({ locale }: { locale: SupportedLocale }) {
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
         await navigator.share({
-          title: 'MediaDrop - Universal Media Downloader',
+          title: 'MultiGrab - Universal Video & Audio Downloader',
           text: t.heroSubhead,
           url: `${window.location.origin}/${locale}`,
         });

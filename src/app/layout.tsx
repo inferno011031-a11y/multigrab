@@ -9,17 +9,18 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://mediadrop.live'),
+  metadataBase: new URL('https://multigrab.online'),
   title: {
-    default: 'MediaDrop — Free Universal Video & Audio Downloader (4K, 1080p, MP3)',
-    template: '%s | MediaDrop',
+    default: 'MultiGrab - Universal Video & Audio Downloader',
+    template: '%s | MultiGrab',
   },
   description:
-    'MediaDrop is a fast, clean, and free online tool to download videos and extract MP3 audio from YouTube, Spotify, TikTok, Instagram, X/Twitter, Reddit, Facebook, Pinterest, and Vimeo in top quality (4K, 1080p, 320kbps). No software or login required.',
+    'MultiGrab is a fast, clean, and free online tool to download videos and extract MP3 audio from YouTube, Spotify, TikTok, Instagram, X/Twitter, Reddit, Facebook, Pinterest, and Vimeo in top quality (4K, 1080p, 320kbps). No software or login required.',
   keywords: [
-    'MediaDrop',
-    'MediaDrop YouTube Downloader',
-    'MediaDrop video downloader',
+    'MultiGrab',
+    'MultiGrab Universal Video & Audio Downloader',
+    'MultiGrab YouTube Downloader',
+    'MultiGrab video downloader',
     'YouTube video downloader',
     'free YouTube downloader',
     'YouTube to MP3',
@@ -30,16 +31,17 @@ export const metadata: Metadata = {
     'Spotify downloader',
     'Spotify to MP3',
     'TikTok downloader without watermark',
+    'TikTok to MP3',
     'Instagram reels downloader',
     'Twitter video downloader',
     'Reddit video downloader with audio',
     'online video downloader',
     'MP3 converter',
   ],
-  authors: [{ name: 'MediaDrop Team', url: 'https://mediadrop.live' }],
-  creator: 'MediaDrop',
-  publisher: 'MediaDrop',
-  applicationName: 'MediaDrop',
+  authors: [{ name: 'MultiGrab Team', url: 'https://multigrab.online' }],
+  creator: 'MultiGrab',
+  publisher: 'MultiGrab',
+  applicationName: 'MultiGrab',
   category: 'Multimedia Utility',
   robots: {
     index: true,
@@ -55,20 +57,20 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://mediadrop.live',
-    siteName: 'MediaDrop',
-    title: 'MediaDrop — Free Universal Video & Audio Downloader',
+    url: 'https://multigrab.online',
+    siteName: 'MultiGrab',
+    title: 'MultiGrab - Universal Video & Audio Downloader',
     description:
-      'Download videos and MP3 audio from YouTube, Spotify, TikTok, Instagram, and more in 4K, 1080p, and 320kbps with MediaDrop. Free, fast, and no software required.',
+      'Download videos and MP3 audio from YouTube, Spotify, TikTok, Instagram, and more in 4K, 1080p, and 320kbps with MultiGrab. Free, fast, and no software required.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'MediaDrop — Free Universal Video & Audio Downloader',
+    title: 'MultiGrab - Universal Video & Audio Downloader',
     description:
-      'Download videos and MP3 audio from YouTube, Spotify, TikTok, Instagram, and more in 4K, 1080p, and 320kbps with MediaDrop.',
+      'Download videos and MP3 audio from YouTube, Spotify, TikTok, Instagram, and more in 4K, 1080p, and 320kbps with MultiGrab.',
   },
   alternates: {
-    canonical: 'https://mediadrop.live',
+    canonical: 'https://multigrab.online',
   },
 };
 
@@ -82,23 +84,23 @@ export default function RootLayout({
     '@graph': [
       {
         '@type': 'Organization',
-        '@id': 'https://mediadrop.live/#organization',
-        name: 'MediaDrop',
-        url: 'https://mediadrop.live',
-        logo: 'https://mediadrop.live/favicon.ico',
+        '@id': 'https://multigrab.online/#organization',
+        name: 'MultiGrab',
+        url: 'https://multigrab.online',
+        logo: 'https://multigrab.online/favicon.ico',
         description: 'Universal online video downloader and audio converter platform.',
-        sameAs: ['https://twitter.com/mediadrop', 'https://github.com/mediadrop'],
+        sameAs: ['https://twitter.com/multigrab', 'https://github.com/multigrab'],
       },
       {
         '@type': 'WebApplication',
-        '@id': 'https://mediadrop.live/#webapp',
-        name: 'MediaDrop - Universal Video & Audio Downloader',
-        url: 'https://mediadrop.live',
+        '@id': 'https://multigrab.online/#webapp',
+        name: 'MultiGrab - Universal Video & Audio Downloader',
+        url: 'https://multigrab.online',
         applicationCategory: 'MultimediaApplication',
         operatingSystem: 'All (Web, iOS, Android, Windows, macOS, Linux)',
         browserRequirements: 'Requires JavaScript. Requires HTML5.',
         provider: {
-          '@id': 'https://mediadrop.live/#organization',
+          '@id': 'https://multigrab.online/#organization',
         },
         offers: {
           '@type': 'Offer',
@@ -113,19 +115,19 @@ export default function RootLayout({
           worstRating: '1',
         },
         description:
-          'Free online tool by MediaDrop to download videos and extract MP3 audio from YouTube, Spotify, TikTok, Instagram, X/Twitter, Reddit, Facebook, Pinterest, and Vimeo in full quality.',
+          'Free online tool by MultiGrab to download videos and extract MP3 audio from YouTube, Spotify, TikTok, Instagram, X/Twitter, Reddit, Facebook, Pinterest, and Vimeo in full quality.',
       },
       {
         '@type': 'WebSite',
-        '@id': 'https://mediadrop.live/#website',
-        url: 'https://mediadrop.live',
-        name: 'MediaDrop',
+        '@id': 'https://multigrab.online/#website',
+        url: 'https://multigrab.online',
+        name: 'MultiGrab',
         publisher: {
-          '@id': 'https://mediadrop.live/#organization',
+          '@id': 'https://multigrab.online/#organization',
         },
         potentialAction: {
           '@type': 'SearchAction',
-          target: 'https://mediadrop.live/?url={search_term_string}',
+          target: 'https://multigrab.online/?url={search_term_string}',
           'query-input': 'required name=search_term_string',
         },
       },

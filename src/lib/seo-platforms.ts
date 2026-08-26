@@ -20,11 +20,11 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
   'youtube-downloader': {
     slug: 'youtube-downloader',
     platform: 'youtube',
-    title: 'YouTube Video Downloader — MediaDrop: Free 4K, 1080p & MP3 Downloader',
-    metaDescription: 'MediaDrop is the fastest free online YouTube downloader. Save YouTube videos, Shorts, and audio in 4K UHD, 1080p Full HD, and 320kbps MP3 without software.',
-    heading: 'YouTube Video Downloader by MediaDrop',
+    title: 'YouTube Video Downloader — MultiGrab: Free 4K, 1080p & MP3 Downloader',
+    metaDescription: 'MultiGrab is the fastest free online YouTube downloader. Save YouTube videos, Shorts, and audio in 4K UHD, 1080p Full HD, and 320kbps MP3 without software.',
+    heading: 'YouTube Video Downloader by MultiGrab',
     subheading: 'Paste any YouTube URL to download high-definition MP4 video with synced stereo audio or extract crystal-clear 320 kbps MP3 files in seconds.',
-    heroBadge: 'MediaDrop • YouTube 4K & 1080p Hub',
+    heroBadge: 'MultiGrab • YouTube 4K & 1080p Hub',
     iconName: 'youtube',
     features: [
       'Download 4K UHD (2160p), 1440p QHD, 1080p Full HD, and 720p HD MP4 streams',
@@ -34,14 +34,14 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
     ],
     steps: [
       { title: 'Copy YouTube URL', desc: 'Open YouTube and copy the link of the video, music clip, or Short you wish to download.' },
-      { title: 'Paste into MediaDrop', desc: 'Paste the copied URL into the search field above and click Download.' },
+      { title: 'Paste into MultiGrab', desc: 'Paste the copied URL into the search field above and click Download.' },
       { title: 'Choose Quality & Save', desc: 'Select your preferred format (4K, 1080p, 720p MP4 or 320kbps MP3) and download starts immediately.' },
     ],
     faqs: [
-      { q: 'Why is MediaDrop better than traditional YouTube downloaders?', a: 'Traditional downloader sites are often riddled with spam popups, slow server speeds, or missing audio on 1080p videos. MediaDrop is built on modern cloud infrastructure, provides ad-free clean downloads, and automatically muxes 1080p video with pristine AAC stereo audio.' },
-      { q: 'Can I download YouTube Shorts on MediaDrop?', a: 'Yes! Simply paste any YouTube Shorts link (e.g., youtube.com/shorts/...) to download the full-resolution vertical video.' },
-      { q: 'What video resolutions does MediaDrop support?', a: 'MediaDrop supports all resolutions published by the original creator: 4K UHD (3840x2160), 2K (2560x1440), 1080p (1920x1080), 720p HD, and 480p SD.' },
-      { q: 'How do I download YouTube videos on iPhone or iPad?', a: 'Open Safari, visit MediaDrop, paste the YouTube URL, and tap Download. When the file is ready, tap "Save Video" to save directly to your Apple Photos app or Files folder.' },
+      { q: 'Why is MultiGrab better than traditional YouTube downloaders?', a: 'Traditional downloader sites are often riddled with spam popups, slow server speeds, or missing audio on 1080p videos. MultiGrab is built on modern cloud infrastructure, provides ad-free clean downloads, and automatically muxes 1080p video with pristine AAC stereo audio.' },
+      { q: 'Can I download YouTube Shorts on MultiGrab?', a: 'Yes! Simply paste any YouTube Shorts link (e.g., youtube.com/shorts/...) to download the full-resolution vertical video.' },
+      { q: 'What video resolutions does MultiGrab support?', a: 'MultiGrab supports all resolutions published by the original creator: 4K UHD (3840x2160), 2K (2560x1440), 1080p (1920x1080), 720p HD, and 480p SD.' },
+      { q: 'How do I download YouTube videos on iPhone or iPad?', a: 'Open Safari, visit MultiGrab, paste the YouTube URL, and tap Download. When the file is ready, tap "Save Video" to save directly to your Apple Photos app or Files folder.' },
     ],
     exampleUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     relatedTools: [
@@ -54,11 +54,11 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
   'youtube-to-mp3': {
     slug: 'youtube-to-mp3',
     platform: 'youtube',
-    title: 'YouTube to MP3 Converter — MediaDrop: 320kbps Audio Extractor',
-    metaDescription: 'Convert YouTube videos and music clips to studio-quality 320kbps and 128kbps MP3 audio files with MediaDrop. Fast, free, and no software installation required.',
-    heading: 'YouTube to MP3 Converter by MediaDrop',
+    title: 'YouTube to MP3 Converter — MultiGrab: 320kbps Audio Extractor',
+    metaDescription: 'Convert YouTube videos and music clips to studio-quality 320kbps and 128kbps MP3 audio files with MultiGrab. Fast, free, and no software installation required.',
+    heading: 'YouTube to MP3 Converter by MultiGrab',
     subheading: 'Extract crisp, high-bitrate 320 kbps MP3 or M4A audio tracks from any YouTube video, music video, podcast, or DJ set for offline listening.',
-    heroBadge: 'MediaDrop • YouTube to 320kbps MP3',
+    heroBadge: 'MultiGrab • YouTube to 320kbps MP3',
     iconName: 'youtube',
     features: [
       'Extract studio-fidelity 320 kbps and standard 128 kbps constant bitrate MP3',
@@ -68,12 +68,12 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
     ],
     steps: [
       { title: 'Copy YouTube Song Link', desc: 'Copy the URL of the YouTube song or video you want to extract audio from.' },
-      { title: 'Paste into MediaDrop', desc: 'Paste the URL into the search box above and hit Download.' },
+      { title: 'Paste into MultiGrab', desc: 'Paste the URL into the search box above and hit Download.' },
       { title: 'Download MP3', desc: 'Select the MP3 High Quality (320 kbps) option to save the audio file to your device.' },
     ],
     faqs: [
-      { q: 'What is the bitrate of the downloaded MP3 files?', a: 'MediaDrop extracts audio at up to 320 kbps constant bitrate, delivering pristine acoustic clarity for music enthusiasts.' },
-      { q: 'Is there a limit on audio length?', a: 'No, MediaDrop can process both short sound clips and multi-hour long podcasts and concert recordings.' },
+      { q: 'What is the bitrate of the downloaded MP3 files?', a: 'MultiGrab extracts audio at up to 320 kbps constant bitrate, delivering pristine acoustic clarity for music enthusiasts.' },
+      { q: 'Is there a limit on audio length?', a: 'No, MultiGrab can process both short sound clips and multi-hour long podcasts and concert recordings.' },
       { q: 'Can I listen to the downloaded MP3 files offline?', a: 'Yes! The downloaded MP3 files are universal audio files playable on any smartphone, car stereo, or MP3 player.' },
     ],
     exampleUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
@@ -86,11 +86,11 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
   'youtube-shorts-downloader': {
     slug: 'youtube-shorts-downloader',
     platform: 'youtube',
-    title: 'YouTube Shorts Downloader — MediaDrop: Save Shorts in 1080p HD',
-    metaDescription: 'Download YouTube Shorts in original 1080x1920 Full HD MP4 quality with MediaDrop. Free online YouTube Shorts video and audio saver for mobile and desktop.',
-    heading: 'YouTube Shorts Video Downloader by MediaDrop',
+    title: 'YouTube Shorts Downloader — MultiGrab: Save Shorts in 1080p HD',
+    metaDescription: 'Download YouTube Shorts in original 1080x1920 Full HD MP4 quality with MultiGrab. Free online YouTube Shorts video and audio saver for mobile and desktop.',
+    heading: 'YouTube Shorts Video Downloader by MultiGrab',
     subheading: 'Save vertical YouTube Shorts in crisp 1080p Full HD MP4 format directly to your camera roll or PC without watermarks or quality loss.',
-    heroBadge: 'MediaDrop • YouTube Shorts HD Saver',
+    heroBadge: 'MultiGrab • YouTube Shorts HD Saver',
     iconName: 'youtube',
     features: [
       'Download vertical YouTube Shorts in full 1080x1920 HD resolution',
@@ -100,12 +100,12 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
     ],
     steps: [
       { title: 'Copy Shorts URL', desc: 'Tap the Share icon on any YouTube Short and select Copy Link.' },
-      { title: 'Paste in MediaDrop', desc: 'Paste the link into MediaDrop and click Download.' },
+      { title: 'Paste in MultiGrab', desc: 'Paste the link into MultiGrab and click Download.' },
       { title: 'Save 1080p Video', desc: 'Choose 1080p HD to download the vertical video instantly.' },
     ],
     faqs: [
-      { q: 'How do I download Shorts directly to my iPhone Camera Roll?', a: 'Open MediaDrop in Safari, paste the Shorts link, click Download, and tap the download icon in Safari. Then tap "Share" > "Save Video" to place it right in your Photos app.' },
-      { q: 'Does MediaDrop add any watermarks to downloaded Shorts?', a: 'No, MediaDrop downloads the pure, original creator stream with zero watermarks.' },
+      { q: 'How do I download Shorts directly to my iPhone Camera Roll?', a: 'Open MultiGrab in Safari, paste the Shorts link, click Download, and tap the download icon in Safari. Then tap "Share" > "Save Video" to place it right in your Photos app.' },
+      { q: 'Does MultiGrab add any watermarks to downloaded Shorts?', a: 'No, MultiGrab downloads the pure, original creator stream with zero watermarks.' },
     ],
     exampleUrl: 'https://www.youtube.com/shorts/dQw4w9WgXcQ',
     relatedTools: [
@@ -117,11 +117,11 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
   'youtube-to-mp4': {
     slug: 'youtube-to-mp4',
     platform: 'youtube',
-    title: 'YouTube to MP4 Converter — MediaDrop: Free HD MP4 Video Saver',
-    metaDescription: 'Convert YouTube videos to high quality MP4 format online for free with MediaDrop. Supports 1080p, 720p, and 4K MP4 downloads with crystal clear sound.',
-    heading: 'YouTube to MP4 Video Converter by MediaDrop',
+    title: 'YouTube to MP4 Converter — MultiGrab: Free HD MP4 Video Saver',
+    metaDescription: 'Convert YouTube videos to high quality MP4 format online for free with MultiGrab. Supports 1080p, 720p, and 4K MP4 downloads with crystal clear sound.',
+    heading: 'YouTube to MP4 Video Converter by MultiGrab',
     subheading: 'Convert any YouTube video link into a universally compatible MP4 video file with synced stereo sound in seconds.',
-    heroBadge: 'MediaDrop • YouTube to MP4 Converter',
+    heroBadge: 'MultiGrab • YouTube to MP4 Converter',
     iconName: 'youtube',
     features: [
       'Universal MP4 container playable across all Apple, Android, Windows, and Smart TV devices',
@@ -131,7 +131,7 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
     ],
     steps: [
       { title: 'Copy Video Link', desc: 'Copy the URL of the YouTube video you want to convert to MP4.' },
-      { title: 'Paste into MediaDrop', desc: 'Paste the link into the converter field above.' },
+      { title: 'Paste into MultiGrab', desc: 'Paste the link into the converter field above.' },
       { title: 'Save MP4 File', desc: 'Select your preferred MP4 resolution and save the file.' },
     ],
     faqs: [
@@ -146,11 +146,11 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
   'youtube-1080p-downloader': {
     slug: 'youtube-1080p-downloader',
     platform: 'youtube',
-    title: 'YouTube 1080p Downloader — MediaDrop: Full HD 60FPS Video Saver',
-    metaDescription: 'Download YouTube videos in Full HD 1080p at 60 FPS with synchronized audio using MediaDrop. Free online high-definition video downloader.',
-    heading: 'YouTube 1080p Full HD Downloader by MediaDrop',
+    title: 'YouTube 1080p Downloader — MultiGrab: Full HD 60FPS Video Saver',
+    metaDescription: 'Download YouTube videos in Full HD 1080p at 60 FPS with synchronized audio using MultiGrab. Free online high-definition video downloader.',
+    heading: 'YouTube 1080p Full HD Downloader by MultiGrab',
     subheading: 'Download YouTube videos in true 1080p (1920x1080) resolution with crisp 60 FPS fluidity and synchronized stereo sound.',
-    heroBadge: 'MediaDrop • 1080p Full HD 60FPS',
+    heroBadge: 'MultiGrab • 1080p Full HD 60FPS',
     iconName: 'youtube',
     features: [
       'Download 1080p 60FPS high frame rate video streams',
@@ -159,11 +159,11 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
     ],
     steps: [
       { title: 'Copy YouTube Link', desc: 'Copy the link of any 1080p YouTube video.' },
-      { title: 'Paste in MediaDrop', desc: 'Paste the link and hit Download.' },
+      { title: 'Paste in MultiGrab', desc: 'Paste the link and hit Download.' },
       { title: 'Download 1080p MP4', desc: 'Select 1080p Full HD to save the video.' },
     ],
     faqs: [
-      { q: 'Why do other downloaders fail on 1080p or have no sound?', a: 'YouTube stores 1080p video and audio as separate adaptive streams. Most downloaders either downgrade you to 720p or deliver a silent video. MediaDrop automatically merges the 1080p video with the high-bitrate audio stream on our servers so you get a perfect 1080p MP4 with sound.' },
+      { q: 'Why do other downloaders fail on 1080p or have no sound?', a: 'YouTube stores 1080p video and audio as separate adaptive streams. Most downloaders either downgrade you to 720p or deliver a silent video. MultiGrab automatically merges the 1080p video with the high-bitrate audio stream on our servers so you get a perfect 1080p MP4 with sound.' },
     ],
     exampleUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     relatedTools: [
@@ -174,11 +174,11 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
   'youtube-4k-downloader': {
     slug: 'youtube-4k-downloader',
     platform: 'youtube',
-    title: 'YouTube 4K Downloader — MediaDrop: Ultra HD 2160p Video Saver',
-    metaDescription: 'Download YouTube videos in 4K Ultra HD (2160p) at 60 FPS with MediaDrop. Free high quality 4K video downloader for PC, Mac, and mobile.',
-    heading: 'YouTube 4K Ultra HD Downloader by MediaDrop',
+    title: 'YouTube 4K Downloader — MultiGrab: Ultra HD 2160p Video Saver',
+    metaDescription: 'Download YouTube videos in 4K Ultra HD (2160p) at 60 FPS with MultiGrab. Free high quality 4K video downloader for PC, Mac, and mobile.',
+    heading: 'YouTube 4K Ultra HD Downloader by MultiGrab',
     subheading: 'Experience cinematic clarity by downloading YouTube videos in native 4K UHD (3840x2160) resolution at 60 frames per second.',
-    heroBadge: 'MediaDrop • 4K UHD 2160p Downloader',
+    heroBadge: 'MultiGrab • 4K UHD 2160p Downloader',
     iconName: 'youtube',
     features: [
       'Download native 4K 2160p Ultra HD video streams with HDR support',
@@ -187,7 +187,7 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
     ],
     steps: [
       { title: 'Copy 4K Video URL', desc: 'Find a 4K YouTube video and copy its URL.' },
-      { title: 'Paste in MediaDrop', desc: 'Paste the link into MediaDrop.' },
+      { title: 'Paste in MultiGrab', desc: 'Paste the link into MultiGrab.' },
       { title: 'Download 4K UHD', desc: 'Select the 4K 2160p option to begin downloading.' },
     ],
     faqs: [
@@ -202,11 +202,11 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
   'youtube-audio-downloader': {
     slug: 'youtube-audio-downloader',
     platform: 'youtube',
-    title: 'YouTube Audio Downloader — MediaDrop: Extract MP3 & M4A Soundtracks',
-    metaDescription: 'Extract and download audio tracks, background music, and podcasts from YouTube in MP3 and M4A format with MediaDrop for free.',
-    heading: 'YouTube Audio Downloader by MediaDrop',
+    title: 'YouTube Audio Downloader — MultiGrab: Extract MP3 & M4A Soundtracks',
+    metaDescription: 'Extract and download audio tracks, background music, and podcasts from YouTube in MP3 and M4A format with MultiGrab for free.',
+    heading: 'YouTube Audio Downloader by MultiGrab',
     subheading: 'Extract pure audio tracks from YouTube videos in high-quality MP3 or M4A format without downloading heavy video files.',
-    heroBadge: 'MediaDrop • Audio Track Extractor',
+    heroBadge: 'MultiGrab • Audio Track Extractor',
     iconName: 'youtube',
     features: [
       'Extract pure audio streams without downloading unnecessary video bandwidth',
@@ -215,7 +215,7 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
     ],
     steps: [
       { title: 'Copy Video Link', desc: 'Copy the YouTube link of the audio you want.' },
-      { title: 'Paste in MediaDrop', desc: 'Paste the URL into MediaDrop.' },
+      { title: 'Paste in MultiGrab', desc: 'Paste the URL into MultiGrab.' },
       { title: 'Download Audio Track', desc: 'Choose MP3 or M4A to download immediately.' },
     ],
     faqs: [
@@ -230,11 +230,11 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
   'spotify-downloader': {
     slug: 'spotify-downloader',
     platform: 'spotify',
-    title: 'Spotify Downloader — MediaDrop: Save Songs in 320kbps MP3 Free',
-    metaDescription: 'Download Spotify songs, tracks, and podcast episodes in high quality 320kbps MP3 audio with album artwork using MediaDrop. Free online Spotify saver.',
-    heading: 'Spotify Song & Music Downloader by MediaDrop',
+    title: 'Spotify Downloader — MultiGrab: Save Songs in 320kbps MP3 Free',
+    metaDescription: 'Download Spotify songs, tracks, and podcast episodes in high quality 320kbps MP3 audio with album artwork using MultiGrab. Free online Spotify saver.',
+    heading: 'Spotify Song & Music Downloader by MultiGrab',
     subheading: 'Paste any Spotify track URL to extract and download high-fidelity 320 kbps MP3 audio with original album artwork and song metadata.',
-    heroBadge: 'MediaDrop • Spotify 320kbps MP3',
+    heroBadge: 'MultiGrab • Spotify 320kbps MP3',
     iconName: 'spotify',
     features: [
       'Extract 320 kbps High Quality MP3 and M4A audio tracks',
@@ -244,11 +244,11 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
     ],
     steps: [
       { title: 'Copy Spotify Song Link', desc: 'In the Spotify app or web player, tap Share and copy the song link.' },
-      { title: 'Paste into MediaDrop', desc: 'Paste the Spotify URL into the search bar above.' },
+      { title: 'Paste into MultiGrab', desc: 'Paste the Spotify URL into the search bar above.' },
       { title: 'Save MP3', desc: 'Click Download to convert and save the 320 kbps MP3 file to your device.' },
     ],
     faqs: [
-      { q: 'Do I need Spotify Premium to use MediaDrop?', a: 'No premium account or Spotify login is needed. Anyone can download public tracks.' },
+      { q: 'Do I need Spotify Premium to use MultiGrab?', a: 'No premium account or Spotify login is needed. Anyone can download public tracks.' },
       { q: 'What audio formats are supported?', a: 'You can download MP3 at 320 kbps, MP3 at 128 kbps, or M4A audio streams.' },
       { q: 'Does the downloaded file include album cover art?', a: 'Yes, the original cover artwork and metadata are preserved.' },
     ],
@@ -257,11 +257,11 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
   'spotify-to-mp3': {
     slug: 'spotify-to-mp3',
     platform: 'spotify',
-    title: 'Spotify to MP3 Converter — MediaDrop: Free 320kbps Music Saver',
-    metaDescription: 'Convert Spotify links to 320kbps MP3 music files online with MediaDrop. Fast, free, and works on all devices without installing software.',
-    heading: 'Spotify to MP3 Music Converter by MediaDrop',
+    title: 'Spotify to MP3 Converter — MultiGrab: Free 320kbps Music Saver',
+    metaDescription: 'Convert Spotify links to 320kbps MP3 music files online with MultiGrab. Fast, free, and works on all devices without installing software.',
+    heading: 'Spotify to MP3 Music Converter by MultiGrab',
     subheading: 'Convert your favorite Spotify songs into universal MP3 audio files with high bitrate quality for offline listening anywhere.',
-    heroBadge: 'MediaDrop • Spotify to MP3 Converter',
+    heroBadge: 'MultiGrab • Spotify to MP3 Converter',
     iconName: 'spotify',
     features: [
       'Fast conversion from Spotify song links to MP3 format',
@@ -270,7 +270,7 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
     ],
     steps: [
       { title: 'Copy Song Link', desc: 'Copy any track link from Spotify.' },
-      { title: 'Paste into MediaDrop', desc: 'Paste the link above and click Download.' },
+      { title: 'Paste into MultiGrab', desc: 'Paste the link above and click Download.' },
       { title: 'Save Audio', desc: 'Download the MP3 file directly to your device.' },
     ],
     faqs: [
@@ -281,11 +281,11 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
   'tiktok-downloader': {
     slug: 'tiktok-downloader',
     platform: 'tiktok',
-    title: 'TikTok Video Downloader Without Watermark — MediaDrop: Save in HD',
-    metaDescription: 'Download TikTok videos in original HD MP4 without watermarks using MediaDrop. Free online TikTok video and audio saver for mobile and desktop.',
-    heading: 'TikTok Video Downloader Without Watermark by MediaDrop',
+    title: 'TikTok Video Downloader Without Watermark — MultiGrab: Save in HD',
+    metaDescription: 'Download TikTok videos in original HD MP4 without watermarks using MultiGrab. Free online TikTok video and audio saver for mobile and desktop.',
+    heading: 'TikTok Video Downloader Without Watermark by MultiGrab',
     subheading: 'Save public TikTok videos in crisp HD MP4 resolution or extract the original background sound and music in MP3.',
-    heroBadge: 'MediaDrop • TikTok HD No Watermark',
+    heroBadge: 'MultiGrab • TikTok HD No Watermark',
     iconName: 'tiktok',
     features: [
       'Download high-definition TikTok videos in clean MP4 format with zero watermarks',
@@ -299,20 +299,20 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
       { title: 'Download File', desc: 'Select HD video or audio extraction to save directly to your phone or PC.' },
     ],
     faqs: [
-      { q: 'Can I download TikTok videos on iPhone/Android?', a: 'Yes, MediaDrop works directly inside Safari, Chrome, and all mobile browsers.' },
+      { q: 'Can I download TikTok videos on iPhone/Android?', a: 'Yes, MultiGrab works directly inside Safari, Chrome, and all mobile browsers.' },
       { q: 'How do I extract TikTok music?', a: 'Choose the Separate Audio Tracks option on the download screen.' },
-      { q: 'Does MediaDrop remove the TikTok watermark?', a: 'Yes, MediaDrop fetches the clean original stream provided by the platform.' },
+      { q: 'Does MultiGrab remove the TikTok watermark?', a: 'Yes, MultiGrab fetches the clean original stream provided by the platform.' },
     ],
     exampleUrl: 'https://www.tiktok.com/@tiktok/video/7106594312292453678',
   },
-  'tiktok-mp3-downloader': {
-    slug: 'tiktok-mp3-downloader',
+  'tiktok-to-mp3': {
+    slug: 'tiktok-to-mp3',
     platform: 'tiktok',
-    title: 'TikTok to MP3 Converter — MediaDrop: Download Sounds & Music',
-    metaDescription: 'Extract and download TikTok audio, sounds, and background music in high quality MP3 format for free with MediaDrop.',
-    heading: 'TikTok Sound & Audio MP3 Downloader by MediaDrop',
+    title: 'TikTok to MP3 Converter — MultiGrab: Download Sounds & Music',
+    metaDescription: 'Extract and download TikTok audio, sounds, and background music in high quality MP3 format for free with MultiGrab.',
+    heading: 'TikTok Sound & Audio MP3 Downloader by MultiGrab',
     subheading: 'Extract the background music, voiceover, or original sound from any TikTok video directly as an MP3 file.',
-    heroBadge: 'MediaDrop • TikTok to MP3 Extractor',
+    heroBadge: 'MultiGrab • TikTok to MP3 Extractor',
     iconName: 'tiktok',
     features: [
       'Extract full-length audio tracks from TikTok videos',
@@ -321,7 +321,7 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
     ],
     steps: [
       { title: 'Copy Video Link', desc: 'Copy the share link from TikTok.' },
-      { title: 'Paste into MediaDrop', desc: 'Paste into the box above and click Download.' },
+      { title: 'Paste into MultiGrab', desc: 'Paste into the box above and click Download.' },
       { title: 'Save MP3', desc: 'Click Extract MP3 Audio to download the song.' },
     ],
     faqs: [
@@ -332,11 +332,11 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
   'instagram-downloader': {
     slug: 'instagram-downloader',
     platform: 'instagram',
-    title: 'Instagram Video Downloader — MediaDrop: Save Reels, IGTV & Videos',
-    metaDescription: 'Download Instagram Reels, IGTV, and public video posts in original quality MP4 for free with MediaDrop. Fast online Instagram downloader for iOS and Android.',
-    heading: 'Instagram Reels & Video Downloader by MediaDrop',
+    title: 'Instagram Video Downloader — MultiGrab: Save Reels, IGTV & Videos',
+    metaDescription: 'Download Instagram Reels, IGTV, and public video posts in original quality MP4 for free with MultiGrab. Fast online Instagram downloader for iOS and Android.',
+    heading: 'Instagram Reels & Video Downloader by MultiGrab',
     subheading: 'Download public Instagram Reels and videos in crisp HD quality directly to your phone or computer without installing apps.',
-    heroBadge: 'MediaDrop • Instagram Reels & Video Saver',
+    heroBadge: 'MultiGrab • Instagram Reels & Video Saver',
     iconName: 'instagram',
     features: [
       'Download Instagram Reels in original high definition MP4',
@@ -346,23 +346,23 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
     ],
     steps: [
       { title: 'Copy Reel Link', desc: 'Tap the three dots on the Instagram Reel and copy the link.' },
-      { title: 'Paste in MediaDrop', desc: 'Paste the URL into MediaDrop.' },
+      { title: 'Paste in MultiGrab', desc: 'Paste the URL into MultiGrab.' },
       { title: 'Save Video', desc: 'Choose video or audio to download immediately.' },
     ],
     faqs: [
-      { q: 'Can I download private Instagram posts?', a: 'No, MediaDrop only supports publicly available Instagram Reels and videos.' },
-      { q: 'How do I save Instagram Reels on iPhone?', a: 'Paste the link in Safari on MediaDrop, tap Download, and tap Save to Photos.' },
+      { q: 'Can I download private Instagram posts?', a: 'No, MultiGrab only supports publicly available Instagram Reels and videos.' },
+      { q: 'How do I save Instagram Reels on iPhone?', a: 'Paste the link in Safari on MultiGrab, tap Download, and tap Save to Photos.' },
     ],
     exampleUrl: 'https://www.instagram.com/reel/C123456789/',
   },
   'instagram-reels-downloader': {
     slug: 'instagram-reels-downloader',
     platform: 'instagram',
-    title: 'Instagram Reels Downloader — MediaDrop: Save IG Reels in 1080p HD',
-    metaDescription: 'Download Instagram Reels in high definition 1080p MP4 with sound online for free with MediaDrop. Fast, clean, and works on all devices.',
-    heading: 'Instagram Reels Video Downloader (1080p) by MediaDrop',
+    title: 'Instagram Reels Downloader — MultiGrab: Save IG Reels in 1080p HD',
+    metaDescription: 'Download Instagram Reels in high definition 1080p MP4 with sound online for free with MultiGrab. Fast, clean, and works on all devices.',
+    heading: 'Instagram Reels Video Downloader (1080p) by MultiGrab',
     subheading: 'Download any public Instagram Reel with full audio in original 1080p resolution directly to your camera roll.',
-    heroBadge: 'MediaDrop • Instagram Reels 1080p',
+    heroBadge: 'MultiGrab • Instagram Reels 1080p',
     iconName: 'instagram',
     features: [
       'Save IG Reels in 1080p Full HD video quality',
@@ -371,22 +371,22 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
     ],
     steps: [
       { title: 'Copy Reel URL', desc: 'Tap the paper airplane or 3 dots on the Reel and select Copy Link.' },
-      { title: 'Paste in MediaDrop', desc: 'Paste into the search field above.' },
+      { title: 'Paste in MultiGrab', desc: 'Paste into the search field above.' },
       { title: 'Download MP4', desc: 'Click Download to save the 1080p video.' },
     ],
     faqs: [
-      { q: 'Does MediaDrop work for carousel video posts?', a: 'Yes, public video carousels and standalone Reels are fully supported.' },
+      { q: 'Does MultiGrab work for carousel video posts?', a: 'Yes, public video carousels and standalone Reels are fully supported.' },
     ],
     exampleUrl: 'https://www.instagram.com/reel/C123456789/',
   },
   'twitter-downloader': {
     slug: 'twitter-downloader',
     platform: 'twitter',
-    title: 'X / Twitter Video Downloader — MediaDrop: Save Tweets & GIFs in HD',
-    metaDescription: 'Download Twitter (X) videos, clips, and GIFs in multiple MP4 resolutions (1080p, 720p, 480p) with MediaDrop. Fast, secure, and free.',
-    heading: 'X (Twitter) Video & GIF Downloader by MediaDrop',
+    title: 'X / Twitter Video Downloader — MultiGrab: Save Tweets & GIFs in HD',
+    metaDescription: 'Download Twitter (X) videos, clips, and GIFs in multiple MP4 resolutions (1080p, 720p, 480p) with MultiGrab. Fast, secure, and free.',
+    heading: 'X (Twitter) Video & GIF Downloader by MultiGrab',
     subheading: 'Save videos and animated GIFs from X/Twitter in 1080p, 720p, or 480p MP4 formats instantly.',
-    heroBadge: 'MediaDrop • X / Twitter Video Saver',
+    heroBadge: 'MultiGrab • X / Twitter Video Saver',
     iconName: 'twitter',
     features: [
       'Save public X / Twitter videos in top resolutions up to 1080p',
@@ -395,23 +395,23 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
     ],
     steps: [
       { title: 'Copy Post Link', desc: 'Click the Share icon on any tweet containing a video and copy the URL.' },
-      { title: 'Paste & Download', desc: 'Paste into MediaDrop and click Download.' },
+      { title: 'Paste & Download', desc: 'Paste into MultiGrab and click Download.' },
       { title: 'Select Quality', desc: 'Pick your preferred MP4 resolution and save the file.' },
     ],
     faqs: [
-      { q: 'Does MediaDrop work with x.com links?', a: 'Yes, both x.com and twitter.com links are fully supported.' },
-      { q: 'How do I download Twitter GIFs?', a: 'Twitter GIFs are stored as MP4 videos. MediaDrop extracts them as standard playable MP4 files.' },
+      { q: 'Does MultiGrab work with x.com links?', a: 'Yes, both x.com and twitter.com links are fully supported.' },
+      { q: 'How do I download Twitter GIFs?', a: 'Twitter GIFs are stored as MP4 videos. MultiGrab extracts them as standard playable MP4 files.' },
     ],
     exampleUrl: 'https://x.com/Interior/status/463440424141459456',
   },
   'facebook-downloader': {
     slug: 'facebook-downloader',
     platform: 'facebook',
-    title: 'Facebook Video Downloader — MediaDrop: Save FB Watch & Reels in HD',
-    metaDescription: 'Download public Facebook Watch videos and Reels in Full HD 1080p and SD MP4 formats for free with MediaDrop. Fast and mobile-friendly.',
-    heading: 'Facebook Video & Reels Downloader by MediaDrop',
+    title: 'Facebook Video Downloader — MultiGrab: Save FB Watch & Reels in HD',
+    metaDescription: 'Download public Facebook Watch videos and Reels in Full HD 1080p and SD MP4 formats for free with MultiGrab. Fast and mobile-friendly.',
+    heading: 'Facebook Video & Reels Downloader by MultiGrab',
     subheading: 'Download public Facebook videos and Reels directly to your device in high definition with synchronized sound.',
-    heroBadge: 'MediaDrop • Facebook HD Video Saver',
+    heroBadge: 'MultiGrab • Facebook HD Video Saver',
     iconName: 'facebook',
     features: [
       'Download Facebook Watch videos and Reels in 1080p HD and SD',
@@ -420,23 +420,23 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
     ],
     steps: [
       { title: 'Copy Facebook Link', desc: 'Click Share on a public video and copy the link.' },
-      { title: 'Paste in MediaDrop', desc: 'Paste the link and select your resolution.' },
+      { title: 'Paste in MultiGrab', desc: 'Paste the link and select your resolution.' },
       { title: 'Download MP4', desc: 'Save the video file to your gallery or downloads.' },
     ],
     faqs: [
       { q: 'Can I download private Facebook videos?', a: 'Only publicly visible Facebook videos can be processed.' },
-      { q: 'Does MediaDrop support Facebook Reels?', a: 'Yes, Facebook Reels and Watch videos are both supported in HD.' },
+      { q: 'Does MultiGrab support Facebook Reels?', a: 'Yes, Facebook Reels and Watch videos are both supported in HD.' },
     ],
     exampleUrl: 'https://www.facebook.com/watch/?v=123456789',
   },
   'reddit-downloader': {
     slug: 'reddit-downloader',
     platform: 'reddit',
-    title: 'Reddit Video Downloader with Audio — MediaDrop: Save in 1080p MP4',
-    metaDescription: 'Download Reddit videos with sound in 1080p, 720p HD MP4 using MediaDrop. Automatically merges separated v.redd.it audio and video streams for free.',
-    heading: 'Reddit Video Downloader with Synced Audio by MediaDrop',
+    title: 'Reddit Video Downloader with Audio — MultiGrab: Save in 1080p MP4',
+    metaDescription: 'Download Reddit videos with sound in 1080p, 720p HD MP4 using MultiGrab. Automatically merges separated v.redd.it audio and video streams for free.',
+    heading: 'Reddit Video Downloader with Synced Audio by MultiGrab',
     subheading: 'Download Reddit videos with crystal clear sound in high-definition MP4 format. Automatically merges split video and audio tracks.',
-    heroBadge: 'MediaDrop • Reddit Video with Sound',
+    heroBadge: 'MultiGrab • Reddit Video with Sound',
     iconName: 'reddit',
     features: [
       'Automatically synchronizes and merges Reddit video and audio streams',
@@ -445,22 +445,22 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
     ],
     steps: [
       { title: 'Copy Reddit Post URL', desc: 'Copy the URL of the Reddit post containing the video.' },
-      { title: 'Paste & Process', desc: 'Paste into MediaDrop and click Download.' },
+      { title: 'Paste & Process', desc: 'Paste into MultiGrab and click Download.' },
       { title: 'Save with Audio', desc: 'Download the combined MP4 video with full sound.' },
     ],
     faqs: [
-      { q: 'Why do other downloaders have no sound on Reddit videos?', a: 'Reddit stores video and audio on separate streams. MediaDrop automatically merges them with FFmpeg so your download always has perfect sound.' },
+      { q: 'Why do other downloaders have no sound on Reddit videos?', a: 'Reddit stores video and audio on separate streams. MultiGrab automatically merges them with FFmpeg so your download always has perfect sound.' },
     ],
     exampleUrl: 'https://www.reddit.com/r/videos/comments/6x9y1x/test/',
   },
   'pinterest-downloader': {
     slug: 'pinterest-downloader',
     platform: 'pinterest',
-    title: 'Pinterest Video Downloader — MediaDrop: Save Idea Pins in HD MP4',
-    metaDescription: 'Download public Pinterest videos and Idea Pins in original quality MP4 format for free with MediaDrop. Fast and works on iOS and Android.',
-    heading: 'Pinterest Video & Pin Downloader by MediaDrop',
+    title: 'Pinterest Video Downloader — MultiGrab: Save Idea Pins in HD MP4',
+    metaDescription: 'Download public Pinterest videos and Idea Pins in original quality MP4 format for free with MultiGrab. Fast and works on iOS and Android.',
+    heading: 'Pinterest Video & Pin Downloader by MultiGrab',
     subheading: 'Download Pinterest video pins and idea clips in high-definition MP4 quality directly to your phone or computer.',
-    heroBadge: 'MediaDrop • Pinterest Video Saver',
+    heroBadge: 'MultiGrab • Pinterest Video Saver',
     iconName: 'pinterest',
     features: [
       'Download Pinterest video pins in original high-resolution MP4',
@@ -469,21 +469,21 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
     ],
     steps: [
       { title: 'Copy Pin Link', desc: 'Tap Share on any Pinterest video pin and copy the link.' },
-      { title: 'Paste and Save', desc: 'Paste into MediaDrop and save the MP4 video.' },
+      { title: 'Paste and Save', desc: 'Paste into MultiGrab and save the MP4 video.' },
     ],
     faqs: [
-      { q: 'Does MediaDrop support pin.it short links?', a: 'Yes, both full URLs and short pin.it links work seamlessly.' },
+      { q: 'Does MultiGrab support pin.it short links?', a: 'Yes, both full URLs and short pin.it links work seamlessly.' },
     ],
     exampleUrl: 'https://www.pinterest.com/pin/123456789/',
   },
   'vimeo-downloader': {
     slug: 'vimeo-downloader',
     platform: 'vimeo',
-    title: 'Vimeo Video Downloader — MediaDrop: Save in 4K & 1080p Full HD',
-    metaDescription: 'Download public Vimeo videos in 4K, 1080p, 720p HD MP4 format for free online with MediaDrop. Fast, clean, and no software required.',
-    heading: 'Vimeo Video Downloader in Full HD by MediaDrop',
+    title: 'Vimeo Video Downloader — MultiGrab: Save in 4K & 1080p Full HD',
+    metaDescription: 'Download public Vimeo videos in 4K, 1080p, 720p HD MP4 format for free online with MultiGrab. Fast, clean, and no software required.',
+    heading: 'Vimeo Video Downloader in Full HD by MultiGrab',
     subheading: 'Save public Vimeo videos in 4K, 1080p, 720p, and 480p MP4 quality with synchronized audio.',
-    heroBadge: 'MediaDrop • Vimeo High-Res Downloader',
+    heroBadge: 'MultiGrab • Vimeo High-Res Downloader',
     iconName: 'vimeo',
     features: [
       'Download Vimeo videos in progressive 1080p and 720p HD',
@@ -492,7 +492,7 @@ export const SEO_PLATFORMS: Record<string, SeoPlatformData> = {
     ],
     steps: [
       { title: 'Copy Vimeo URL', desc: 'Copy the link from the Vimeo video page.' },
-      { title: 'Paste & Download', desc: 'Paste into MediaDrop and choose your resolution.' },
+      { title: 'Paste & Download', desc: 'Paste into MultiGrab and choose your resolution.' },
     ],
     faqs: [
       { q: 'Can I download password-protected Vimeo videos?', a: 'No, only publicly accessible Vimeo videos can be downloaded.' },

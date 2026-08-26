@@ -3,7 +3,7 @@ import { SEO_PLATFORMS } from '@/lib/seo-platforms';
 import { SUPPORTED_LOCALES } from '@/lib/i18n';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://mediadrop.live';
+  const baseUrl = 'https://multigrab.online';
   const now = new Date();
   const routes: MetadataRoute.Sitemap = [];
 
@@ -25,7 +25,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
   }
 
-  // 3. English Programmatic SEO platform pages
+  // 3. English Programmatic SEO platform pages (e.g. /tiktok-downloader, /youtube-downloader)
   for (const slug of Object.keys(SEO_PLATFORMS)) {
     routes.push({
       url: `${baseUrl}/${slug}`,

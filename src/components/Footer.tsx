@@ -16,11 +16,11 @@ export function Footer() {
                 </div>
               </div>
               <span className="text-lg font-bold text-white tracking-tight">
-                Media<span className="text-cyan-400">Drop</span>
+                Multi<span className="text-cyan-400">Grab</span>
               </span>
             </div>
             <p className="text-xs leading-relaxed text-zinc-400">
-              The modern online media downloader. Save public videos and high-fidelity MP3 audio in top quality with no ads, no trackers, and zero software required.
+              MultiGrab is a modern universal media downloader. Save public videos and high-fidelity MP3 audio in top quality with no ads, no trackers, and zero software required.
             </p>
             <div className="flex items-center gap-2 text-xs text-emerald-400 font-medium">
               <ShieldCheck className="w-4 h-4" />
@@ -79,18 +79,33 @@ export function Footer() {
             </h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <Link href="/spotify-downloader" className="text-zinc-300 hover:text-emerald-400 transition-colors">
-                  Spotify Song Downloader (320kbps MP3)
-                </Link>
-              </li>
-              <li>
                 <Link href="/tiktok-downloader" className="text-zinc-300 hover:text-cyan-400 transition-colors">
                   TikTok Downloader Without Watermark
                 </Link>
               </li>
               <li>
+                <Link href="/tiktok-to-mp3" className="text-zinc-300 hover:text-cyan-400 transition-colors">
+                  TikTok to MP3 Audio Extractor
+                </Link>
+              </li>
+              <li>
+                <Link href="/spotify-downloader" className="text-zinc-300 hover:text-emerald-400 transition-colors">
+                  Spotify Song Downloader (320kbps MP3)
+                </Link>
+              </li>
+              <li>
+                <Link href="/spotify-to-mp3" className="text-zinc-300 hover:text-emerald-400 transition-colors">
+                  Spotify to MP3 Music Converter
+                </Link>
+              </li>
+              <li>
                 <Link href="/instagram-downloader" className="text-zinc-300 hover:text-pink-400 transition-colors">
                   Instagram Reels Downloader
+                </Link>
+              </li>
+              <li>
+                <Link href="/instagram-reels-downloader" className="text-zinc-300 hover:text-pink-400 transition-colors">
+                  Instagram Reels 1080p HD Saver
                 </Link>
               </li>
               <li>
@@ -132,14 +147,14 @@ export function Footer() {
               <Link href="/id" className="text-zinc-300 hover:text-white transition-colors">🇮🇩 Indonesia</Link>
             </div>
             <p className="text-xs text-zinc-400 leading-relaxed pt-2">
-              MediaDrop is intended solely for personal, non-commercial offline archiving of public content under applicable fair use principles.
+              MultiGrab is intended solely for personal, non-commercial offline archiving of public content under applicable fair use principles.
             </p>
           </div>
         </div>
 
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-400 gap-4">
           <div>
-            © {new Date().getFullYear()} <strong className="text-zinc-200">MediaDrop</strong>. All rights reserved.
+            © {new Date().getFullYear()} <strong className="text-zinc-200">MultiGrab</strong>. All rights reserved.
           </div>
           <div className="flex items-center gap-6">
             <Link href="/sitemap.xml" className="text-zinc-400 hover:text-white transition-colors">

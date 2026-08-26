@@ -42,7 +42,7 @@ function MainContent() {
   const [history, setHistory] = useState<HistoryItem[]>(() => {
     if (typeof window === 'undefined') return [];
     try {
-      const saved = localStorage.getItem('mediadrop_history');
+      const saved = localStorage.getItem('multigrab_history');
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
@@ -68,7 +68,7 @@ function MainContent() {
       const filtered = prev.filter((h) => h.id !== item.id);
       const updated = [item, ...filtered].slice(0, 30);
       try {
-        localStorage.setItem('mediadrop_history', JSON.stringify(updated));
+        localStorage.setItem('multigrab_history', JSON.stringify(updated));
       } catch {}
       return updated;
     });
@@ -77,7 +77,7 @@ function MainContent() {
   const handleClearHistory = () => {
     setHistory([]);
     try {
-      localStorage.removeItem('mediadrop_history');
+      localStorage.removeItem('multigrab_history');
     } catch {}
   };
 
@@ -171,7 +171,7 @@ function MainContent() {
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
         await navigator.share({
-          title: 'MediaDrop - Universal Media Downloader',
+          title: 'MultiGrab - Universal Video & Audio Downloader',
           text: 'Download public videos and MP3 audio from YouTube, Spotify, TikTok, Instagram, and more!',
           url: window.location.origin,
         });
@@ -235,7 +235,7 @@ function MainContent() {
                 className="inline-flex items-center gap-1.5 rounded-full border border-zinc-800 bg-zinc-950 px-3.5 py-1 text-xs text-zinc-400 hover:text-white hover:border-zinc-700 transition-colors cursor-pointer"
               >
                 <Share2 className="w-3.5 h-3.5 text-indigo-400" />
-                <span>{shareCopied ? 'Link Copied!' : 'Share MediaDrop'}</span>
+                <span>{shareCopied ? 'Link Copied!' : 'Share MultiGrab'}</span>
               </button>
             </div>
 

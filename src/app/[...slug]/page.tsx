@@ -13,7 +13,7 @@ interface Props {
 export async function generateStaticParams() {
   const params: { slug: string[] }[] = [];
 
-  // 1. English SEO landing pages (e.g. /youtube-downloader)
+  // 1. English SEO landing pages (e.g. /youtube-downloader, /tiktok-downloader)
   for (const slug of Object.keys(SEO_PLATFORMS)) {
     params.push({ slug: [slug] });
   }
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
 
   if (!slug || slug.length === 0 || slug.length > 2) {
-    return { title: 'MediaDrop' };
+    return { title: 'MultiGrab' };
   }
 
   // Case A: Non-English homepage (e.g. ['es'])
@@ -48,38 +48,38 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       const validLocale = slug[0] as SupportedLocale;
       const t = UI_DICTIONARY[validLocale] || UI_DICTIONARY.en;
       const titles: Record<SupportedLocale, string> = {
-        en: 'MediaDrop — Free Universal Video & Audio Downloader (4K, 1080p, MP3)',
-        es: 'MediaDrop — Descargador Gratuito de Videos y Audio MP3 (YouTube, TikTok, Spotify)',
-        pt: 'MediaDrop — Baixar Vídeos e Músicas MP3 Grátis (YouTube, TikTok, Spotify)',
-        hi: 'MediaDrop — मुफ़्त वीडियो और MP3 ऑडियो डाउनलोडर (YouTube, Spotify, TikTok)',
-        fr: 'MediaDrop — Téléchargeur Gratuit de Vidéos et Musique MP3 (YouTube, TikTok, Spotify)',
-        de: 'MediaDrop — Kostenloser Video & MP3 Downloader (YouTube, TikTok, Spotify)',
-        ar: 'MediaDrop — أداة تحميل الفيديو والصوت MP3 المجانية (يوتيوب، تيك توك، سبوتيفاي)',
-        id: 'MediaDrop — Pengunduh Video dan Audio MP3 Gratis (YouTube, TikTok, Spotify)',
+        en: 'MultiGrab — Free Universal Video & Audio Downloader (4K, 1080p, MP3)',
+        es: 'MultiGrab — Descargador Gratuito de Videos y Audio MP3 (YouTube, TikTok, Spotify)',
+        pt: 'MultiGrab — Baixar Vídeos e Músicas MP3 Grátis (YouTube, TikTok, Spotify)',
+        hi: 'MultiGrab — मुफ़्त वीडियो और MP3 ऑडियो डाउनलोडर (YouTube, Spotify, TikTok)',
+        fr: 'MultiGrab — Téléchargeur Gratuit de Vidéos et Musique MP3 (YouTube, TikTok, Spotify)',
+        de: 'MultiGrab — Kostenloser Video & MP3 Downloader (YouTube, TikTok, Spotify)',
+        ar: 'MultiGrab — أداة تحميل الفيديو والصوت MP3 المجانية (يوتيوب، تيك توك، سبوتيفاي)',
+        id: 'MultiGrab — Pengunduh Video dan Audio MP3 Gratis (YouTube, TikTok, Spotify)',
       };
 
       return {
         title: titles[validLocale] || titles.en,
         description: t.heroSubhead,
         alternates: {
-          canonical: `https://mediadrop.live/${validLocale}`,
+          canonical: `https://multigrab.online/${validLocale}`,
           languages: {
-            en: 'https://mediadrop.live',
-            es: 'https://mediadrop.live/es',
-            pt: 'https://mediadrop.live/pt',
-            hi: 'https://mediadrop.live/hi',
-            fr: 'https://mediadrop.live/fr',
-            de: 'https://mediadrop.live/de',
-            ar: 'https://mediadrop.live/ar',
-            id: 'https://mediadrop.live/id',
-            'x-default': 'https://mediadrop.live',
+            en: 'https://multigrab.online',
+            es: 'https://multigrab.online/es',
+            pt: 'https://multigrab.online/pt',
+            hi: 'https://multigrab.online/hi',
+            fr: 'https://multigrab.online/fr',
+            de: 'https://multigrab.online/de',
+            ar: 'https://multigrab.online/ar',
+            id: 'https://multigrab.online/id',
+            'x-default': 'https://multigrab.online',
           },
         },
         openGraph: {
           title: titles[validLocale] || titles.en,
           description: t.heroSubhead,
-          url: `https://mediadrop.live/${validLocale}`,
-          siteName: 'MediaDrop',
+          url: `https://multigrab.online/${validLocale}`,
+          siteName: 'MultiGrab',
         },
       };
     }
@@ -95,27 +95,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           `${platformData.platform} downloader`,
           `${platformData.platform} mp3`,
           'free video downloader',
-          'mediadrop',
+          'multigrab',
         ],
         alternates: {
-          canonical: `https://mediadrop.live/${platformData.slug}`,
+          canonical: `https://multigrab.online/${platformData.slug}`,
           languages: {
-            en: `https://mediadrop.live/${platformData.slug}`,
-            es: `https://mediadrop.live/es/${platformData.slug}`,
-            pt: `https://mediadrop.live/pt/${platformData.slug}`,
-            hi: `https://mediadrop.live/hi/${platformData.slug}`,
-            fr: `https://mediadrop.live/fr/${platformData.slug}`,
-            de: `https://mediadrop.live/de/${platformData.slug}`,
-            ar: `https://mediadrop.live/ar/${platformData.slug}`,
-            id: `https://mediadrop.live/id/${platformData.slug}`,
-            'x-default': `https://mediadrop.live/${platformData.slug}`,
+            en: `https://multigrab.online/${platformData.slug}`,
+            es: `https://multigrab.online/es/${platformData.slug}`,
+            pt: `https://multigrab.online/pt/${platformData.slug}`,
+            hi: `https://multigrab.online/hi/${platformData.slug}`,
+            fr: `https://multigrab.online/fr/${platformData.slug}`,
+            de: `https://multigrab.online/de/${platformData.slug}`,
+            ar: `https://multigrab.online/ar/${platformData.slug}`,
+            id: `https://multigrab.online/id/${platformData.slug}`,
+            'x-default': `https://multigrab.online/${platformData.slug}`,
           },
         },
         openGraph: {
           title: platformData.title,
           description: platformData.metaDescription,
-          url: `https://mediadrop.live/${platformData.slug}`,
-          siteName: 'MediaDrop',
+          url: `https://multigrab.online/${platformData.slug}`,
+          siteName: 'MultiGrab',
         },
       };
     }
@@ -133,13 +133,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
       const localizedTitles: Record<SupportedLocale, string> = {
         en: platformData.title,
-        es: `Descargar ${platformData.platform.toUpperCase()} - Video HD y Audio MP3 Gratis | MediaDrop`,
-        pt: `Baixar ${platformData.platform.toUpperCase()} - Vídeos e Músicas MP3 Grátis | MediaDrop`,
-        hi: `${platformData.platform.toUpperCase()} वीडियो और MP3 डाउनलोडर - मुफ़्त | MediaDrop`,
-        fr: `Télécharger ${platformData.platform.toUpperCase()} - Vidéos et MP3 Gratuitement | MediaDrop`,
-        de: `${platformData.platform.toUpperCase()} Downloader - Videos & MP3 kostenlos herunterladen | MediaDrop`,
-        ar: `تحميل فيديو وصوت ${platformData.platform.toUpperCase()} مجاناً بأعلى جودة | MediaDrop`,
-        id: `Download Video dan MP3 ${platformData.platform.toUpperCase()} Gratis | MediaDrop`,
+        es: `Descargar ${platformData.platform.toUpperCase()} - Video HD y Audio MP3 Gratis | MultiGrab`,
+        pt: `Baixar ${platformData.platform.toUpperCase()} - Vídeos e Músicas MP3 Grátis | MultiGrab`,
+        hi: `${platformData.platform.toUpperCase()} वीडियो और MP3 डाउनलोडर - मुफ़्त | MultiGrab`,
+        fr: `Télécharger ${platformData.platform.toUpperCase()} - Vidéos et MP3 Gratuitement | MultiGrab`,
+        de: `${platformData.platform.toUpperCase()} Downloader - Videos & MP3 kostenlos herunterladen | MultiGrab`,
+        ar: `تحميل فيديو وصوت ${platformData.platform.toUpperCase()} مجاناً بأعلى جودة | MultiGrab`,
+        id: `Download Video dan MP3 ${platformData.platform.toUpperCase()} Gratis | MultiGrab`,
       };
 
       const pageTitle = localizedTitles[validLocale] || platformData.title;
@@ -148,30 +148,30 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         title: pageTitle,
         description: `${t.heroSubhead} ${platformData.metaDescription}`,
         alternates: {
-          canonical: `https://mediadrop.live/${validLocale}/${platformData.slug}`,
+          canonical: `https://multigrab.online/${validLocale}/${platformData.slug}`,
           languages: {
-            en: `https://mediadrop.live/${platformData.slug}`,
-            es: `https://mediadrop.live/es/${platformData.slug}`,
-            pt: `https://mediadrop.live/pt/${platformData.slug}`,
-            hi: `https://mediadrop.live/hi/${platformData.slug}`,
-            fr: `https://mediadrop.live/fr/${platformData.slug}`,
-            de: `https://mediadrop.live/de/${platformData.slug}`,
-            ar: `https://mediadrop.live/ar/${platformData.slug}`,
-            id: `https://mediadrop.live/id/${platformData.slug}`,
-            'x-default': `https://mediadrop.live/${platformData.slug}`,
+            en: `https://multigrab.online/${platformData.slug}`,
+            es: `https://multigrab.online/es/${platformData.slug}`,
+            pt: `https://multigrab.online/pt/${platformData.slug}`,
+            hi: `https://multigrab.online/hi/${platformData.slug}`,
+            fr: `https://multigrab.online/fr/${platformData.slug}`,
+            de: `https://multigrab.online/de/${platformData.slug}`,
+            ar: `https://multigrab.online/ar/${platformData.slug}`,
+            id: `https://multigrab.online/id/${platformData.slug}`,
+            'x-default': `https://multigrab.online/${platformData.slug}`,
           },
         },
         openGraph: {
           title: pageTitle,
           description: platformData.metaDescription,
-          url: `https://mediadrop.live/${validLocale}/${platformData.slug}`,
-          siteName: 'MediaDrop',
+          url: `https://multigrab.online/${validLocale}/${platformData.slug}`,
+          siteName: 'MultiGrab',
         },
       };
     }
   }
 
-  return { title: 'MediaDrop' };
+  return { title: 'MultiGrab' };
 }
 
 export default async function CatchAllSlugPage({ params }: Props) {
@@ -194,7 +194,7 @@ export default async function CatchAllSlugPage({ params }: Props) {
       );
     }
 
-    // English SEO landing page (e.g. /youtube-downloader)
+    // English SEO landing page (e.g. /youtube-downloader, /tiktok-downloader)
     const platformData = SEO_PLATFORMS[slug[0]];
     if (platformData) {
       const webAppSchema = {
@@ -203,11 +203,11 @@ export default async function CatchAllSlugPage({ params }: Props) {
         name: platformData.title,
         applicationCategory: 'MultimediaApplication',
         operatingSystem: 'All (Web, iOS, Android, Windows, macOS, Linux)',
-        url: `https://mediadrop.live/${platformData.slug}`,
+        url: `https://multigrab.online/${platformData.slug}`,
         aggregateRating: {
           '@type': 'AggregateRating',
           ratingValue: '4.9',
-          reviewCount: '12850',
+          reviewCount: '15400',
         },
         offers: {
           '@type': 'Offer',
@@ -233,7 +233,7 @@ export default async function CatchAllSlugPage({ params }: Props) {
       const howToSchema = {
         '@context': 'https://schema.org',
         '@type': 'HowTo',
-        name: `How to Download from ${platformData.platform.toUpperCase()} using MediaDrop`,
+        name: `How to Download from ${platformData.platform.toUpperCase()} using MultiGrab`,
         description: platformData.subheading,
         step: platformData.steps.map((step, idx) => ({
           '@type': 'HowToStep',
@@ -278,12 +278,12 @@ export default async function CatchAllSlugPage({ params }: Props) {
         name: platformData.title,
         applicationCategory: 'MultimediaApplication',
         operatingSystem: 'All',
-        url: `https://mediadrop.live/${validLocale}/${platformData.slug}`,
+        url: `https://multigrab.online/${validLocale}/${platformData.slug}`,
         inLanguage: validLocale,
         aggregateRating: {
           '@type': 'AggregateRating',
           ratingValue: '4.9',
-          reviewCount: '12850',
+          reviewCount: '15400',
         },
         offers: {
           '@type': 'Offer',
@@ -309,7 +309,7 @@ export default async function CatchAllSlugPage({ params }: Props) {
       const howToSchema = {
         '@context': 'https://schema.org',
         '@type': 'HowTo',
-        name: `How to Download from ${platformData.platform.toUpperCase()} using MediaDrop`,
+        name: `How to Download from ${platformData.platform.toUpperCase()} using MultiGrab`,
         description: platformData.subheading,
         step: platformData.steps.map((step, idx) => ({
           '@type': 'HowToStep',

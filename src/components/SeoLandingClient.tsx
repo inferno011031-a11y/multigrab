@@ -47,7 +47,7 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
   const [history, setHistory] = useState<HistoryItem[]>(() => {
     if (typeof window === 'undefined') return [];
     try {
-      const saved = localStorage.getItem('mediadrop_history');
+      const saved = localStorage.getItem('multigrab_history');
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
@@ -62,7 +62,7 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
       const filtered = prev.filter((h) => h.id !== item.id);
       const updated = [item, ...filtered].slice(0, 30);
       try {
-        localStorage.setItem('mediadrop_history', JSON.stringify(updated));
+        localStorage.setItem('multigrab_history', JSON.stringify(updated));
       } catch {}
       return updated;
     });
@@ -71,7 +71,7 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
   const handleClearHistory = () => {
     setHistory([]);
     try {
-      localStorage.removeItem('mediadrop_history');
+      localStorage.removeItem('multigrab_history');
     } catch {}
   };
 
@@ -185,7 +185,7 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
             {/* Breadcrumb Navigation */}
             <div className="flex items-center justify-center gap-2 text-xs text-zinc-500 mb-4">
               <Link href="/" className="hover:text-cyan-400 transition-colors">
-                MediaDrop Home
+                MultiGrab Home
               </Link>
               <span>/</span>
               <span className="text-zinc-300 font-medium capitalize">{data.platform} Downloader</span>
@@ -222,7 +222,7 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
                 className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-1.5 text-zinc-400 hover:text-white transition-colors cursor-pointer"
               >
                 <Share2 className="w-3.5 h-3.5 text-indigo-400" />
-                <span>{copiedShare ? 'Link Copied!' : 'Share MediaDrop'}</span>
+                <span>{copiedShare ? 'Link Copied!' : 'Share MultiGrab'}</span>
               </button>
 
               <button
@@ -274,7 +274,7 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
             <div className="rounded-3xl border border-zinc-800/80 bg-zinc-950/60 p-6 sm:p-8 backdrop-blur-xl">
               <div className="text-zinc-400 text-xs font-bold uppercase tracking-wider mb-4 flex items-center gap-2">
                 <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Related MediaDrop Tools</span>
+                <span>Related MultiGrab Tools</span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {data.relatedTools.map((tool) => (
@@ -330,7 +330,7 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
         <section className="mx-auto max-w-5xl px-4 py-10">
           <div className="rounded-3xl border border-zinc-800/80 bg-zinc-950/60 p-8 backdrop-blur-xl">
             <h3 className="text-lg font-bold text-white mb-6 text-center">
-              Why Use MediaDrop for {data.platform.toUpperCase()} Downloads?
+              Why Use MultiGrab for {data.platform.toUpperCase()} Downloads?
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {data.features.map((feat, idx) => (

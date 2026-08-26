@@ -5,8 +5,8 @@ import React from 'react';
 export function FaqSection() {
   const faqs = [
     {
-      q: 'Is MediaDrop free to use?',
-      a: 'Yes, MediaDrop is 100% free with no sign-ups, no subscriptions, and no download limits.',
+      q: 'Is MultiGrab free to use?',
+      a: 'Yes, MultiGrab is 100% free with no sign-ups, no subscriptions, and no download limits.',
     },
     {
       q: 'What video and audio qualities are available?',
@@ -14,7 +14,7 @@ export function FaqSection() {
     },
     {
       q: 'Does it work on mobile phones?',
-      a: 'Yes. MediaDrop works directly in Safari on iOS and Chrome on Android without needing any app.',
+      a: 'Yes. MultiGrab works directly in Safari on iOS and Chrome on Android without needing any app.',
     },
     {
       q: 'Where are my downloaded files saved?',
@@ -22,7 +22,7 @@ export function FaqSection() {
     },
     {
       q: 'Can I download private or password-protected content?',
-      a: 'No. MediaDrop only processes publicly accessible links.',
+      a: 'No. MultiGrab only processes publicly accessible links.',
     },
   ];
 

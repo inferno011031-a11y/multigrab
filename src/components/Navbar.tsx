@@ -34,10 +34,12 @@ export function Navbar({
     { name: 'YouTube Shorts Saver', href: '/youtube-shorts-downloader', badge: 'Shorts' },
     { name: 'Spotify Downloader', href: '/spotify-downloader', badge: 'MP3' },
     { name: 'TikTok No Watermark', href: '/tiktok-downloader', badge: 'HD' },
+    { name: 'TikTok to MP3 Audio', href: '/tiktok-to-mp3', badge: 'Sound' },
     { name: 'Instagram Reels Saver', href: '/instagram-downloader', badge: 'Reels' },
     { name: 'X / Twitter Video', href: '/twitter-downloader', badge: 'Direct' },
     { name: 'Facebook Video Saver', href: '/facebook-downloader', badge: 'MP4' },
     { name: 'Reddit Video Downloader', href: '/reddit-downloader', badge: 'Audio Mux' },
+    { name: 'Pinterest Video Pin', href: '/pinterest-downloader', badge: 'HD' },
   ];
 
   return (
@@ -53,7 +55,7 @@ export function Navbar({
             </div>
             <div className="flex flex-col">
               <span className="text-lg font-extrabold tracking-tight text-white flex items-center gap-1">
-                Media<span className="bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">Drop</span>
+                Multi<span className="bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">Grab</span>
               </span>
             </div>
           </Link>
@@ -79,9 +81,9 @@ export function Navbar({
               </button>
 
               {isToolsOpen && (
-                <div className="absolute left-0 top-full mt-2 w-64 rounded-2xl border border-zinc-800 bg-zinc-950/95 p-2 shadow-2xl backdrop-blur-2xl animate-in fade-in zoom-in-95 duration-150 z-50">
+                <div className="absolute left-0 top-full mt-2 w-64 rounded-2xl border border-zinc-800 bg-zinc-950/95 p-2 shadow-2xl backdrop-blur-2xl animate-in fade-in zoom-in-95 duration-150 z-50 max-h-80 overflow-y-auto">
                   <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-zinc-500">
-                    High-Speed Extractors
+                    Universal Extractors
                   </div>
                   <div className="space-y-0.5 mt-1">
                     {tools.map((tool) => (
@@ -165,7 +167,7 @@ export function Navbar({
             <div className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 px-2 py-1">
               Top Downloaders
             </div>
-            {tools.slice(0, 6).map((tool) => (
+            {tools.map((tool) => (
               <Link
                 key={tool.href}
                 href={tool.href}

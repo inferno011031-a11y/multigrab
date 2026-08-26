@@ -66,7 +66,7 @@ export function FeaturesSection() {
     <section className="mx-auto max-w-6xl px-4 py-16 sm:py-24">
       <div className="text-center mb-12">
         <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-          Why Use MediaDrop?
+          Why Use MultiGrab?
         </h2>
         <p className="mt-2 text-sm text-zinc-400 max-w-xl mx-auto">
           Fast, direct downloads without the spam, redirects, and popups found on other tools.
