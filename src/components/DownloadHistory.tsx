@@ -58,6 +58,7 @@ export function DownloadHistory({
             {history.length > 0 && (
               <button
                 onClick={onClearHistory}
+                aria-label="Clear download history"
                 title="Clear History"
                 className="p-1.5 text-neutral-400 hover:text-white transition-colors cursor-pointer"
               >
@@ -66,6 +67,7 @@ export function DownloadHistory({
             )}
             <button
               onClick={onClose}
+              aria-label="Close download history"
               className="rounded-xl p-1.5 text-neutral-400 hover:bg-neutral-900 hover:text-white transition-colors cursor-pointer"
             >
               <X className="h-5 w-5" />

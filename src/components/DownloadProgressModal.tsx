@@ -87,6 +87,7 @@ export function DownloadProgressModal({
         {/* Close button */}
         <button
           onClick={onClose}
+          aria-label="Close download progress"
           className="absolute top-5 right-5 rounded-full p-1.5 text-zinc-400 hover:bg-zinc-900 hover:text-white transition-colors cursor-pointer"
         >
           <X className="h-5 w-5" />
@@ -194,6 +195,7 @@ export function DownloadProgressModal({
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900 px-3.5 py-3 text-zinc-400 hover:text-white hover:border-zinc-700 transition-colors"
+                aria-label="Open direct stream link in new tab"
                 title="Direct Stream Link"
               >
                 <ExternalLink className="h-4 w-4" />
