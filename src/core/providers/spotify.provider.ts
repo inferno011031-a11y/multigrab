@@ -288,6 +288,8 @@ export class SpotifyProvider extends BaseMediaProvider {
 
     if (ffmpegPath) {
       downloadArgs.push('--ffmpeg-location', ffmpegPath);
+      downloadArgs.push('--embed-metadata');
+      downloadArgs.push('--embed-thumbnail');
     }
 
     if (formatId === 'audio-mp3-320' || formatId === 'audio-mp3') {
