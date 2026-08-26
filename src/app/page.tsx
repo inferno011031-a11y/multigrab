@@ -274,7 +274,7 @@ function MainContent() {
         )}
 
         {/* Supported Platforms Grid */}
-        <div id="platforms">
+        <div id="platforms" className="content-auto">
           <PlatformGrid
             platforms={DEFAULT_PLATFORMS_INFO}
             onSelectPlatformSample={handleAnalyze}
@@ -282,12 +282,14 @@ function MainContent() {
         </div>
 
         {/* Features Highlights */}
-        <div id="features">
+        <div id="features" className="content-auto">
           <FeaturesSection />
         </div>
 
         {/* FAQ */}
-        <FaqSection />
+        <div className="content-auto">
+          <FaqSection />
+        </div>
       </main>
 
       {/* Real-time Download Progress Modal (Lazy Loaded) */}

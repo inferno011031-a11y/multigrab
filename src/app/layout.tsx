@@ -137,15 +137,23 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className="dark bg-black text-neutral-100 antialiased selection:bg-white selection:text-black"
     >
       <head>
+        <link rel="preconnect" href="https://i.ytimg.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://i.ytimg.com" />
+        <link rel="preconnect" href="https://i.scdn.co" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://i.scdn.co" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(rootSchema) }}
         />
       </head>
-      <body className="min-h-screen bg-black text-neutral-100 flex flex-col font-sans">
+      <body
+        suppressHydrationWarning
+        className="min-h-screen bg-black text-neutral-100 flex flex-col font-sans"
+      >
         {children}
       </body>
     </html>

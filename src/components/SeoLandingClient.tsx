@@ -310,22 +310,19 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
           </section>
         )}
 
-        {/* How to Download Steps (H2) */}
-        <section className="mx-auto max-w-5xl px-4 py-12 sm:py-16">
+        {/* How it Works (H2) */}
+        <section className="mx-auto max-w-5xl px-4 py-12 sm:py-16 content-auto">
           <div className="text-center mb-10">
-            <h2 className="text-xl sm:text-3xl font-extrabold text-white">
-              How to Download from {data.platform.toUpperCase()}
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
+              How to Download {data.platform.toUpperCase()} Media in 3 Easy Steps
             </h2>
-            <p className="mt-1.5 text-xs sm:text-sm text-zinc-400">
-              Save your media in 3 simple steps without installing software.
-            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {data.steps.map((s, idx) => (
               <div
                 key={idx}
-                className="rounded-3xl border border-zinc-800/80 bg-zinc-950/60 p-6 backdrop-blur-xl hover:border-indigo-500/30 transition-colors"
+                className="relative rounded-3xl border border-zinc-800/80 bg-zinc-950/60 p-6 backdrop-blur-xl"
               >
                 <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-gradient-to-tr from-indigo-600 to-cyan-400 text-xs font-black text-white mb-4 shadow-md shadow-indigo-500/20">
                   0{idx + 1}
@@ -338,7 +335,7 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
         </section>
 
         {/* Features Highlights (H2) */}
-        <section className="mx-auto max-w-5xl px-4 py-10">
+        <section className="mx-auto max-w-5xl px-4 py-10 content-auto">
           <div className="rounded-3xl border border-zinc-800/80 bg-zinc-950/60 p-8 backdrop-blur-xl">
             <h2 className="text-xl sm:text-2xl font-bold text-white mb-6 text-center">
               Why Use MultiGrab for {data.platform.toUpperCase()} Downloads?
@@ -355,7 +352,7 @@ export function SeoLandingClient({ data }: SeoLandingClientProps) {
         </section>
 
         {/* Platform FAQs (H2) */}
-        <section className="mx-auto max-w-4xl px-4 py-12 sm:py-16">
+        <section className="mx-auto max-w-4xl px-4 py-12 sm:py-16 content-auto">
           <div className="text-center mb-8">
             <div className="inline-flex items-center gap-2 text-indigo-400 text-xs font-semibold mb-2">
               <HelpCircle className="w-4 h-4" />
