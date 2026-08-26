@@ -53,7 +53,23 @@ export async function GET(
     return NextResponse.json(errorBody, { status: 403 });
   }
 
-  if (!existsSync(normalizedPath)) {
+  // 1. Try sanitized path
+  let targetPath = normalizedPath;
+
+  // 2. If sanitized path does not exist, check exact token filename or find job file
+  if (!existsSync(targetPath)) {
+    const directPath = path.normalize(path.join(normalizedTempDir, safeJobId, tokenData.filename));
+    if (directPath.startsWith(normalizedTempDir) && existsSync(directPath)) {
+      targetPath = directPath;
+    } else {
+      const jobFile = await TempStorageManager.findJobFile(safeJobId);
+      if (jobFile && existsSync(jobFile.filePath)) {
+        targetPath = jobFile.filePath;
+      }
+    }
+  }
+
+  if (!existsSync(targetPath)) {
     const errorBody: ApiErrorResponse = {
       success: false,
       error: { code: 'FILE_NOT_FOUND', message: 'File no longer exists on server or has expired.' },
@@ -62,7 +78,7 @@ export async function GET(
   }
 
   try {
-    const stat = await fs.stat(normalizedPath);
+    const stat = await fs.stat(targetPath);
     const meta = await TempStorageManager.getJobMetadata(safeJobId);
     const mimeType = meta?.mimeType || 'application/octet-stream';
 
@@ -78,7 +94,7 @@ export async function GET(
       .replace(/\*/g, '%2A');
 
     // Read and return binary stream safely
-    const fileBuffer = await fs.readFile(normalizedPath);
+    const fileBuffer = await fs.readFile(targetPath);
 
     return new Response(fileBuffer, {
       status: 200,

@@ -6,6 +6,13 @@ import { TempStorageManager } from '@/core/storage/temp-storage';
 import { config } from '@/lib/config';
 import { logger } from '@/lib/logger';
 
+interface SpotifyTrackDetails {
+  title: string;
+  artist: string;
+  thumbnail: string;
+  searchQuery: string;
+}
+
 export class SpotifyProvider extends BaseMediaProvider {
   readonly platform: SupportedPlatform = 'spotify';
   readonly name: string = 'Spotify';
@@ -16,37 +23,153 @@ export class SpotifyProvider extends BaseMediaProvider {
   ];
 
   /**
+   * Cleans and normalizes Spotify track URLs by stripping tracking parameters.
+   */
+  private cleanUrl(rawUrl: string): string {
+    try {
+      const u = new URL(rawUrl);
+      u.search = '';
+      return u.toString();
+    } catch {
+      return rawUrl;
+    }
+  }
+
+  /**
+   * Fetches and parses Spotify metadata via open.spotify.com HTML and oEmbed API.
+   */
+  private async extractSpotifyInfo(url: string): Promise<SpotifyTrackDetails> {
+    const cleanedUrl = this.cleanUrl(url);
+    let title = '';
+    let artist = '';
+    let thumbnail = '';
+
+    // 1. Try Spotify oEmbed first
+    try {
+      const oembedUrl = `https://open.spotify.com/oembed?url=${encodeURIComponent(cleanedUrl)}`;
+      const res = await fetch(oembedUrl, {
+        headers: {
+          'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          Accept: 'application/json',
+        },
+      });
+
+      if (res.ok) {
+        const data = (await res.json()) as { title?: string; thumbnail_url?: string };
+        if (data.title) {
+          title = data.title;
+        }
+        if (data.thumbnail_url) {
+          thumbnail = data.thumbnail_url;
+        }
+      }
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      logger.warn(`Spotify oEmbed failed: ${errorMessage}`, 'SPOTIFY_PROVIDER');
+    }
+
+    // 2. Fetch Spotify HTML to extract artist name & precise metadata
+    try {
+      const pageRes = await fetch(cleanedUrl, {
+        headers: {
+          'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          'Accept-Language': 'en-US,en;q=0.9',
+        },
+      });
+
+      if (pageRes.ok) {
+        const html = await pageRes.text();
+
+        // Extract <title> e.g. "Song Name - song and lyrics by Artist | Spotify"
+        const titleMatch = html.match(/<title>(.*?)<\/title>/i);
+        if (titleMatch && titleMatch[1]) {
+          const rawTitleText = titleMatch[1].replace(/&amp;/g, '&').replace(/&quot;/g, '"');
+          const byArtistMatch = rawTitleText.match(/^(.*?)\s*-\s*(?:song and lyrics by|song by|track by)\s*(.*?)(?:\s*\|\s*Spotify|$)/i);
+          if (byArtistMatch) {
+            if (!title) title = byArtistMatch[1].trim();
+            if (!artist) artist = byArtistMatch[2].trim();
+          } else {
+            const pipeSplit = rawTitleText.replace(/\s*\|\s*Spotify\s*$/i, '').split(' - ');
+            if (pipeSplit.length >= 2) {
+              if (!title) title = pipeSplit[0].trim();
+              if (!artist) artist = pipeSplit[1].trim();
+            } else if (!title) {
+              title = pipeSplit[0].trim();
+            }
+          }
+        }
+
+        // Extract OpenGraph og:title
+        if (!title) {
+          const ogTitleMatch = html.match(/<meta\s+property=["']og:title["']\s+content=["'](.*?)["']/i);
+          if (ogTitleMatch && ogTitleMatch[1]) {
+            title = ogTitleMatch[1].replace(/&amp;/g, '&');
+          }
+        }
+
+        // Extract OpenGraph og:description (e.g. "Artist · Song · 2022")
+        if (!artist) {
+          const ogDescMatch = html.match(/<meta\s+property=["']og:description["']\s+content=["'](.*?)["']/i);
+          if (ogDescMatch && ogDescMatch[1]) {
+            const parts = ogDescMatch[1].split('·').map((p) => p.trim());
+            if (parts.length > 0 && parts[0]) {
+              artist = parts[0];
+            }
+          }
+        }
+
+        // Extract OpenGraph og:image
+        if (!thumbnail) {
+          const ogImgMatch = html.match(/<meta\s+property=["']og:image["']\s+content=["'](.*?)["']/i);
+          if (ogImgMatch && ogImgMatch[1]) {
+            thumbnail = ogImgMatch[1];
+          }
+        }
+      }
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      logger.warn(`Spotify HTML scraping fallback failed: ${errorMessage}`, 'SPOTIFY_PROVIDER');
+    }
+
+    // Fallback if title still empty
+    if (!title) {
+      const pathParts = new URL(cleanedUrl).pathname.split('/').filter(Boolean);
+      title = pathParts[pathParts.length - 1] || 'Spotify Track';
+    }
+
+    if (!artist) {
+      artist = 'Spotify Artist';
+    }
+
+    const searchQuery = artist && artist !== 'Spotify Artist'
+      ? `${artist} - ${title} audio`
+      : `${title} audio`;
+
+    return {
+      title,
+      artist,
+      thumbnail,
+      searchQuery,
+    };
+  }
+
+  /**
    * Fetches public track metadata via Spotify oEmbed and matches public audio stream.
    */
   public async getMetadata(url: string): Promise<MediaMetadata> {
     logger.info(`Fetching Spotify metadata for URL`, 'SPOTIFY_PROVIDER', { url });
 
-    let trackTitle = 'Spotify Track';
-    let trackArtist = 'Spotify Artist';
-    let thumbnail = '';
-
-    try {
-      const oembedUrl = `https://open.spotify.com/oembed?url=${encodeURIComponent(url)}`;
-      const res = await fetch(oembedUrl, {
-        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; MediaDrop/1.0)' },
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        if (data.title) trackTitle = data.title;
-        if (data.thumbnail_url) thumbnail = data.thumbnail_url;
-      }
-    } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : String(err);
-      logger.warn(`Spotify oEmbed metadata fetch fallback: ${errorMessage}`, 'SPOTIFY_PROVIDER');
-    }
-
-    // Match audio stream via search
+    const info = await this.extractSpotifyInfo(url);
+    let trackTitle = info.title;
+    let trackArtist = info.artist;
+    let thumbnail = info.thumbnail;
     let duration: number | undefined;
     let matchedId = 'spotify-track';
 
     try {
-      const searchTarget = `ytsearch1:${trackTitle} audio`;
+      const searchTarget = `ytsearch1:${info.searchQuery}`;
       const searchData = await SubprocessExecutor.extractJson(searchTarget, ['--default-search', 'ytsearch']);
       const entry = Array.isArray(searchData.entries) && searchData.entries[0]
         ? (searchData.entries[0] as Record<string, unknown>)
@@ -61,7 +184,7 @@ export class SpotifyProvider extends BaseMediaProvider {
       if (!thumbnail && typeof entry.thumbnail === 'string') {
         thumbnail = entry.thumbnail;
       }
-      if (typeof entry.uploader === 'string') {
+      if (trackArtist === 'Spotify Artist' && typeof entry.uploader === 'string') {
         trackArtist = entry.uploader;
       }
     } catch (err: unknown) {
@@ -117,7 +240,7 @@ export class SpotifyProvider extends BaseMediaProvider {
       canonicalUrl: url,
       platform: this.platform,
       platformName: this.name,
-      title: trackTitle,
+      title: trackArtist && trackArtist !== 'Spotify Artist' ? `${trackArtist} - ${trackTitle}` : trackTitle,
       author: trackArtist,
       duration,
       durationFormatted: this.formatDuration(duration),
@@ -143,18 +266,9 @@ export class SpotifyProvider extends BaseMediaProvider {
     const { cmd, baseArgs } = await SubprocessExecutor.getExtractorCommand();
     const ffmpegPath = await SubprocessExecutor.getFfmpegPath();
 
-    // 1. Get track title from metadata
-    let query = url;
-    try {
-      const oembedUrl = `https://open.spotify.com/oembed?url=${encodeURIComponent(url)}`;
-      const res = await fetch(oembedUrl);
-      if (res.ok) {
-        const data = await res.json();
-        if (data.title) {
-          query = `ytsearch1:${data.title} audio`;
-        }
-      }
-    } catch {}
+    // 1. Extract accurate search query for audio matching
+    const info = await this.extractSpotifyInfo(url);
+    const query = `ytsearch1:${info.searchQuery}`;
 
     const outputTemplate = path.join(jobDir, '%(title).100B-%(id)s.%(ext)s');
 
@@ -188,7 +302,7 @@ export class SpotifyProvider extends BaseMediaProvider {
 
     downloadArgs.push(query);
 
-    logger.info(`Starting Spotify audio download for ${jobId}`, 'SPOTIFY_PROVIDER', { query });
+    logger.info(`Starting Spotify audio download for ${jobId}`, 'SPOTIFY_PROVIDER', { query, hasFfmpeg: Boolean(ffmpegPath) });
 
     await SubprocessExecutor.runRaw(cmd, downloadArgs, {
       cwd: jobDir,
@@ -198,7 +312,7 @@ export class SpotifyProvider extends BaseMediaProvider {
 
     const fileResult = await TempStorageManager.findJobFile(jobId);
     if (!fileResult) {
-      throw new Error('Spotify audio file was not created.');
+      throw new Error('Spotify audio file was not created. Please try another quality.');
     }
 
     const mimeType = this.getMimeType(fileResult.filename);

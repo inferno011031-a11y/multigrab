@@ -45,7 +45,11 @@ export class SubprocessExecutor {
     } catch {}
 
     // 2. Try python imageio_ffmpeg
-    const pythonExecs = [config.extractor.pythonPath, 'python3', 'python', 'py'];
+    const isWin = process.platform === 'win32';
+    const pythonExecs = isWin
+      ? ['py', 'C:\\Python314\\python.exe', config.extractor.pythonPath, 'python', 'python3']
+      : [config.extractor.pythonPath, 'python3', 'python', 'py'];
+
     for (const py of pythonExecs) {
       try {
         const out = await SubprocessExecutor.runRaw(
@@ -91,7 +95,11 @@ export class SubprocessExecutor {
     } catch {}
 
     // 3. Try python module execution
-    const pythonExecs = [config.extractor.pythonPath, 'python3', 'python', 'py'];
+    const isWin = process.platform === 'win32';
+    const pythonExecs = isWin
+      ? ['py', 'C:\\Python314\\python.exe', config.extractor.pythonPath, 'python', 'python3']
+      : [config.extractor.pythonPath, 'python3', 'python', 'py'];
+
     for (const py of pythonExecs) {
       try {
         await SubprocessExecutor.runRaw(py, ['-m', 'yt_dlp', '--version'], { timeout: 4000 });
