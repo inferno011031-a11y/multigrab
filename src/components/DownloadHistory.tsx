@@ -111,13 +111,31 @@ export function DownloadHistory({
                     Analyze Again
                   </button>
                   {item.downloadUrl && (
-                    <a
-                      href={item.downloadUrl}
-                      download={item.filename || 'download'}
-                      className="text-[11px] font-medium text-neutral-300 hover:text-white hover:underline cursor-pointer ml-auto"
+                    <button
+                      onClick={async () => {
+                        try {
+                          const res = await fetch(item.downloadUrl!);
+                          if (!res.ok) throw new Error('HTTP ' + res.status);
+                          const blob = await res.blob();
+                          const url = window.URL.createObjectURL(blob);
+                          const a = document.createElement('a');
+                          a.style.display = 'none';
+                          a.href = url;
+                          a.download = item.filename || 'download';
+                          document.body.appendChild(a);
+                          a.click();
+                          setTimeout(() => {
+                            document.body.removeChild(a);
+                            window.URL.revokeObjectURL(url);
+                          }, 1000);
+                        } catch {
+                          window.location.href = item.downloadUrl!;
+                        }
+                      }}
+                      className="text-[11px] font-medium text-emerald-400 hover:text-emerald-300 hover:underline cursor-pointer ml-auto"
                     >
                       Download File
-                    </a>
+                    </button>
                   )}
                 </div>
               </div>

@@ -61,6 +61,38 @@ export function DownloadProgressModal({
     };
   }, [jobId, onCompleted]);
 
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleSaveFile = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!job?.downloadUrl || isSaving) return;
+
+    setIsSaving(true);
+    try {
+      const res = await fetch(job.downloadUrl);
+      if (!res.ok) {
+        throw new Error('Server returned HTTP ' + res.status);
+      }
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = job.filename || 'media-download.mp3';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+        setIsSaving(false);
+      }, 1000);
+    } catch (err) {
+      console.error('Blob download failed, falling back to direct URL:', err);
+      setIsSaving(false);
+      window.location.href = job.downloadUrl;
+    }
+  };
+
   const formatFileSize = (bytes?: number) => {
     if (!bytes) return 'Calculating...';
     const mb = bytes / (1024 * 1024);
@@ -182,14 +214,23 @@ export function DownloadProgressModal({
             </div>
 
             <div className="mt-4 flex flex-col sm:flex-row gap-2">
-              <a
-                href={job.downloadUrl}
-                download={job.filename || 'media-download'}
-                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-3 text-xs sm:text-sm font-bold text-white shadow-lg shadow-emerald-500/20 hover:opacity-95 transition-all text-center cursor-pointer"
+              <button
+                onClick={handleSaveFile}
+                disabled={isSaving}
+                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-3 text-xs sm:text-sm font-bold text-white shadow-lg shadow-emerald-500/20 hover:opacity-95 transition-all text-center cursor-pointer disabled:opacity-75"
               >
-                <Download className="h-4 w-4 stroke-[2.5]" />
-                <span>Save File to Device</span>
-              </a>
+                {isSaving ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin stroke-[2.5]" />
+                    <span>Saving to device...</span>
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-4 w-4 stroke-[2.5]" />
+                    <span>Save File to Device</span>
+                  </>
+                )}
+              </button>
               <a
                 href={job.downloadUrl}
                 target="_blank"
