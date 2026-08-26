@@ -69,12 +69,19 @@ export function DownloadProgressModal({
 
     setIsSaving(true);
     try {
-      const res = await fetch(job.downloadUrl);
+      const res = await fetch(job.downloadUrl, { cache: 'no-store' });
       if (!res.ok) {
         throw new Error('Server returned HTTP ' + res.status);
       }
-      const blob = await res.blob();
+      const buffer = await res.arrayBuffer();
+      if (!buffer || buffer.byteLength === 0) {
+        throw new Error('Empty file buffer received');
+      }
+
+      const mimeType = job.mimeType || (job.filename?.endsWith('.mp3') ? 'audio/mpeg' : 'application/octet-stream');
+      const blob = new Blob([buffer], { type: mimeType });
       const url = window.URL.createObjectURL(blob);
+
       const a = document.createElement('a');
       a.style.display = 'none';
       a.href = url;
@@ -87,18 +94,27 @@ export function DownloadProgressModal({
           document.body.removeChild(a);
         } catch {}
         setIsSaving(false);
-      }, 500);
+      }, 1000);
 
-      // Keep blob URL alive for 60 seconds so browser download manager finishes writing all bytes
+      // Keep blob URL alive for 2 minutes so browser download manager writes all bytes
       setTimeout(() => {
         try {
           window.URL.revokeObjectURL(url);
         } catch {}
-      }, 60000);
+      }, 120000);
     } catch (err) {
-      console.error('Blob download failed, falling back to direct URL:', err);
+      console.error('Blob download failed, falling back to direct link:', err);
       setIsSaving(false);
-      window.location.href = job.downloadUrl;
+      const fallbackA = document.createElement('a');
+      fallbackA.href = job.downloadUrl;
+      fallbackA.download = job.filename || 'media-download.mp3';
+      document.body.appendChild(fallbackA);
+      fallbackA.click();
+      setTimeout(() => {
+        try {
+          document.body.removeChild(fallbackA);
+        } catch {}
+      }, 1000);
     }
   };
 
@@ -110,6 +126,8 @@ export function DownloadProgressModal({
     }
     return `${mb.toFixed(1)} MB`;
   };
+
+  const isAudioFile = Boolean(job?.filename?.match(/\.(mp3|m4a|wav|aac|ogg|flac)$/i));
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md animate-in fade-in duration-200">
@@ -221,6 +239,18 @@ export function DownloadProgressModal({
                 {formatFileSize(job.fileSize)}
               </span>
             </div>
+
+            {/* In-Browser Audio Player Preview */}
+            {isAudioFile && job.downloadUrl && (
+              <div className="mt-3 rounded-xl bg-zinc-950/80 p-2 border border-zinc-800/80">
+                <audio
+                  controls
+                  className="w-full h-9 rounded-lg"
+                  src={job.downloadUrl}
+                  preload="metadata"
+                />
+              </div>
+            )}
 
             <div className="mt-4 flex flex-col sm:flex-row gap-2">
               <button
