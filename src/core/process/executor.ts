@@ -86,7 +86,7 @@ export class SubprocessExecutor {
 
     // 1. Try direct system ffmpeg
     try {
-      await SubprocessExecutor.runRaw('ffmpeg', ['-version'], { timeout: 3000 });
+      await SubprocessExecutor.runRaw('ffmpeg', ['-version'], { timeout: 3000, silent: true });
       SubprocessExecutor.cachedFfmpegPath = 'ffmpeg';
       return 'ffmpeg';
     } catch {}
@@ -95,14 +95,14 @@ export class SubprocessExecutor {
     const isWin = process.platform === 'win32';
     const pythonExecs = isWin
       ? ['py', 'C:\\Python314\\python.exe', config.extractor.pythonPath, 'python', 'python3']
-      : [config.extractor.pythonPath, 'python3', 'python', 'py'];
+      : ['python3', config.extractor.pythonPath, 'python'];
 
     for (const py of pythonExecs) {
       try {
         const out = await SubprocessExecutor.runRaw(
           py,
           ['-c', 'import imageio_ffmpeg; print(imageio_ffmpeg.get_ffmpeg_exe())'],
-          { timeout: 4000 }
+          { timeout: 4000, silent: true }
         );
         const ffmpegExe = out.stdout.trim();
         if (ffmpegExe && !ffmpegExe.includes('Traceback')) {
@@ -136,7 +136,7 @@ export class SubprocessExecutor {
 
     // 2. Try global yt-dlp binary
     try {
-      await SubprocessExecutor.runRaw('yt-dlp', ['--version'], { timeout: 3000 });
+      await SubprocessExecutor.runRaw('yt-dlp', ['--version'], { timeout: 3000, silent: true });
       SubprocessExecutor.cachedCommand = { cmd: 'yt-dlp', baseArgs: [] };
       return SubprocessExecutor.cachedCommand;
     } catch {}
@@ -145,11 +145,11 @@ export class SubprocessExecutor {
     const isWin = process.platform === 'win32';
     const pythonExecs = isWin
       ? ['py', 'C:\\Python314\\python.exe', config.extractor.pythonPath, 'python', 'python3']
-      : [config.extractor.pythonPath, 'python3', 'python', 'py'];
+      : ['python3', config.extractor.pythonPath, 'python'];
 
     for (const py of pythonExecs) {
       try {
-        await SubprocessExecutor.runRaw(py, ['-m', 'yt_dlp', '--version'], { timeout: 4000 });
+        await SubprocessExecutor.runRaw(py, ['-m', 'yt_dlp', '--version'], { timeout: 4000, silent: true });
         SubprocessExecutor.cachedCommand = { cmd: py, baseArgs: ['-m', 'yt_dlp'] };
         return SubprocessExecutor.cachedCommand;
       } catch {}
@@ -208,12 +208,13 @@ export class SubprocessExecutor {
     options: {
       cwd?: string;
       timeout?: number;
+      silent?: boolean;
       onProgress?: ProgressCallback;
     } = {}
   ): Promise<ProcessOutput> {
     return new Promise((resolve, reject) => {
       const timeout = options.timeout ?? config.security.requestTimeoutMs ?? 30000;
-      const { cwd, onProgress } = options;
+      const { cwd, silent, onProgress } = options;
 
       let stdout = '';
       let stderr = '';
@@ -252,7 +253,9 @@ export class SubprocessExecutor {
       child.on('error', (err) => {
         clearTimeout(timer);
         if (!isTimedOut) {
-          logger.warn(`Subprocess spawn error: ${err.message}`, 'EXECUTOR', { cmd: command });
+          if (!silent) {
+            logger.warn(`Subprocess spawn error: ${err.message}`, 'EXECUTOR', { cmd: command });
+          }
           reject(err);
         }
       });
@@ -264,7 +267,9 @@ export class SubprocessExecutor {
         if (code === 0) {
           resolve({ stdout, stderr, exitCode: code });
         } else {
-          logger.warn(`Subprocess exited with code ${code}`, 'EXECUTOR', { cmd: command, exitCode: code, stderr: stderr.slice(0, 200) });
+          if (!silent) {
+            logger.warn(`Subprocess exited with code ${code}`, 'EXECUTOR', { cmd: command, exitCode: code, stderr: stderr.slice(0, 200) });
+          }
           reject(new Error(stderr || `Process exited with code ${code}`));
         }
       });
