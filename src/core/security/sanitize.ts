@@ -11,6 +11,22 @@ export function sanitizeFilename(raw: string, fallback: string = 'media-download
   // Trim whitespace
   let name = raw.trim();
 
+  // Replace fullwidth / unicode punctuation that breaks OS filesystems:
+  // ｜ (\uFF5C), ／ (\uFF0F), ＼ (\uFF3C), ？ (\uFF1F), ＊ (\uFF0A), ： (\uFF1A), ＜ (\uFF1C), ＞ (\uFF1E), ＂ (\uFF02)
+  name = name
+    .replace(/[\uFF5C|]/g, '-')
+    .replace(/[\uFF0F/]/g, '-')
+    .replace(/[\uFF3C\\]/g, '-')
+    .replace(/[\uFF1F?]/g, '')
+    .replace(/[\uFF0A*]/g, '')
+    .replace(/[\uFF1A:]/g, '-')
+    .replace(/[\uFF1C<]/g, '')
+    .replace(/[\uFF1E>]/g, '')
+    .replace(/[\uFF02"]/g, '')
+    .replace(/[\u2018\u2019\u201A\u201B']/g, '')
+    .replace(/[\u201C\u201D\u201E\u201F"]/g, '')
+    .replace(/[\u2013\u2014]/g, '-');
+
   // Strip null bytes and control chars
   name = name.replace(/[\x00-\x1f\x7f]/g, '');
 
@@ -18,18 +34,17 @@ export function sanitizeFilename(raw: string, fallback: string = 'media-download
   name = name.replace(/\.\./g, '_');
   name = name.replace(/[/\\?%*:|"<>]/g, '_');
 
-  // Collapse consecutive underscores
-  name = name.replace(/_+/g, '_');
+  // Collapse consecutive whitespace and underscores / dashes
+  name = name.replace(/\s+/g, ' ');
+  name = name.replace(/[-_]{2,}/g, '-');
 
-  // Strip leading and trailing underscores, dots, spaces
-  name = name.replace(/^[._\s]+|[._\s]+$/g, '');
+  // Strip leading and trailing underscores, dots, spaces, dashes
+  name = name.replace(/^[-._\s]+|[-._\s]+$/g, '');
 
-  // Truncate to maximum 120 characters to avoid filesystem limit issues
-  if (name.length > 120) {
-    const ext = path.extname(name);
-    const base = path.basename(name, ext).slice(0, 120 - ext.length);
-    name = `${base}${ext}`;
-  }
+  // Truncate to maximum 80 characters to guarantee filesystem and MAX_PATH safety
+  const ext = path.extname(name);
+  const base = path.basename(name, ext).slice(0, 80).trim();
+  name = `${base}${ext}`;
 
   return name || fallback;
 }

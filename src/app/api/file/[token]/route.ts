@@ -82,14 +82,17 @@ export async function GET(
     const meta = await TempStorageManager.getJobMetadata(safeJobId);
     const mimeType = meta?.mimeType || 'application/octet-stream';
 
+    // Clean safe filename for Content-Disposition header (prevents OS file naming errors)
+    const cleanHeaderFilename = sanitizeFilename(tokenData.filename || safeFilename, 'media-download.mp4');
+
     // 1. Create clean ASCII fallback for HTTP header (RFC 6266)
-    const asciiFilename = safeFilename
+    const asciiFilename = cleanHeaderFilename
       .replace(/[^\x20-\x7E]/g, '_')
-      .replace(/["\\]/g, '_')
+      .replace(/["\\]/g, '')
       .trim() || 'media-download.mp4';
 
     // 2. Create RFC 5987 UTF-8 encoded filename
-    const utf8Encoded = encodeURIComponent(safeFilename)
+    const utf8Encoded = encodeURIComponent(cleanHeaderFilename)
       .replace(/['()]/g, (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`)
       .replace(/\*/g, '%2A');
 
