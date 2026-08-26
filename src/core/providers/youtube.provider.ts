@@ -1,6 +1,8 @@
+import path from 'path';
 import { BaseMediaProvider } from './base.provider';
 import { MediaFormat, MediaMetadata, SupportedPlatform } from '@/core/types/media';
 import { SubprocessExecutor } from '@/core/process/executor';
+import { TempStorageManager } from '@/core/storage/temp-storage';
 import { logger } from '@/lib/logger';
 
 export class YouTubeProvider extends BaseMediaProvider {
@@ -165,50 +167,91 @@ export class YouTubeProvider extends BaseMediaProvider {
     jobId: string,
     onProgress?: (progress: { percent: number; speed?: string; eta?: string }) => void
   ): Promise<{ filePath: string; filename: string; mimeType: string; size: number }> {
+    const isAudio = formatId.startsWith('audio-') || formatId === 'bestaudio';
+
+    // 1. Try standard processDownload
     try {
       return await super.processDownload(url, formatId, jobId, onProgress);
     } catch (err: unknown) {
-      const errMsg = String(err);
-      const isAudio = formatId.startsWith('audio-') || formatId === 'bestaudio';
+      logger.warn(`Primary YouTube download failed: ${String(err)}, initiating multi-client resilience pipeline`, 'YOUTUBE_PROVIDER');
 
-      if (isAudio && (errMsg.includes('Sign in') || errMsg.includes('bot') || errMsg.includes('blocked') || errMsg.includes('Private'))) {
-        logger.warn(`YouTube bot check encountered during audio download, attempting SoundCloud audio fallback`, 'YOUTUBE_PROVIDER');
-        const meta = await this.getMetadata(url);
-        const searchQuery = `${meta.author} - ${meta.title} audio`;
-        const { cmd, baseArgs } = await SubprocessExecutor.getExtractorCommand();
-        const jobDir = await (await import('@/core/storage/temp-storage')).TempStorageManager.getJobDirectory(jobId);
-        const pathModule = await import('path');
-        const outputTemplate = pathModule.default.join(jobDir, '%(title).100B-%(id)s.mp3');
+      const jobDir = await TempStorageManager.getJobDirectory(jobId);
+      const { cmd, baseArgs } = await SubprocessExecutor.getExtractorCommand();
+      const outputTemplate = path.join(jobDir, '%(title).100B-%(id)s.%(ext)s');
 
-        const scArgs = [
-          ...baseArgs,
-          ...SubprocessExecutor.getCloudBypassArgs(),
-          '--no-warnings',
-          '--no-playlist',
-          '--no-check-certificates',
-          '--default-search',
-          'scsearch',
-          '-f',
-          'ba/b',
-          '-x',
-          '--audio-format',
-          'mp3',
-          '--audio-quality',
-          '320K',
-          '-o',
-          outputTemplate,
-          `scsearch1:${searchQuery}`,
-        ];
+      // 2. Audio Fallback -> SoundCloud search match
+      if (isAudio) {
+        try {
+          const meta = await this.getMetadata(url);
+          const searchQuery = `${meta.author} - ${meta.title} audio`;
+          const scArgs = [
+            ...baseArgs,
+            ...SubprocessExecutor.getCloudBypassArgs(),
+            '--no-warnings',
+            '--no-playlist',
+            '--no-check-certificates',
+            '--default-search',
+            'scsearch',
+            '-f',
+            'ba/b',
+            '-x',
+            '--audio-format',
+            'mp3',
+            '--audio-quality',
+            formatId === 'audio-mp3-128' ? '128K' : '320K',
+            '-o',
+            outputTemplate,
+            `scsearch1:${searchQuery}`,
+          ];
 
-        await SubprocessExecutor.runRaw(cmd, scArgs, { cwd: jobDir, onProgress });
-        const fileResult = await (await import('@/core/storage/temp-storage')).TempStorageManager.findJobFile(jobId);
-        if (fileResult) {
-          return {
-            filePath: fileResult.filePath,
-            filename: fileResult.filename,
-            mimeType: 'audio/mpeg',
-            size: fileResult.size,
-          };
+          await SubprocessExecutor.runRaw(cmd, scArgs, { cwd: jobDir, onProgress });
+          const fileResult = await TempStorageManager.findJobFile(jobId);
+          if (fileResult) {
+            return {
+              filePath: fileResult.filePath,
+              filename: fileResult.filename,
+              mimeType: 'audio/mpeg',
+              size: fileResult.size,
+            };
+          }
+        } catch (scErr: unknown) {
+          logger.warn(`SoundCloud audio fallback failed: ${String(scErr)}`, 'YOUTUBE_PROVIDER');
+        }
+      }
+
+      // 3. Video Multi-Client Fallback (Android -> iOS -> TV -> MWeb)
+      const clientFallbacks = ['android', 'ios', 'tv', 'mweb'];
+      for (const client of clientFallbacks) {
+        try {
+          logger.info(`Retrying YouTube video download using ${client} client`, 'YOUTUBE_PROVIDER');
+          const clientArgs = [
+            ...baseArgs,
+            '--force-ipv4',
+            '--geo-bypass',
+            '--no-warnings',
+            '--no-playlist',
+            '--no-check-certificates',
+            '--extractor-args',
+            `youtube:player_client=${client};player_skip=configs`,
+            '-f',
+            isAudio ? 'ba/b' : 'b/bv+ba/best',
+            '-o',
+            outputTemplate,
+            url,
+          ];
+
+          await SubprocessExecutor.runRaw(cmd, clientArgs, { cwd: jobDir, onProgress });
+          const fileResult = await TempStorageManager.findJobFile(jobId);
+          if (fileResult) {
+            return {
+              filePath: fileResult.filePath,
+              filename: fileResult.filename,
+              mimeType: isAudio ? 'audio/mpeg' : 'video/mp4',
+              size: fileResult.size,
+            };
+          }
+        } catch (clientErr: unknown) {
+          logger.warn(`YouTube ${client} client fallback failed: ${String(clientErr)}`, 'YOUTUBE_PROVIDER');
         }
       }
 
