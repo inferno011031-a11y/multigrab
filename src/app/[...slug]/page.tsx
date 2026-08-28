@@ -205,6 +205,10 @@ export default async function CatchAllSlugPage({ params }: Props) {
     notFound();
   }
 
+  if (slug.length === 1 && (slug[0] === 'sitemap.xml' || slug[0] === 'robots.txt' || slug[0] === 'favicon.ico')) {
+    notFound();
+  }
+
   // 1. Single Segment handling
   if (slug.length === 1) {
     // Non-English Homepage (e.g. /es, /pt)
